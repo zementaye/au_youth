@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: au-youth-platform
+    runtime: node
+    plan: starter
+    region: oregon
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false # set manually from your Neon connection string
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: UPLOAD_DIR
+        value: /var/data/uploads
+    # Persistent disks require a paid Render plan (not the Free tier). If
+    # you're on Free, delete this `disk:` block and the UPLOAD_DIR env var
+    # above — uploads will still work, but files won't survive a redeploy.
+    disk:
+      name: uploads-disk
+      mountPath: /var/data/uploads
+      sizeGB: 1
