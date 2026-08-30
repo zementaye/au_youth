@@ -20,32 +20,40 @@ export default async function Nav() {
   const isAdmin = user && (user.systemRole === "SUPER_ADMIN" || user.systemRole === "DEPT_ADMIN");
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-paper/95 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3">
+    <header className="sticky top-0 z-40 border-b border-ink bg-paper/97 backdrop-blur">
+      <div className="strip">
+        <span style={{ background: "var(--sage)" }} />
+        <span style={{ background: "var(--gold)" }} />
+        <span style={{ background: "var(--coral)" }} />
+        <span style={{ background: "var(--forest)" }} />
+      </div>
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3.5">
         <Link href="/" className="flex items-center gap-2.5">
-          <span className="node-dot" />
+          <span className="flex h-6 w-6 items-center justify-center border border-ink bg-ink">
+            <span className="h-2 w-2 bg-paper" />
+          </span>
           <span className="font-display text-lg font-semibold tracking-tight text-ink">
             AU Youth Network
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-1 md:flex">
+        <nav className="hidden items-center gap-6 md:flex">
           {links.map((l) => (
             <Link
               key={l.href}
               href={l.href}
-              className="flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm text-ink-soft transition-colors hover:bg-paper-raised hover:text-ink"
+              className="eyebrow flex items-center gap-1.5 border-b-2 border-transparent py-1 text-ink-soft transition-colors hover:border-ink hover:text-ink"
             >
-              <l.icon size={15} strokeWidth={1.75} />
+              <l.icon size={14} strokeWidth={2} />
               {l.label}
             </Link>
           ))}
           {isAdmin && (
             <Link
               href="/admin"
-              className="flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm text-ink-soft transition-colors hover:bg-paper-raised hover:text-ink"
+              className="eyebrow flex items-center gap-1.5 border-b-2 border-transparent py-1 text-coral transition-colors hover:border-coral"
             >
-              <ShieldCheck size={15} strokeWidth={1.75} />
+              <ShieldCheck size={14} strokeWidth={2} />
               Admin
             </Link>
           )}
@@ -68,27 +76,18 @@ export default async function Nav() {
                 {user.fullName.split(" ")[0]}
               </Link>
               <form action={logoutAction}>
-                <button
-                  type="submit"
-                  className="flex items-center gap-1.5 rounded-full border border-line px-3.5 py-1.5 text-sm text-ink-soft transition-colors hover:border-ink hover:text-ink"
-                >
-                  <LogOut size={14} strokeWidth={1.75} />
+                <button type="submit" className="btn btn-outline !py-1.5 !text-xs">
+                  <LogOut size={13} strokeWidth={2} />
                   Sign out
                 </button>
               </form>
             </>
           ) : (
             <>
-              <Link
-                href="/login"
-                className="rounded-full px-3.5 py-1.5 text-sm text-ink-soft hover:text-ink"
-              >
+              <Link href="/login" className="eyebrow text-ink-soft hover:text-ink">
                 Sign in
               </Link>
-              <Link
-                href="/signup"
-                className="rounded-full bg-ink px-4 py-1.5 text-sm font-medium text-paper transition-colors hover:bg-ink-soft"
-              >
+              <Link href="/signup" className="btn btn-primary !py-1.5 !text-xs">
                 Join the network
               </Link>
             </>
@@ -101,7 +100,7 @@ export default async function Nav() {
           <Link
             key={l.href}
             href={l.href}
-            className="flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1 text-xs text-ink-soft hover:bg-paper-raised"
+            className="flex shrink-0 items-center gap-1.5 border border-transparent px-3 py-1 text-xs text-ink-soft hover:border-ink hover:text-ink"
           >
             <l.icon size={13} strokeWidth={1.75} />
             {l.label}
@@ -110,7 +109,7 @@ export default async function Nav() {
         {isAdmin && (
           <Link
             href="/admin"
-            className="flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1 text-xs text-ink-soft hover:bg-paper-raised"
+            className="flex shrink-0 items-center gap-1.5 border border-transparent px-3 py-1 text-xs text-coral hover:border-coral"
           >
             <ShieldCheck size={13} strokeWidth={1.75} />
             Admin

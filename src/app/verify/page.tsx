@@ -23,7 +23,7 @@ export default async function VerifyPage({
       <p className="mt-2 text-sm text-ink-soft">{result.message}</p>
       <Link
         href="/dashboard"
-        className="mt-6 inline-block rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-paper hover:bg-ink-soft"
+        className="mt-6 inline-block rounded-none bg-ink px-5 py-2.5 text-sm font-medium text-paper hover:bg-ink-soft"
       >
         Go to dashboard
       </Link>

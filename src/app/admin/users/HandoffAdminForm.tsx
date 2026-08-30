@@ -18,7 +18,7 @@ export default function HandoffAdminForm({ candidates }: { candidates: Candidate
     return (
       <button
         onClick={() => setOpen(true)}
-        className="flex items-center gap-2 rounded-full border border-dashed border-line px-4 py-2 text-sm text-ink-soft transition-colors hover:border-ink hover:text-ink"
+        className="flex items-center gap-2 rounded-none border border-dashed border-line px-4 py-2 text-sm text-ink-soft transition-colors hover:border-ink hover:text-ink"
       >
         <UserCog size={15} /> Hand off department admin role
       </button>
@@ -34,14 +34,14 @@ export default function HandoffAdminForm({ candidates }: { candidates: Candidate
           router.push("/dashboard");
         });
       }}
-      className="card-raised flex flex-wrap items-center gap-3 rounded-lg p-4"
+      className="card-raised flex flex-wrap items-center gap-3 rounded-none p-4"
     >
       <UserCog size={16} className="text-ink-soft" />
       <p className="text-sm text-ink">Hand your department admin role to:</p>
       <select
         name="userId"
         required
-        className="rounded-md border border-line bg-paper px-2.5 py-1.5 text-sm text-ink-soft"
+        className="rounded-none border border-line bg-paper px-2.5 py-1.5 text-sm text-ink-soft"
         defaultValue=""
       >
         <option value="" disabled>
@@ -56,7 +56,7 @@ export default function HandoffAdminForm({ candidates }: { candidates: Candidate
       <button
         type="submit"
         disabled={isPending}
-        className="rounded-full bg-coral px-4 py-1.5 text-xs font-medium text-paper hover:opacity-90 disabled:opacity-60"
+        className="rounded-none bg-coral px-4 py-1.5 text-xs font-medium text-paper hover:opacity-90 disabled:opacity-60"
       >
         {isPending ? "Handing off…" : "Confirm handoff"}
       </button>

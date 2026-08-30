@@ -62,8 +62,8 @@ export default function DirectoryClient({
 
   return (
     <div>
-      <div className="card-raised flex flex-col gap-3 rounded-lg p-4 sm:flex-row sm:items-center">
-        <div className="flex flex-1 items-center gap-2 rounded-md border border-line bg-paper px-3 py-2">
+      <div className="card-raised flex flex-col gap-3 rounded-none p-4 sm:flex-row sm:items-center">
+        <div className="flex flex-1 items-center gap-2 rounded-none border border-line bg-paper px-3 py-2">
           <Search size={15} className="text-ink-soft" />
           <input
             value={query}
@@ -81,7 +81,7 @@ export default function DirectoryClient({
         <select
           value={deptFilter}
           onChange={(e) => setDeptFilter(e.target.value)}
-          className="rounded-md border border-line bg-paper px-3 py-2 text-sm text-ink-soft"
+          className="rounded-none border border-line bg-paper px-3 py-2 text-sm text-ink-soft"
         >
           <option value="">All departments</option>
           {departments.map((d) => (
@@ -93,7 +93,7 @@ export default function DirectoryClient({
         <select
           value={programFilter}
           onChange={(e) => setProgramFilter(e.target.value)}
-          className="rounded-md border border-line bg-paper px-3 py-2 text-sm text-ink-soft"
+          className="rounded-none border border-line bg-paper px-3 py-2 text-sm text-ink-soft"
         >
           <option value="">All programs</option>
           <option value="INTERN">Intern</option>
@@ -108,7 +108,7 @@ export default function DirectoryClient({
 
       <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {pageItems.map((m) => (
-          <div key={m.id} className="card-raised flex flex-col gap-3 rounded-lg p-5">
+          <div key={m.id} className="card-raised flex flex-col gap-3 rounded-none p-5">
             <div className="flex items-start gap-3">
               <div className="h-11 w-11 shrink-0 overflow-hidden rounded-full border border-line bg-paper">
                 {m.profilePhotoUrl ? (
@@ -184,7 +184,7 @@ export default function DirectoryClient({
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page === 1}
-            className="flex items-center gap-1 rounded-full border border-line px-3 py-1.5 text-xs text-ink-soft hover:border-ink hover:text-ink disabled:opacity-40"
+            className="flex items-center gap-1 rounded-none border border-line px-3 py-1.5 text-xs text-ink-soft hover:border-ink hover:text-ink disabled:opacity-40"
           >
             <ChevronLeft size={14} /> Prev
           </button>
@@ -194,7 +194,7 @@ export default function DirectoryClient({
           <button
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={page === totalPages}
-            className="flex items-center gap-1 rounded-full border border-line px-3 py-1.5 text-xs text-ink-soft hover:border-ink hover:text-ink disabled:opacity-40"
+            className="flex items-center gap-1 rounded-none border border-line px-3 py-1.5 text-xs text-ink-soft hover:border-ink hover:text-ink disabled:opacity-40"
           >
             Next <ChevronRight size={14} />
           </button>

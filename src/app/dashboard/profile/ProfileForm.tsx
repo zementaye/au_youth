@@ -21,7 +21,7 @@ export default function ProfileForm({
   return (
     <form action={formAction} className="space-y-6">
       {state?.error && (
-        <div className="rounded-md border border-coral/40 bg-coral/5 px-4 py-3 text-sm text-coral">
+        <div className="rounded-none border border-coral/40 bg-coral/5 px-4 py-3 text-sm text-coral">
           {state.error}
         </div>
       )}
@@ -45,7 +45,7 @@ export default function ProfileForm({
               const file = e.target.files?.[0];
               if (file) setPhotoPreview(URL.createObjectURL(file));
             }}
-            className="text-sm text-ink-soft file:mr-3 file:rounded-full file:border file:border-line file:bg-paper-raised file:px-3 file:py-1.5 file:text-xs file:text-ink-soft hover:file:border-ink"
+            className="text-sm text-ink-soft file:mr-3 file:rounded-none file:border file:border-line file:bg-paper-raised file:px-3 file:py-1.5 file:text-xs file:text-ink-soft hover:file:border-ink"
           />
         </div>
         <p className="mt-1.5 text-xs text-ink-soft/70">PNG, JPEG, WEBP, or GIF, up to 5MB.</p>
@@ -97,7 +97,7 @@ export default function ProfileForm({
       <button
         type="submit"
         disabled={pending}
-        className="w-full rounded-full bg-ink px-5 py-3 text-sm font-medium text-paper transition-colors hover:bg-ink-soft disabled:opacity-60"
+        className="w-full rounded-none bg-ink px-5 py-3 text-sm font-medium text-paper transition-colors hover:bg-ink-soft disabled:opacity-60"
       >
         {pending ? "Saving…" : "Save changes"}
       </button>

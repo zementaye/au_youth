@@ -1,30 +1,38 @@
 @import "tailwindcss";
 
-@import "@fontsource/fraunces/400.css";
-@import "@fontsource/fraunces/500.css";
-@import "@fontsource/fraunces/600.css";
-@import "@fontsource/fraunces/600-italic.css";
-@import "@fontsource/inter/400.css";
-@import "@fontsource/inter/500.css";
-@import "@fontsource/inter/600.css";
-@import "@fontsource/inter/700.css";
+@import "@fontsource/space-grotesk/500.css";
+@import "@fontsource/space-grotesk/600.css";
+@import "@fontsource/space-grotesk/700.css";
+@import "@fontsource/ibm-plex-sans/400.css";
+@import "@fontsource/ibm-plex-sans/500.css";
+@import "@fontsource/ibm-plex-sans/600.css";
 @import "@fontsource/ibm-plex-mono/400.css";
 @import "@fontsource/ibm-plex-mono/500.css";
 
-:root {
-  --ink: #10221f;
-  --ink-soft: #2c433f;
-  --paper: #f5f1e6;
-  --paper-raised: #fbf9f2;
-  --gold: #c99a3c;
-  --gold-soft: #e7cf9a;
-  --coral: #b95738;
-  --sage: #6f8f74;
-  --line: #ddd3bd;
-  --line-soft: #eae3d1;
+/*
+  AU Youth Network — visual identity
+  -----------------------------------
+  Grounded in strip-woven cloth: a continental network made of
+  distinct bands joined edge to edge. No cream paper, no serif
+  display, no soft rounded pill UI — flat colour, hard edges,
+  a working grid.
+*/
 
-  --font-display: "Fraunces", ui-serif, Georgia, serif;
-  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+:root {
+  --ink: #14171a;
+  --ink-soft: #4b5157;
+  --paper: #ffffff;
+  --paper-raised: #f4f4f1;
+  --gold: #e8a317;       /* amber */
+  --gold-soft: #fbe6b0;
+  --coral: #a31545;      /* berry */
+  --sage: #1e3fe0;       /* continental blue */
+  --forest: #12603f;     /* palm green */
+  --line: #d9d9d3;
+  --line-soft: #eceee8;
+
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 }
 
@@ -37,6 +45,7 @@
   --color-gold-soft: var(--gold-soft);
   --color-coral: var(--coral);
   --color-sage: var(--sage);
+  --color-forest: var(--forest);
   --color-line: var(--line);
   --color-line-soft: var(--line-soft);
   --font-display: var(--font-display);
@@ -61,6 +70,7 @@ body {
 
 h1, h2, h3, .font-display {
   font-family: var(--font-display);
+  letter-spacing: -0.01em;
 }
 
 .font-mono, .meta {
@@ -68,12 +78,12 @@ h1, h2, h3, .font-display {
 }
 
 ::selection {
-  background: var(--gold-soft);
+  background: var(--gold);
   color: var(--ink);
 }
 
 :focus-visible {
-  outline: 2px solid var(--coral);
+  outline: 2px solid var(--sage);
   outline-offset: 2px;
 }
 
@@ -85,36 +95,132 @@ h1, h2, h3, .font-display {
   }
 }
 
-/* Node-connector motif: used for the skill-network signature element */
+/* ---- Signature: the woven strip ----
+   Every department is a band. Bands sit edge to edge, not scattered
+   in a soft radial diagram. Used on the homepage hero and as a
+   recurring accent bar across cards, nav and section dividers. */
+.strip {
+  display: flex;
+  height: 10px;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--ink);
+}
+
+.strip > span {
+  flex: 1;
+}
+
 .node-dot {
   width: 6px;
   height: 6px;
-  border-radius: 999px;
   background: var(--gold);
   flex-shrink: 0;
 }
 
 .node-line {
-  height: 1px;
-  background-image: linear-gradient(to right, var(--line) 50%, transparent 0%);
-  background-size: 6px 1px;
-  background-repeat: repeat-x;
+  height: 2px;
+  background: var(--line);
   flex: 1;
 }
 
+/* ---- Cards ----
+   Flat white, hard 1px ink border, a 4px solid colour spine on the
+   leading edge instead of a drop shadow. */
 .card-raised {
-  background: var(--paper-raised);
-  border: 1px solid var(--line);
+  background: var(--paper);
+  border: 1px solid var(--ink);
+  border-left: 4px solid var(--sage);
+  border-radius: 0;
 }
 
+.card-raised:nth-of-type(3n+2) {
+  border-left-color: var(--gold);
+}
+
+.card-raised:nth-of-type(3n) {
+  border-left-color: var(--coral);
+}
+
+/* ---- Tags / chips ----
+   Solid fill, not outline pills. */
 .tag {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.68rem;
+  font-weight: 500;
   letter-spacing: 0.02em;
-  padding: 0.2rem 0.55rem;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  color: var(--ink-soft);
+  text-transform: uppercase;
+  padding: 0.22rem 0.6rem;
+  border: 1px solid var(--ink);
+  border-radius: 0;
+  color: var(--ink);
   background: var(--paper-raised);
   white-space: nowrap;
+}
+
+/* ---- Buttons ----
+   Hard corners, offset "stamp" shadow that tucks in on press instead
+   of a soft hover fade. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 0;
+  font-weight: 500;
+  font-size: 0.875rem;
+  padding: 0.55rem 1.1rem;
+  border: 1px solid var(--ink);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  box-shadow: 3px 3px 0 var(--ink);
+}
+
+.btn:hover {
+  transform: translate(3px, 3px);
+  box-shadow: 0 0 0 var(--ink);
+}
+
+.btn-primary {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.btn-outline {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+/* ---- Form fields ----
+   Used everywhere across the app (was previously undefined, so
+   inputs rendered with no styling at all). Sharp corners, ink
+   border, blue focus ring matching the button accent. */
+.input {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  background: var(--paper);
+  padding: 0.55rem 0.75rem;
+  font-size: 0.875rem;
+  color: var(--ink);
+}
+
+.input::placeholder {
+  color: var(--ink-soft);
+  opacity: 0.55;
+}
+
+.input:focus-visible {
+  outline: 2px solid var(--sage);
+  outline-offset: -1px;
+  border-color: var(--sage);
+}
+
+/* Eyebrow label used above headings */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-soft);
 }

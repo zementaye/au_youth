@@ -8,7 +8,7 @@ export default function ResetPasswordForm({ token }: { token: string }) {
 
   if (!token) {
     return (
-      <p className="rounded-md border border-coral/40 bg-coral/5 px-4 py-3 text-sm text-coral">
+      <p className="rounded-none border border-coral/40 bg-coral/5 px-4 py-3 text-sm text-coral">
         This link is missing its reset token. Request a new one from the forgot-password page.
       </p>
     );
@@ -18,7 +18,7 @@ export default function ResetPasswordForm({ token }: { token: string }) {
     <form action={formAction} className="space-y-5">
       <input type="hidden" name="token" value={token} />
       {state?.error && (
-        <div className="rounded-md border border-coral/40 bg-coral/5 px-4 py-3 text-sm text-coral">
+        <div className="rounded-none border border-coral/40 bg-coral/5 px-4 py-3 text-sm text-coral">
           {state.error}
         </div>
       )}
@@ -31,7 +31,7 @@ export default function ResetPasswordForm({ token }: { token: string }) {
       <button
         type="submit"
         disabled={pending}
-        className="w-full rounded-full bg-ink px-5 py-3 text-sm font-medium text-paper transition-colors hover:bg-ink-soft disabled:opacity-60"
+        className="w-full rounded-none bg-ink px-5 py-3 text-sm font-medium text-paper transition-colors hover:bg-ink-soft disabled:opacity-60"
       >
         {pending ? "Saving…" : "Set new password"}
       </button>

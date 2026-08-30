@@ -14,7 +14,7 @@ export default function HelpRequestComposer({ skillOptions }: { skillOptions: st
     return (
       <button
         onClick={() => setOpen(true)}
-        className="flex w-full items-center justify-center gap-2 rounded-lg border border-dashed border-line px-5 py-3 text-sm text-ink-soft transition-colors hover:border-ink hover:text-ink"
+        className="flex w-full items-center justify-center gap-2 rounded-none border border-dashed border-line px-5 py-3 text-sm text-ink-soft transition-colors hover:border-ink hover:text-ink"
       >
         <MessageSquarePlus size={15} /> Post a help request
       </button>
@@ -22,10 +22,10 @@ export default function HelpRequestComposer({ skillOptions }: { skillOptions: st
   }
 
   return (
-    <form action={formAction} className="card-raised space-y-4 rounded-lg p-5">
+    <form action={formAction} className="card-raised space-y-4 rounded-none p-5">
       <p className="font-display text-lg font-medium text-ink">New help request</p>
       {state?.error && (
-        <div className="rounded-md border border-coral/40 bg-coral/5 px-4 py-2 text-sm text-coral">
+        <div className="rounded-none border border-coral/40 bg-coral/5 px-4 py-2 text-sm text-coral">
           {state.error}
         </div>
       )}
@@ -47,7 +47,7 @@ export default function HelpRequestComposer({ skillOptions }: { skillOptions: st
         <button
           type="submit"
           disabled={pending}
-          className="rounded-full bg-ink px-5 py-2 text-sm font-medium text-paper transition-colors hover:bg-ink-soft disabled:opacity-60"
+          className="rounded-none bg-ink px-5 py-2 text-sm font-medium text-paper transition-colors hover:bg-ink-soft disabled:opacity-60"
         >
           {pending ? "Posting…" : "Post request"}
         </button>

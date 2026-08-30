@@ -111,7 +111,7 @@ export default function SkillPicker({
       </div>
 
       {open && (
-        <div className="card-raised absolute z-20 mt-1.5 max-h-64 w-full overflow-y-auto rounded-lg p-1.5 shadow-lg">
+        <div className="card-raised absolute z-20 mt-1.5 max-h-64 w-full overflow-y-auto rounded-none p-1.5">
           {filtered.length > 0 ? (
             <>
               <p className="px-2.5 pb-1 pt-1 text-[10px] font-medium uppercase tracking-wide text-ink-soft/60">
@@ -122,7 +122,7 @@ export default function SkillPicker({
                   key={s}
                   type="button"
                   onClick={() => addSkill(s)}
-                  className="block w-full rounded-md px-2.5 py-1.5 text-left text-sm text-ink hover:bg-paper"
+                  className="block w-full rounded-none px-2.5 py-1.5 text-left text-sm text-ink hover:bg-paper"
                 >
                   {s}
                 </button>
@@ -138,7 +138,7 @@ export default function SkillPicker({
             <button
               type="button"
               onClick={() => addSkill(query)}
-              className="mt-0.5 block w-full rounded-md border-t border-line-soft px-2.5 py-1.5 text-left text-sm text-coral hover:bg-paper"
+              className="mt-0.5 block w-full rounded-none border-t border-line-soft px-2.5 py-1.5 text-left text-sm text-coral hover:bg-paper"
             >
               + Add “{query.trim()}” as a new skill
             </button>

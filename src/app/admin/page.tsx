@@ -86,7 +86,7 @@ export default async function AdminOverviewPage() {
         {isSuper && (
           <div>
             <h2 className="mb-3 font-display text-xl font-medium text-ink">Members per department</h2>
-            <div className="card-raised rounded-lg p-4">
+            <div className="card-raised rounded-none p-4">
               <MembersByDeptChart data={deptChartData} />
             </div>
           </div>
@@ -94,7 +94,7 @@ export default async function AdminOverviewPage() {
 
         <div>
           <h2 className="mb-3 font-display text-xl font-medium text-ink">Help request status</h2>
-          <div className="card-raised rounded-lg p-4">
+          <div className="card-raised rounded-none p-4">
             <HelpRequestStatusChart open={Number(openCount[0]?.count ?? 0)} resolved={Number(resolvedCount[0]?.count ?? 0)} />
           </div>
         </div>
@@ -102,7 +102,7 @@ export default async function AdminOverviewPage() {
 
       <div className="mt-10">
         <h2 className="mb-3 font-display text-xl font-medium text-ink">Most listed skills</h2>
-        <div className="card-raised rounded-lg p-4">
+        <div className="card-raised rounded-none p-4">
           <TopSkillsChart data={skillsChartData} />
         </div>
       </div>
@@ -118,7 +118,7 @@ export default async function AdminOverviewPage() {
               Full audit log <ArrowRight size={12} />
             </Link>
           </div>
-          <div className="card-raised divide-y divide-line-soft rounded-lg">
+          <div className="card-raised divide-y divide-line-soft rounded-none">
             {recentAudit.map((a) => (
               <div key={a.id} className="flex items-center justify-between px-5 py-3 text-sm">
                 <span className="text-ink-soft">
@@ -137,7 +137,7 @@ export default async function AdminOverviewPage() {
 
 function AdminLink({ href, icon: Icon, label }: { href: string; icon: typeof UsersIcon; label: string }) {
   return (
-    <Link href={href} className="card-raised flex items-center justify-between rounded-lg p-4 text-sm text-ink hover:shadow-sm">
+    <Link href={href} className="card-raised flex items-center justify-between rounded-none p-4 text-sm text-ink transition-transform hover:-translate-y-0.5">
       <span className="flex items-center gap-2">
         <Icon size={16} className="text-ink-soft" /> {label}
       </span>
@@ -148,7 +148,7 @@ function AdminLink({ href, icon: Icon, label }: { href: string; icon: typeof Use
 
 function StatCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="card-raised rounded-lg p-4">
+    <div className="card-raised rounded-none p-4">
       <p className="meta text-xs text-ink-soft/70">{label}</p>
       <p className="mt-1 font-display text-xl font-medium text-ink">{value}</p>
     </div>

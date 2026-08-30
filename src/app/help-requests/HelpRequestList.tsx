@@ -50,7 +50,7 @@ export default function HelpRequestList({
             onDone={() => setEditingId(null)}
           />
         ) : (
-          <article key={r.id} className="card-raised rounded-lg p-5">
+          <article key={r.id} className="card-raised rounded-none p-5">
             <div className="mb-2 flex flex-wrap items-center gap-2 text-xs">
               <StatusBadge status={r.status} />
               {r.deptName && <span className="tag">{r.deptName}</span>}
@@ -105,7 +105,7 @@ export default function HelpRequestList({
                   <button
                     disabled={isPending}
                     onClick={() => startTransition(() => { claimHelpRequestAction(r.id); })}
-                    className="rounded-full bg-ink px-4 py-1.5 text-xs font-medium text-paper hover:bg-ink-soft disabled:opacity-60"
+                    className="rounded-none bg-ink px-4 py-1.5 text-xs font-medium text-paper hover:bg-ink-soft disabled:opacity-60"
                   >
                     I can help
                   </button>
@@ -114,7 +114,7 @@ export default function HelpRequestList({
                   <button
                     disabled={isPending}
                     onClick={() => startTransition(() => { unclaimHelpRequestAction(r.id); })}
-                    className="flex items-center gap-1 rounded-full border border-line px-4 py-1.5 text-xs font-medium text-ink-soft hover:border-ink hover:text-ink disabled:opacity-60"
+                    className="flex items-center gap-1 rounded-none border border-line px-4 py-1.5 text-xs font-medium text-ink-soft hover:border-ink hover:text-ink disabled:opacity-60"
                   >
                     <RotateCcw size={12} /> {r.claimedById === currentUserId ? "Step back" : "Reopen"}
                   </button>
@@ -123,7 +123,7 @@ export default function HelpRequestList({
                   <button
                     disabled={isPending}
                     onClick={() => startTransition(() => { resolveHelpRequestAction(r.id); })}
-                    className="rounded-full border border-line px-4 py-1.5 text-xs font-medium text-ink-soft hover:border-ink hover:text-ink disabled:opacity-60"
+                    className="rounded-none border border-line px-4 py-1.5 text-xs font-medium text-ink-soft hover:border-ink hover:text-ink disabled:opacity-60"
                   >
                     Mark resolved
                   </button>
@@ -132,7 +132,7 @@ export default function HelpRequestList({
                   <button
                     disabled={isPending}
                     onClick={() => startTransition(() => { reopenHelpRequestAction(r.id); })}
-                    className="flex items-center gap-1 rounded-full border border-line px-4 py-1.5 text-xs font-medium text-ink-soft hover:border-ink hover:text-ink disabled:opacity-60"
+                    className="flex items-center gap-1 rounded-none border border-line px-4 py-1.5 text-xs font-medium text-ink-soft hover:border-ink hover:text-ink disabled:opacity-60"
                   >
                     <RotateCcw size={12} /> Reopen
                   </button>

@@ -155,16 +155,33 @@ CHAT_HISTORY.md is the log.
 ## Design and code conventions established so far
 
 - **Design tokens** live in `src/app/globals.css` under `:root` — match
-  these instead of introducing new colors/fonts:
-  - Colors: `--ink`, `--ink-soft`, `--paper`, `--paper-raised`, `--gold`,
-    `--gold-soft`, `--coral`, `--sage`, `--line`, `--line-soft`
-  - Fonts: Fraunces (display/headings), Inter (body), IBM Plex Mono
-    (meta/labels) — self-hosted via `@fontsource` packages, not the Google
-    Fonts CDN.
-  - Signature visual motif: a dotted "network" connector look (`.node-dot`,
-    `.node-line` utility classes), echoing the skill-matching concept — used
-    on the landing page's SVG diagram. Reach for this motif before inventing
-    a new one if a future feature needs a similar illustrative element.
+  these instead of introducing new colors/fonts. Redesigned 2026-08-30 (the
+  previous cream/serif/terracotta look read as a generic AI-template
+  aesthetic and was replaced outright):
+  - Colors: `--ink` (#14171a), `--ink-soft`, `--paper` (#ffffff, no longer
+    cream), `--paper-raised`, `--gold` (mustard amber, #e8a317), `--coral`
+    (berry, #a31545), `--sage` (continental blue, #1e3fe0), `--forest`
+    (palm green, #12603f), `--line`, `--line-soft`.
+  - Fonts: Space Grotesk (display/headings), IBM Plex Sans (body), IBM
+    Plex Mono (meta/labels) — self-hosted via `@fontsource` packages, not
+    the Google Fonts CDN. Fraunces/Inter were dropped entirely.
+  - Shape language: sharp corners everywhere (`rounded-full` pills and
+    `rounded-lg`/`rounded-md` cards were replaced app-wide) — the only
+    circles left are avatars and status dots. Buttons use the `.btn` /
+    `.btn-primary` / `.btn-outline` classes (hard offset shadow that tucks
+    in on hover). Cards use `.card-raised` (flat white, 1px ink border,
+    4px colored spine on the left edge, cycling sage/gold/coral). Form
+    inputs use `.input` (this class was referenced across ~8 form files
+    but was never actually defined before this pass — it now has a real
+    style; if a future form field looks unstyled, check this class first
+    rather than assuming it's already handled).
+  - Signature visual motif: a **woven strip** — departments rendered as
+    solid color bands stacked edge to edge (`.strip` utility class for the
+    thin 4-color bar used in the nav and footer; see `NetworkSignature` in
+    `src/app/page.tsx` for the full department-strip version). This
+    replaces the old dotted radial "network" diagram (`.node-dot`,
+    `.node-line` are still defined for compatibility but are no longer the
+    primary signature — reach for the strip motif first).
 - **Server Actions over API routes** for mutations — see `src/lib/actions/`
   for the existing pattern (one file per feature area: `auth.ts`, `posts.ts`,
   `help-requests.ts`, `profile.ts`, `admin.ts`, `notifications.ts`).

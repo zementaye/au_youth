@@ -45,7 +45,7 @@ export default function UsersTable({ users }: { users: UserRow[] }) {
 
   return (
     <div>
-      <div className="mb-3 flex items-center gap-2 rounded-md border border-line bg-paper-raised px-3 py-2 sm:w-80">
+      <div className="mb-3 flex items-center gap-2 rounded-none border border-line bg-paper-raised px-3 py-2 sm:w-80">
         <Search size={14} className="text-ink-soft" />
         <input
           value={query}
@@ -55,7 +55,7 @@ export default function UsersTable({ users }: { users: UserRow[] }) {
         />
       </div>
 
-      <div className="card-raised overflow-x-auto rounded-lg">
+      <div className="card-raised overflow-x-auto rounded-none">
         <table className="w-full min-w-[720px] text-left text-sm">
           <thead>
             <tr className="border-b border-line-soft text-xs uppercase tracking-wide text-ink-soft/70">
@@ -90,7 +90,7 @@ export default function UsersTable({ users }: { users: UserRow[] }) {
                       <button
                         disabled={isPending}
                         onClick={() => startTransition(() => { togglePosterAction(u.id); })}
-                        className="rounded-full border border-line px-3 py-1 text-xs text-ink-soft hover:border-ink hover:text-ink disabled:opacity-60"
+                        className="rounded-none border border-line px-3 py-1 text-xs text-ink-soft hover:border-ink hover:text-ink disabled:opacity-60"
                       >
                         {u.isPoster ? "Revoke poster" : "Grant poster"}
                       </button>
@@ -99,7 +99,7 @@ export default function UsersTable({ users }: { users: UserRow[] }) {
                       <button
                         disabled={isPending}
                         onClick={() => startTransition(() => { toggleActiveAction(u.id); })}
-                        className="rounded-full border border-line px-3 py-1 text-xs text-ink-soft hover:border-coral hover:text-coral disabled:opacity-60"
+                        className="rounded-none border border-line px-3 py-1 text-xs text-ink-soft hover:border-coral hover:text-coral disabled:opacity-60"
                       >
                         {u.isActive ? "Deactivate" : "Reactivate"}
                       </button>
@@ -124,7 +124,7 @@ export default function UsersTable({ users }: { users: UserRow[] }) {
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page === 1}
-            className="flex items-center gap-1 rounded-full border border-line px-3 py-1.5 text-xs text-ink-soft hover:border-ink hover:text-ink disabled:opacity-40"
+            className="flex items-center gap-1 rounded-none border border-line px-3 py-1.5 text-xs text-ink-soft hover:border-ink hover:text-ink disabled:opacity-40"
           >
             <ChevronLeft size={14} /> Prev
           </button>
@@ -134,7 +134,7 @@ export default function UsersTable({ users }: { users: UserRow[] }) {
           <button
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={page === totalPages}
-            className="flex items-center gap-1 rounded-full border border-line px-3 py-1.5 text-xs text-ink-soft hover:border-ink hover:text-ink disabled:opacity-40"
+            className="flex items-center gap-1 rounded-none border border-line px-3 py-1.5 text-xs text-ink-soft hover:border-ink hover:text-ink disabled:opacity-40"
           >
             Next <ChevronRight size={14} />
           </button>
