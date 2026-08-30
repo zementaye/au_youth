@@ -2,7 +2,7 @@
 
 import { useActionState, useEffect, useState } from "react";
 import { editHelpRequestAction, type FormState } from "@/lib/actions/help-requests";
-import { X } from "lucide-react";
+import SkillPicker from "@/components/SkillPicker";
 
 type Req = { id: string; title: string; description: string; skills: string[] };
 
@@ -17,18 +17,6 @@ export default function EditHelpRequestForm({
 }) {
   const [state, formAction, pending] = useActionState<FormState, FormData>(editHelpRequestAction, null);
   const [selectedSkills, setSelectedSkills] = useState<string[]>(request.skills);
-  const [skillInput, setSkillInput] = useState("");
-
-  const matches = skillOptions.filter(
-    (s) => s.toLowerCase().includes(skillInput.toLowerCase()) && !selectedSkills.includes(s) && skillInput.length > 0
-  );
-
-  function addSkill(name: string) {
-    const trimmed = name.trim();
-    if (!trimmed || selectedSkills.includes(trimmed)) return;
-    setSelectedSkills((prev) => [...prev, trimmed]);
-    setSkillInput("");
-  }
 
   useEffect(() => {
     if (state && !state.error) onDone();
@@ -49,40 +37,13 @@ export default function EditHelpRequestForm({
 
       <div>
         <label className="mb-1.5 block text-sm font-medium text-ink">Required skill(s)</label>
-        <div className="input flex flex-wrap items-center gap-1.5 !py-2">
-          {selectedSkills.map((s) => (
-            <span key={s} className="tag flex items-center gap-1 !bg-gold-soft/40">
-              {s}
-              <button type="button" onClick={() => setSelectedSkills((p) => p.filter((x) => x !== s))} aria-label={`Remove ${s}`}>
-                <X size={11} />
-              </button>
-            </span>
-          ))}
-          <input
-            value={skillInput}
-            onChange={(e) => setSkillInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === ",") {
-                e.preventDefault();
-                addSkill(skillInput);
-              }
-            }}
-            placeholder="Add another…"
-            className="min-w-[140px] flex-1 border-none bg-transparent text-sm outline-none placeholder:text-ink-soft/50"
-          />
-        </div>
-        {matches.length > 0 && (
-          <div className="mt-1.5 flex flex-wrap gap-1.5">
-            {matches.slice(0, 6).map((m) => (
-              <button key={m} type="button" onClick={() => addSkill(m)} className="tag hover:bg-gold-soft/40">
-                + {m}
-              </button>
-            ))}
-          </div>
-        )}
-        {selectedSkills.map((s) => (
-          <input key={s} type="hidden" name="skills" value={s} />
-        ))}
+        <SkillPicker
+          name="skills"
+          options={skillOptions}
+          value={selectedSkills}
+          onChange={setSelectedSkills}
+          placeholder="Search or choose skills…"
+        />
       </div>
 
       <div className="flex items-center gap-3">

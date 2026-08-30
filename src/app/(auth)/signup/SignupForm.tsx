@@ -2,7 +2,7 @@
 
 import { useActionState, useState } from "react";
 import { signupAction, type FormState } from "@/lib/actions/auth";
-import { X } from "lucide-react";
+import SkillPicker from "@/components/SkillPicker";
 
 type Department = { id: string; name: string };
 
@@ -15,25 +15,6 @@ export default function SignupForm({
 }) {
   const [state, formAction, pending] = useActionState<FormState, FormData>(signupAction, null);
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
-  const [skillInput, setSkillInput] = useState("");
-
-  const matches = skillOptions.filter(
-    (s) =>
-      s.toLowerCase().includes(skillInput.toLowerCase()) &&
-      !selectedSkills.includes(s) &&
-      skillInput.length > 0
-  );
-
-  function addSkill(name: string) {
-    const trimmed = name.trim();
-    if (!trimmed || selectedSkills.includes(trimmed)) return;
-    setSelectedSkills((prev) => [...prev, trimmed]);
-    setSkillInput("");
-  }
-
-  function removeSkill(name: string) {
-    setSelectedSkills((prev) => prev.filter((s) => s !== name));
-  }
 
   return (
     <form action={formAction} className="space-y-6">
@@ -86,47 +67,15 @@ export default function SignupForm({
 
       <div>
         <label className="mb-1.5 block text-sm font-medium text-ink">Skills</label>
-        <div className="input flex flex-wrap items-center gap-1.5 !py-2">
-          {selectedSkills.map((s) => (
-            <span key={s} className="tag flex items-center gap-1 !bg-gold-soft/40">
-              {s}
-              <button type="button" onClick={() => removeSkill(s)} aria-label={`Remove ${s}`}>
-                <X size={11} />
-              </button>
-            </span>
-          ))}
-          <input
-            value={skillInput}
-            onChange={(e) => setSkillInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === ",") {
-                e.preventDefault();
-                addSkill(skillInput);
-              }
-            }}
-            placeholder={selectedSkills.length === 0 ? "Type a skill and press Enter" : "Add another…"}
-            className="min-w-[140px] flex-1 border-none bg-transparent text-sm outline-none placeholder:text-ink-soft/50"
-          />
-        </div>
-        {matches.length > 0 && (
-          <div className="mt-1.5 flex flex-wrap gap-1.5">
-            {matches.slice(0, 6).map((m) => (
-              <button
-                key={m}
-                type="button"
-                onClick={() => addSkill(m)}
-                className="tag hover:bg-gold-soft/40"
-              >
-                + {m}
-              </button>
-            ))}
-          </div>
-        )}
-        {selectedSkills.map((s) => (
-          <input key={s} type="hidden" name="skills" value={s} />
-        ))}
+        <SkillPicker
+          name="skills"
+          options={skillOptions}
+          value={selectedSkills}
+          onChange={setSelectedSkills}
+          placeholder="Search or choose skills…"
+        />
         <p className="mt-1.5 text-xs text-ink-soft/70">
-          Not listed? Type it anyway &mdash; new skill tags are added automatically.
+          Not listed? Type it and add it as a new skill.
         </p>
       </div>
 
