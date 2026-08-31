@@ -31,7 +31,7 @@ export default async function DashboardPage() {
       {!user.emailVerified && <VerifyBanner />}
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <p className="meta mb-3 flex items-center gap-2 text-xs uppercase tracking-[0.18em] text-gold">
+          <p className="meta mb-3 flex items-center gap-2 text-xs font-medium">
             <span className="node-dot" /> Your dashboard
           </p>
           <h1 className="font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
@@ -43,7 +43,7 @@ export default async function DashboardPage() {
         </div>
         <Link
           href="/dashboard/profile"
-          className="flex items-center gap-1.5 rounded-none border border-line px-4 py-2 text-sm text-ink-soft hover:border-ink hover:text-ink"
+          className="flex items-center gap-1.5 rounded-full border border-line px-4 py-2 text-sm text-ink-soft hover:border-ink hover:text-ink"
         >
           <Settings size={14} /> Edit profile
         </Link>
@@ -82,7 +82,7 @@ export default async function DashboardPage() {
           </div>
           <div className="space-y-3">
             {submitted.map((r) => (
-              <div key={r.id} className="card-raised rounded-none p-4">
+              <div key={r.id} className="card-raised rounded-lg p-4">
                 <p className="text-sm font-medium text-ink">{r.title}</p>
                 <p className="mt-1 text-xs text-ink-soft">{statusLabel(r.status)}</p>
               </div>
@@ -97,7 +97,7 @@ export default async function DashboardPage() {
           </div>
           <div className="space-y-3">
             {helping.map((r) => (
-              <div key={r.id} className="card-raised rounded-none p-4">
+              <div key={r.id} className="card-raised rounded-lg p-4">
                 <p className="text-sm font-medium text-ink">{r.title}</p>
                 <p className="mt-1 text-xs text-ink-soft">{statusLabel(r.status)}</p>
               </div>
@@ -112,7 +112,7 @@ export default async function DashboardPage() {
 
 function StatCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="card-raised rounded-none p-4">
+    <div className="card-raised rounded-lg p-4">
       <p className="meta text-xs text-ink-soft/70">{label}</p>
       <p className="mt-1 font-display text-xl font-medium text-ink">{value}</p>
     </div>

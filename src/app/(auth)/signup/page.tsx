@@ -10,7 +10,7 @@ export default async function SignupPage() {
 
   return (
     <div className="mx-auto max-w-2xl px-5 py-14">
-      <p className="meta mb-3 flex items-center gap-2 text-xs uppercase tracking-[0.18em] text-gold">
+      <p className="meta mb-3 flex items-center gap-2 text-xs font-medium">
         <span className="node-dot" /> Create your profile
       </p>
       <h1 className="font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">

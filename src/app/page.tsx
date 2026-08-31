@@ -2,10 +2,8 @@ import Link from "next/link";
 import { db } from "@/db";
 import { posts, users, departments, skills } from "@/db/schema";
 import { desc, eq } from "drizzle-orm";
-import { ArrowRight, Pin } from "lucide-react";
+import { ArrowRight, Pin, Users, MessagesSquare, LayoutGrid } from "lucide-react";
 import { formatDate } from "@/lib/format";
-
-const ACCENTS = ["var(--sage)", "var(--gold)", "var(--coral)", "var(--forest)"];
 
 export default async function LandingPage() {
   const [recentPosts, deptList, [{ memberCount }], [{ skillCount }]] = await Promise.all([
@@ -31,59 +29,90 @@ export default async function LandingPage() {
 
   return (
     <div>
-      {/* Hero */}
-      <section className="relative overflow-hidden border-b border-ink">
-        <div className="mx-auto grid max-w-6xl gap-14 px-5 py-16 md:grid-cols-[1.1fr_1fr] md:py-24">
-          <div>
-            <p className="eyebrow mb-5 flex items-center gap-2 text-sage">
-              <span className="h-2 w-2" style={{ background: "var(--sage)" }} /> African Union
-              &nbsp;·&nbsp; Youth Program
-            </p>
-            <h1 className="font-display text-[2.75rem] leading-[1.02] font-semibold tracking-tight text-ink sm:text-6xl">
-              Every department.
-              <br />
-              Every skill.
-              <br />
-              <span className="relative inline-block">
-                One network.
-                <span
-                  className="absolute -bottom-1 left-0 h-2 w-full"
-                  style={{ background: "var(--gold)", zIndex: -1 }}
-                />
-              </span>
-            </h1>
-            <p className="mt-7 max-w-md text-base leading-relaxed text-ink-soft">
-              A shared home for AU interns, volunteers, and fellows &mdash; find out what&apos;s
-              happening across departments, discover who can help with what, and get
-              matched to the person with the skill you need.
-            </p>
-            <div className="mt-9 flex flex-wrap items-center gap-4">
-              <Link href="/signup" className="btn btn-primary">
-                Join the network <ArrowRight size={15} />
-              </Link>
-              <Link href="/directory" className="btn btn-outline">
-                Browse the skill directory
-              </Link>
-            </div>
-
-            <div className="mt-14 grid max-w-md grid-cols-3 gap-0 border border-ink">
-              <Stat label="Departments" value={deptList.length} border />
-              <Stat label="Youth members" value={memberCount} border />
-              <Stat label="Listed skills" value={skillCount} />
-            </div>
+      {/* Hero — quiet, typography-led, a soft accent wash instead of any
+          illustration */}
+      <section className="relative overflow-hidden border-b border-line">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -top-40 right-[-10%] h-[480px] w-[480px] rounded-full opacity-[0.35] blur-3xl"
+          style={{ background: "radial-gradient(circle, var(--gold-soft), transparent 70%)" }}
+        />
+        <div className="relative mx-auto max-w-3xl px-5 py-20 text-center md:py-28">
+          <p className="meta mb-5 flex items-center justify-center gap-2 text-xs font-medium">
+            <span className="node-dot" /> African Union &middot; Youth Program
+          </p>
+          <h1 className="font-display text-4xl font-semibold leading-[1.12] tracking-tight text-ink sm:text-5xl">
+            Every department.
+            <br />
+            Every skill.
+            <br />
+            One place to find it.
+          </h1>
+          <p className="mx-auto mt-6 max-w-lg text-base leading-relaxed text-ink-soft">
+            A shared home for AU interns, volunteers, and fellows &mdash; see what&apos;s
+            happening across departments, discover who can help with what, and get
+            matched to the person with the skill you need.
+          </p>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <Link
+              href="/signup"
+              className="flex items-center gap-2 rounded-md bg-ink px-5 py-2.5 text-sm font-medium text-paper transition-colors hover:bg-ink/90"
+            >
+              Join the network <ArrowRight size={15} />
+            </Link>
+            <Link
+              href="/directory"
+              className="flex items-center gap-2 rounded-md border border-line px-5 py-2.5 text-sm font-medium text-ink transition-colors hover:border-ink/30 hover:bg-line-soft"
+            >
+              Browse the skill directory
+            </Link>
           </div>
 
-          {/* Signature: woven department strip */}
-          <NetworkSignature departmentNames={deptList.map((d) => d.name)} />
+          <div className="mx-auto mt-16 grid max-w-md grid-cols-3 gap-6 border-t border-line pt-8">
+            <div>
+              <p className="font-display text-2xl font-semibold text-ink">{deptList.length}</p>
+              <p className="meta text-xs">Departments</p>
+            </div>
+            <div>
+              <p className="font-display text-2xl font-semibold text-ink">{memberCount}</p>
+              <p className="meta text-xs">Youth members</p>
+            </div>
+            <div>
+              <p className="font-display text-2xl font-semibold text-ink">{skillCount}</p>
+              <p className="meta text-xs">Listed skills</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* What the platform does — three plain feature rows instead of an
+          illustration */}
+      <section className="mx-auto max-w-5xl px-5 py-16">
+        <div className="grid gap-8 sm:grid-cols-3">
+          <Feature
+            icon={LayoutGrid}
+            title="Stay in the loop"
+            body="Platform-wide and department announcements in one feed, with pinned updates always on top."
+          />
+          <Feature
+            icon={Users}
+            title="Find who can help"
+            body="Search the skill directory by department, program type, or the exact skill you're looking for."
+          />
+          <Feature
+            icon={MessagesSquare}
+            title="Ask, offer, resolve"
+            body="Post a help request tagged with a skill — matching members are notified automatically."
+          />
         </div>
       </section>
 
       {/* Pinned / recent announcements */}
       <section className="mx-auto max-w-6xl px-5 py-14">
-        <div className="mb-6 flex items-baseline justify-between border-b border-ink pb-3">
+        <div className="mb-6 flex items-baseline justify-between">
           <h2 className="font-display text-2xl font-semibold text-ink">Latest updates</h2>
-          <Link href="/announcements" className="eyebrow flex items-center gap-1 text-ink-soft hover:text-ink">
-            View all <ArrowRight size={13} />
+          <Link href="/announcements" className="flex items-center gap-1 text-sm text-ink-soft hover:text-ink">
+            View all <ArrowRight size={14} />
           </Link>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
@@ -91,17 +120,17 @@ export default async function LandingPage() {
             <Link
               key={p.id}
               href="/announcements"
-              className="card-raised group flex flex-col gap-2.5 p-5 transition-transform hover:-translate-y-0.5"
+              className="card-raised group flex flex-col gap-2.5 p-5 transition-shadow hover:shadow-md"
             >
               <div className="flex items-center gap-2 text-xs text-ink-soft">
                 {p.pinned && <Pin size={12} className="text-coral" />}
                 <span className="tag">{p.deptName ?? "Platform-wide"}</span>
               </div>
-              <h3 className="font-display text-lg font-medium leading-snug text-ink group-hover:underline">
+              <h3 className="font-display text-lg font-semibold leading-snug text-ink group-hover:underline">
                 {p.title}
               </h3>
               <p className="line-clamp-2 text-sm text-ink-soft">{p.body}</p>
-              <p className="meta mt-auto pt-2 text-xs text-ink-soft/70">
+              <p className="meta mt-auto pt-2 text-xs">
                 {p.authorName} &middot; {formatDate(p.createdAt)}
               </p>
             </Link>
@@ -115,53 +144,22 @@ export default async function LandingPage() {
   );
 }
 
-function Stat({ label, value, border }: { label: string; value: number; border?: boolean }) {
+function Feature({
+  icon: Icon,
+  title,
+  body,
+}: {
+  icon: typeof Users;
+  title: string;
+  body: string;
+}) {
   return (
-    <div className={`p-4 ${border ? "border-r border-ink" : ""}`}>
-      <p className="font-display text-2xl font-semibold text-ink">{value}</p>
-      <p className="meta text-[0.65rem] uppercase tracking-wide text-ink-soft">{label}</p>
-    </div>
-  );
-}
-
-/* Signature element: departments rendered as a woven strip — bands of
-   colour joined edge to edge, the way strip-woven cloth is built from
-   individually loomed bands. A "YOU" tile stitches into the weave to
-   represent joining the network, rather than a radial hub-and-spoke
-   diagram. */
-function NetworkSignature({ departmentNames }: { departmentNames: string[] }) {
-  const names = departmentNames.slice(0, 6);
-
-  return (
-    <div className="flex flex-col justify-center gap-0 self-stretch border border-ink">
-      {names.map((name, i) => (
-        <div
-          key={name}
-          className="flex items-stretch border-b border-ink last:border-b-0"
-          style={{ height: "44px" }}
-        >
-          <div
-            className="flex w-2.5 shrink-0 items-center justify-center"
-            style={{ background: ACCENTS[i % ACCENTS.length] }}
-          />
-          <div className="flex flex-1 items-center justify-between gap-3 px-4">
-            <span className="font-display text-sm font-medium text-ink">{name}</span>
-            <span className="meta text-[0.65rem] text-ink-soft/60">
-              {String(i + 1).padStart(2, "0")}
-            </span>
-          </div>
-        </div>
-      ))}
-      {names.length === 0 && (
-        <p className="p-5 text-sm text-ink-soft">Departments will appear here once added.</p>
-      )}
-      <div className="flex items-stretch bg-ink">
-        <div className="flex w-2.5 shrink-0 items-center justify-center bg-paper" />
-        <div className="flex flex-1 items-center justify-between gap-3 px-4 py-3">
-          <span className="font-display text-sm font-semibold text-paper">+ your skills</span>
-          <span className="meta text-[0.65rem] text-paper/60">You</span>
-        </div>
+    <div>
+      <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-md bg-gold-soft text-gold">
+        <Icon size={17} strokeWidth={1.75} />
       </div>
+      <h3 className="font-display text-base font-semibold text-ink">{title}</h3>
+      <p className="mt-1.5 text-sm leading-relaxed text-ink-soft">{body}</p>
     </div>
   );
 }

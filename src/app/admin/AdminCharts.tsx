@@ -2,11 +2,11 @@
 
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, PieChart, Pie, Cell } from "recharts";
 
-const INK = "#10221f";
-const GOLD = "#c99a3c";
-const CORAL = "#b95738";
-const SAGE = "#6f8f74";
-const LINE = "#ddd3bd";
+const INK = "#0f172a";
+const GOLD = "#0d9488";
+const CORAL = "#dc2626";
+const SAGE = "#16a34a";
+const LINE = "#e4e4e7";
 
 export function MembersByDeptChart({ data }: { data: { name: string; count: number }[] }) {
   if (data.length === 0) return <p className="text-sm text-ink-soft">No members yet.</p>;
@@ -23,7 +23,7 @@ export function MembersByDeptChart({ data }: { data: { name: string; count: numb
           tickLine={false}
         />
         <Tooltip
-          contentStyle={{ fontSize: 12, borderRadius: 8, borderColor: LINE, background: "#fbf9f2" }}
+          contentStyle={{ fontSize: 12, borderRadius: 8, borderColor: LINE, background: "#ffffff" }}
           cursor={{ fill: "rgba(201,154,60,0.08)" }}
         />
         <Bar dataKey="count" fill={GOLD} radius={[0, 4, 4, 0]} barSize={16} />
@@ -47,7 +47,7 @@ export function TopSkillsChart({ data }: { data: { name: string; count: number }
           tickLine={false}
         />
         <Tooltip
-          contentStyle={{ fontSize: 12, borderRadius: 8, borderColor: LINE, background: "#fbf9f2" }}
+          contentStyle={{ fontSize: 12, borderRadius: 8, borderColor: LINE, background: "#ffffff" }}
           cursor={{ fill: "rgba(111,143,116,0.1)" }}
         />
         <Bar dataKey="count" fill={SAGE} radius={[0, 4, 4, 0]} barSize={14} />

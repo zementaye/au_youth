@@ -51,7 +51,7 @@ export default async function HelpRequestsPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-5 py-12">
-      <p className="meta mb-3 flex items-center gap-2 text-xs uppercase tracking-[0.18em] text-gold">
+      <p className="meta mb-3 flex items-center gap-2 text-xs font-medium">
         <span className="node-dot" /> Help request board
       </p>
       <h1 className="font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">

@@ -32,7 +32,7 @@ export default async function AuditLogPage() {
 
   return (
     <div className="mx-auto max-w-4xl px-5 py-12">
-      <p className="meta mb-3 flex items-center gap-2 text-xs uppercase tracking-[0.18em] text-gold">
+      <p className="meta mb-3 flex items-center gap-2 text-xs font-medium">
         <span className="node-dot" /> Admin panel
       </p>
       <h1 className="flex items-center gap-2 font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">

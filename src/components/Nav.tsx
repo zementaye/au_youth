@@ -20,40 +20,34 @@ export default async function Nav() {
   const isAdmin = user && (user.systemRole === "SUPER_ADMIN" || user.systemRole === "DEPT_ADMIN");
 
   return (
-    <header className="sticky top-0 z-40 border-b border-ink bg-paper/97 backdrop-blur">
-      <div className="strip">
-        <span style={{ background: "var(--sage)" }} />
-        <span style={{ background: "var(--gold)" }} />
-        <span style={{ background: "var(--coral)" }} />
-        <span style={{ background: "var(--forest)" }} />
-      </div>
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3.5">
-        <Link href="/" className="flex items-center gap-2.5">
-          <span className="flex h-6 w-6 items-center justify-center border border-ink bg-ink">
-            <span className="h-2 w-2 bg-paper" />
+    <header className="sticky top-0 z-40 border-b border-line bg-paper-raised/90 backdrop-blur">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3">
+        <Link href="/" className="flex items-center gap-2">
+          <span className="flex h-6 w-6 items-center justify-center rounded-md bg-ink text-[11px] font-bold text-paper">
+            AU
           </span>
-          <span className="font-display text-lg font-semibold tracking-tight text-ink">
-            AU Youth Network
+          <span className="font-display text-[15px] font-semibold text-ink">
+            Youth Network
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-6 md:flex">
+        <nav className="hidden items-center gap-1 md:flex">
           {links.map((l) => (
             <Link
               key={l.href}
               href={l.href}
-              className="eyebrow flex items-center gap-1.5 border-b-2 border-transparent py-1 text-ink-soft transition-colors hover:border-ink hover:text-ink"
+              className="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm text-ink-soft transition-colors hover:bg-line-soft hover:text-ink"
             >
-              <l.icon size={14} strokeWidth={2} />
+              <l.icon size={15} strokeWidth={1.75} />
               {l.label}
             </Link>
           ))}
           {isAdmin && (
             <Link
               href="/admin"
-              className="eyebrow flex items-center gap-1.5 border-b-2 border-transparent py-1 text-coral transition-colors hover:border-coral"
+              className="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm text-ink-soft transition-colors hover:bg-line-soft hover:text-ink"
             >
-              <ShieldCheck size={14} strokeWidth={2} />
+              <ShieldCheck size={15} strokeWidth={1.75} />
               Admin
             </Link>
           )}
@@ -65,7 +59,7 @@ export default async function Nav() {
               <NotificationBell initialNotifications={notifications} initialUnreadCount={unreadCount} />
               <Link
                 href="/dashboard"
-                className="hidden items-center gap-1.5 text-sm text-ink-soft hover:text-ink sm:flex"
+                className="hidden items-center gap-1.5 text-sm text-ink-soft transition-colors hover:text-ink sm:flex"
               >
                 {user.profilePhotoUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element
@@ -76,18 +70,27 @@ export default async function Nav() {
                 {user.fullName.split(" ")[0]}
               </Link>
               <form action={logoutAction}>
-                <button type="submit" className="btn btn-outline !py-1.5 !text-xs">
-                  <LogOut size={13} strokeWidth={2} />
+                <button
+                  type="submit"
+                  className="flex items-center gap-1.5 rounded-md border border-line px-3 py-1.5 text-sm text-ink-soft transition-colors hover:border-ink/30 hover:text-ink"
+                >
+                  <LogOut size={14} strokeWidth={1.75} />
                   Sign out
                 </button>
               </form>
             </>
           ) : (
             <>
-              <Link href="/login" className="eyebrow text-ink-soft hover:text-ink">
+              <Link
+                href="/login"
+                className="rounded-md px-3 py-1.5 text-sm text-ink-soft transition-colors hover:text-ink"
+              >
                 Sign in
               </Link>
-              <Link href="/signup" className="btn btn-primary !py-1.5 !text-xs">
+              <Link
+                href="/signup"
+                className="rounded-md bg-ink px-4 py-1.5 text-sm font-medium text-paper transition-colors hover:bg-ink/90"
+              >
                 Join the network
               </Link>
             </>
@@ -100,7 +103,7 @@ export default async function Nav() {
           <Link
             key={l.href}
             href={l.href}
-            className="flex shrink-0 items-center gap-1.5 border border-transparent px-3 py-1 text-xs text-ink-soft hover:border-ink hover:text-ink"
+            className="flex shrink-0 items-center gap-1.5 rounded-md px-3 py-1 text-xs text-ink-soft hover:bg-line-soft"
           >
             <l.icon size={13} strokeWidth={1.75} />
             {l.label}
@@ -109,7 +112,7 @@ export default async function Nav() {
         {isAdmin && (
           <Link
             href="/admin"
-            className="flex shrink-0 items-center gap-1.5 border border-transparent px-3 py-1 text-xs text-coral hover:border-coral"
+            className="flex shrink-0 items-center gap-1.5 rounded-md px-3 py-1 text-xs text-ink-soft hover:bg-line-soft"
           >
             <ShieldCheck size={13} strokeWidth={1.75} />
             Admin

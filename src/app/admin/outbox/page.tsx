@@ -16,7 +16,7 @@ export default async function DevOutboxPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-5 py-12">
-      <p className="meta mb-3 flex items-center gap-2 text-xs uppercase tracking-[0.18em] text-gold">
+      <p className="meta mb-3 flex items-center gap-2 text-xs font-medium">
         <span className="node-dot" /> Admin panel
       </p>
       <h1 className="flex items-center gap-2 font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
@@ -30,7 +30,7 @@ export default async function DevOutboxPage() {
 
       <div className="mt-8 space-y-3">
         {emails.map((e) => (
-          <div key={e.id} className="card-raised rounded-none p-4">
+          <div key={e.id} className="card-raised rounded-lg p-4">
             <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-ink-soft">
               <span>To: {e.toEmail}</span>
               <span className="meta">{formatDateTime(e.createdAt)}</span>

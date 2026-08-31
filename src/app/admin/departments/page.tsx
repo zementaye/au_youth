@@ -23,7 +23,7 @@ export default async function AdminDepartmentsPage() {
 
   return (
     <div className="mx-auto max-w-4xl px-5 py-12">
-      <p className="meta mb-3 flex items-center gap-2 text-xs uppercase tracking-[0.18em] text-gold">
+      <p className="meta mb-3 flex items-center gap-2 text-xs font-medium">
         <span className="node-dot" /> Admin panel
       </p>
       <h1 className="font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
@@ -39,7 +39,7 @@ export default async function AdminDepartmentsPage() {
 
       <div className="mt-10 space-y-4">
         {deptRows.map((d) => (
-          <div key={d.id} className="card-raised rounded-none p-5">
+          <div key={d.id} className="card-raised rounded-lg p-5">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
                 <p className="font-display text-lg font-medium text-ink">{d.name}</p>

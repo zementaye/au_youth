@@ -51,11 +51,11 @@ export default function NotificationBell({
       <button
         onClick={handleOpen}
         aria-label="Notifications"
-        className="relative flex h-8 w-8 items-center justify-center rounded-full text-ink-soft hover:bg-paper-raised hover:text-ink"
+        className="relative flex h-8 w-8 items-center justify-center rounded-md text-ink-soft transition-colors hover:bg-line-soft hover:text-ink"
       >
         <Bell size={17} strokeWidth={1.75} />
         {unreadCount > 0 && (
-          <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-none bg-coral px-1 text-[10px] font-medium text-paper">
+          <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-coral px-1 text-[10px] font-medium text-paper">
             {unreadCount > 9 ? "9+" : unreadCount}
           </span>
         )}
@@ -64,7 +64,7 @@ export default function NotificationBell({
       {open && (
         <>
           <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
-          <div className="card-raised absolute right-0 z-50 mt-2 w-80 rounded-none p-2">
+          <div className="card-raised absolute right-0 z-50 mt-2 w-80 rounded-lg p-2">
             <div className="flex items-center justify-between px-2 py-1.5">
               <p className="text-xs font-medium uppercase tracking-wide text-ink-soft/70">Notifications</p>
               {items.length > 0 && (
@@ -79,7 +79,7 @@ export default function NotificationBell({
                   key={n.id}
                   href={n.link ?? "#"}
                   onClick={() => handleItemClick(n.id)}
-                  className={`block rounded-none px-2 py-2 text-sm transition-colors hover:bg-paper ${
+                  className={`block rounded-md px-2 py-2 text-sm transition-colors hover:bg-paper ${
                     n.isRead ? "text-ink-soft" : "text-ink"
                   }`}
                 >

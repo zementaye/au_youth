@@ -3,7 +3,7 @@ import ForgotPasswordForm from "./ForgotPasswordForm";
 export default function ForgotPasswordPage() {
   return (
     <div className="mx-auto max-w-sm px-5 py-20">
-      <p className="meta mb-3 flex items-center gap-2 text-xs uppercase tracking-[0.18em] text-gold">
+      <p className="meta mb-3 flex items-center gap-2 text-xs font-medium">
         <span className="node-dot" /> Password reset
       </p>
       <h1 className="font-display text-3xl font-semibold tracking-tight text-ink">Forgot password</h1>
