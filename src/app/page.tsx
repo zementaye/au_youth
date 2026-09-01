@@ -2,9 +2,10 @@ import Link from "next/link";
 import { db } from "@/db";
 import { posts, users, departments, skills } from "@/db/schema";
 import { desc, eq, sql } from "drizzle-orm";
-import { ArrowRight, Pin } from "lucide-react";
+import { ArrowRight, Pin, Megaphone, Sparkles, HandHelping, type LucideIcon } from "lucide-react";
 import { formatDate } from "@/lib/format";
 import NetworkDiagram from "@/components/NetworkDiagram";
+import { deptColor } from "@/lib/deptColor";
 
 export default async function LandingPage() {
   const [recentPosts, deptCounts, [{ skillCount }]] = await Promise.all([
@@ -50,8 +51,24 @@ export default async function LandingPage() {
                below the section's own border instead of staying boxed in. */}
       <section className="relative border-b border-line">
         <HeroTexture />
+        {/* Bold offset color panel — sharp corners (matches the structural
+            shape rule), rotated slightly, bleeding off the left edge. This
+            is the "bolder background" pass: a real color shape behind the
+            copy, not a gradient wash, and not confined neatly inside the
+            hero box. */}
+        <div
+          aria-hidden
+          className="absolute -left-24 top-10 -z-10 h-72 w-[36rem] rotate-[-3deg] bg-indigo-soft opacity-70"
+        />
+        <div
+          aria-hidden
+          className="absolute -left-10 bottom-0 -z-10 h-40 w-64 rotate-[4deg] bg-marigold-soft opacity-80"
+        />
         <div className="relative z-10 mx-auto grid max-w-6xl gap-12 px-5 py-16 md:grid-cols-[1.15fr_1fr] md:items-center md:py-24">
           <div>
+            <p className="meta mb-5 flex items-center gap-2 text-xs font-medium uppercase tracking-wide">
+              <span className="node-dot" /> AU Youth Network
+            </p>
             <h1 className="font-display text-5xl font-semibold leading-[0.98] tracking-tight text-ink sm:text-6xl lg:text-7xl">
               Find the person who
               <br />
@@ -68,13 +85,14 @@ export default async function LandingPage() {
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <Link
                 href="/signup"
-                className="flex items-center gap-2 bg-ink px-5 py-2.5 text-sm font-medium text-paper transition-colors hover:bg-marigold hover:text-ink"
+                className="group flex items-center gap-2 bg-ink px-5 py-2.5 text-sm font-medium text-paper transition-all hover:-translate-y-0.5 hover:bg-marigold hover:text-ink hover:shadow-lg"
               >
-                Create your profile <ArrowRight size={15} />
+                Create your profile
+                <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
               </Link>
               <Link
                 href="/directory"
-                className="flex items-center gap-2 border border-line px-5 py-2.5 text-sm font-medium text-ink transition-colors hover:border-ink"
+                className="flex items-center gap-2 border border-line px-5 py-2.5 text-sm font-medium text-ink transition-all hover:-translate-y-0.5 hover:border-ink hover:shadow-md"
               >
                 See who&apos;s on the network
               </Link>
@@ -83,15 +101,15 @@ export default async function LandingPage() {
             <dl className="mt-12 flex flex-wrap gap-x-10 gap-y-4 border-t border-line pt-6">
               <div>
                 <dt className="meta text-xs">Departments</dt>
-                <dd className="font-display text-3xl font-semibold text-ink">{deptCounts.length}</dd>
+                <dd className="font-display text-3xl font-semibold text-marigold">{deptCounts.length}</dd>
               </div>
               <div>
                 <dt className="meta text-xs">Youth members</dt>
-                <dd className="font-display text-3xl font-semibold text-ink">{memberCount}</dd>
+                <dd className="font-display text-3xl font-semibold text-indigo">{memberCount}</dd>
               </div>
               <div>
                 <dt className="meta text-xs">Listed skills</dt>
-                <dd className="font-display text-3xl font-semibold text-ink">{skillCount}</dd>
+                <dd className="font-display text-3xl font-semibold text-brick">{skillCount}</dd>
               </div>
             </dl>
           </div>
@@ -117,18 +135,27 @@ export default async function LandingPage() {
       {/* What happens on each part of the platform, told through the
           actions a member takes rather than abstract feature names. */}
       <section className="mx-auto max-w-5xl px-5 py-16">
-        <div className="grid gap-10 sm:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-3">
           <HowItWorks
             step="Post an update"
             body="Share news with your whole department, or the entire network. Pinned updates stay at the top of the feed."
+            icon={Megaphone}
+            color="marigold"
+            index={1}
           />
           <HowItWorks
             step="List your skills"
             body="Add what you're good at to your profile. Anyone searching the directory for that skill finds you."
+            icon={Sparkles}
+            color="indigo"
+            index={2}
           />
           <HowItWorks
             step="Ask for help"
             body="Tag a request with the skill you need. Everyone who has it gets notified automatically."
+            icon={HandHelping}
+            color="brick"
+            index={3}
           />
         </div>
       </section>
@@ -137,31 +164,37 @@ export default async function LandingPage() {
       <section className="mx-auto max-w-6xl px-5 py-14">
         <div className="mb-6 flex items-baseline justify-between">
           <h2 className="font-display text-2xl font-semibold text-ink">Latest updates</h2>
-          <Link href="/announcements" className="flex items-center gap-1 text-sm text-ink-soft hover:text-ink">
-            View all <ArrowRight size={14} />
+          <Link
+            href="/announcements"
+            className="group flex items-center gap-1 text-sm text-ink-soft transition-colors hover:text-ink"
+          >
+            View all <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
           </Link>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
-          {recentPosts.map((p, i) => (
-            <Link
-              key={p.id}
-              href="/announcements"
-              className="card-raised group flex flex-col gap-2.5 p-5 transition-shadow hover:shadow-md"
-              style={{ animation: `rise-in 520ms cubic-bezier(0.16, 1, 0.3, 1) ${150 + i * 90}ms both` }}
-            >
-              <div className="flex items-center gap-2 text-xs text-ink-soft">
-                {p.pinned && <Pin size={12} className="text-brick" />}
-                <span className="tag">{p.deptName ?? "Platform-wide"}</span>
-              </div>
-              <h3 className="font-display text-lg font-semibold leading-snug text-ink group-hover:underline">
-                {p.title}
-              </h3>
-              <p className="line-clamp-2 text-sm text-ink-soft">{p.body}</p>
-              <p className="meta mt-auto pt-2 text-xs">
-                {p.authorName} — {formatDate(p.createdAt)}
-              </p>
-            </Link>
-          ))}
+          {recentPosts.map((p, i) => {
+            const color = deptColor(p.deptName);
+            return (
+              <Link
+                key={p.id}
+                href="/announcements"
+                className={`card-raised group flex flex-col gap-2.5 border-l-4 p-5 transition-all hover:-translate-y-1 hover:rotate-[-0.3deg] hover:shadow-lg ${color.edge}`}
+                style={{ animation: `rise-in 520ms cubic-bezier(0.16, 1, 0.3, 1) ${150 + i * 90}ms both` }}
+              >
+                <div className="flex items-center gap-2 text-xs text-ink-soft">
+                  {p.pinned && <Pin size={12} className="text-brick" />}
+                  <span className={`tag ${color.chip}`}>{p.deptName ?? "Platform-wide"}</span>
+                </div>
+                <h3 className="font-display text-lg font-semibold leading-snug text-ink group-hover:underline">
+                  {p.title}
+                </h3>
+                <p className="line-clamp-2 text-sm text-ink-soft">{p.body}</p>
+                <p className="meta mt-auto pt-2 text-xs">
+                  {p.authorName} — {formatDate(p.createdAt)}
+                </p>
+              </Link>
+            );
+          })}
           {recentPosts.length === 0 && (
             <p className="text-sm text-ink-soft">
               Quiet in here so far — be the first to post something the network should know.
@@ -196,11 +229,40 @@ function HeroTexture() {
   );
 }
 
-function HowItWorks({ step, body }: { step: string; body: string }) {
+const HOW_IT_WORKS_COLORS = {
+  marigold: { chip: "bg-marigold text-ink", edge: "border-l-marigold", num: "text-marigold" },
+  indigo: { chip: "bg-indigo text-paper", edge: "border-l-indigo", num: "text-indigo" },
+  brick: { chip: "bg-brick text-paper", edge: "border-l-brick", num: "text-brick" },
+} as const;
+
+function HowItWorks({
+  step,
+  body,
+  icon: Icon,
+  color,
+  index,
+}: {
+  step: string;
+  body: string;
+  icon: LucideIcon;
+  color: "marigold" | "indigo" | "brick";
+  index: number;
+}) {
+  const c = HOW_IT_WORKS_COLORS[color];
   return (
-    <div className="border-l-2 border-marigold pl-4">
-      <h3 className="font-display text-base font-semibold text-ink">{step}</h3>
-      <p className="mt-1.5 text-sm leading-relaxed text-ink-soft">{body}</p>
+    <div
+      className={`card-raised group flex flex-col gap-3 border-l-4 p-5 transition-all hover:-translate-y-1 hover:shadow-lg ${c.edge}`}
+    >
+      <div className="flex items-center justify-between">
+        <span className={`flex h-9 w-9 items-center justify-center rounded-full ${c.chip}`}>
+          <Icon size={16} />
+        </span>
+        <span className={`font-mono text-xs font-medium ${c.num}`}>0{index}</span>
+      </div>
+      <div>
+        <h3 className="font-display text-base font-semibold text-ink">{step}</h3>
+        <p className="mt-1.5 text-sm leading-relaxed text-ink-soft">{body}</p>
+      </div>
     </div>
   );
 }
