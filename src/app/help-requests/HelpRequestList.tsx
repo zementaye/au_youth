@@ -11,6 +11,7 @@ import {
 import { CheckCircle2, HandHelping, Circle, Pencil, Trash2, RotateCcw } from "lucide-react";
 import EditHelpRequestForm from "./EditHelpRequestForm";
 import { formatShortDate } from "@/lib/format";
+import Dot from "@/components/Dot";
 
 type Req = {
   id: string;
@@ -93,7 +94,7 @@ export default function HelpRequestList({
             )}
             <div className="mt-4 flex flex-wrap items-center gap-3 border-t border-line-soft pt-3 text-xs text-ink-soft/80">
               <span className="meta">
-                Requested by {r.requestedByName ?? "someone"} · {formatShortDate(r.createdAt)}
+                Requested by {r.requestedByName ?? "someone"} <Dot /> {formatShortDate(r.createdAt)}
               </span>
               {r.claimedByName && r.status === "CLAIMED" && (
                 <span className="flex items-center gap-1 text-sage">

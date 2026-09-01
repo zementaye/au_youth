@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Search, ChevronLeft, ChevronRight } from "lucide-react";
 import { formatDateTime } from "@/lib/format";
+import Dot from "@/components/Dot";
 
 type Row = {
   id: string;
@@ -99,7 +100,7 @@ export default function AuditLogTable({
         {pageItems.map((r) => (
           <div key={r.id} className="flex flex-wrap items-center justify-between gap-2 px-5 py-3 text-sm">
             <span className="text-ink-soft">
-              <span className="text-ink">{r.actorName ?? "Unknown"}</span> · {actionLabel(r.action)}
+              <span className="text-ink">{r.actorName ?? "Unknown"}</span> <Dot /> {actionLabel(r.action)}
               {r.targetType && <span className="text-ink-soft/70"> ({r.targetType})</span>}
             </span>
             <span className="meta text-xs text-ink-soft/60">{formatDateTime(r.createdAt)}</span>

@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Search, Link2, FolderGit2, Globe, Mail, Phone, ChevronLeft, ChevronRight } from "lucide-react";
+import Dot from "@/components/Dot";
 
 type Member = {
   id: string;
@@ -123,7 +124,12 @@ export default function DirectoryClient({
               <div>
                 <p className="font-display text-lg font-medium leading-snug text-ink">{m.fullName}</p>
                 <p className="text-xs text-ink-soft">
-                  {m.title ?? "Member"} {m.deptName ? `· ${m.deptName}` : ""}
+                  {m.title ?? "Member"}
+                  {m.deptName && (
+                    <>
+                      <Dot /> {m.deptName}
+                    </>
+                  )}
                 </p>
                 {m.programType && <span className="tag mt-2 inline-block">{titleCase(m.programType)}</span>}
               </div>

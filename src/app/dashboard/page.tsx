@@ -6,6 +6,7 @@ import { helpRequests, userSkills, skills } from "@/db/schema";
 import { eq, or } from "drizzle-orm";
 import { Settings, ArrowRight } from "lucide-react";
 import VerifyBanner from "@/components/VerifyBanner";
+import Dot from "@/components/Dot";
 
 export default async function DashboardPage() {
   const user = await getCurrentUser();
@@ -38,7 +39,12 @@ export default async function DashboardPage() {
             Welcome back, {user.fullName.split(" ")[0]}
           </h1>
           <p className="mt-2 text-sm text-ink-soft">
-            {user.title ?? "Member"} {user.departmentName ? `· ${user.departmentName}` : ""}
+            {user.title ?? "Member"}
+            {user.departmentName && (
+              <>
+                <Dot /> {user.departmentName}
+              </>
+            )}
           </p>
         </div>
         <Link

@@ -20,14 +20,15 @@ export default async function Nav() {
   const isAdmin = user && (user.systemRole === "SUPER_ADMIN" || user.systemRole === "DEPT_ADMIN");
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-paper-raised/90 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-line bg-paper/90 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="flex h-6 w-6 items-center justify-center rounded-md bg-ink text-[11px] font-bold text-paper">
-            AU
+        <Link href="/" className="flex items-center gap-2.5">
+          <span className="relative flex h-7 w-7 items-center justify-center bg-ink text-paper">
+            <span className="absolute h-1.5 w-1.5 rounded-full bg-marigold" style={{ top: 3, right: 3 }} />
+            <span className="font-display text-[11px] font-bold leading-none">AU</span>
           </span>
-          <span className="font-display text-[15px] font-semibold text-ink">
-            Youth Network
+          <span className="font-display text-[15px] font-semibold leading-none text-ink">
+            Youth&nbsp;Network
           </span>
         </Link>
 
@@ -36,7 +37,7 @@ export default async function Nav() {
             <Link
               key={l.href}
               href={l.href}
-              className="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm text-ink-soft transition-colors hover:bg-line-soft hover:text-ink"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-ink-soft transition-colors hover:bg-line-soft hover:text-ink"
             >
               <l.icon size={15} strokeWidth={1.75} />
               {l.label}
@@ -45,7 +46,7 @@ export default async function Nav() {
           {isAdmin && (
             <Link
               href="/admin"
-              className="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm text-ink-soft transition-colors hover:bg-line-soft hover:text-ink"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-ink-soft transition-colors hover:bg-line-soft hover:text-ink"
             >
               <ShieldCheck size={15} strokeWidth={1.75} />
               Admin
@@ -72,7 +73,7 @@ export default async function Nav() {
               <form action={logoutAction}>
                 <button
                   type="submit"
-                  className="flex items-center gap-1.5 rounded-md border border-line px-3 py-1.5 text-sm text-ink-soft transition-colors hover:border-ink/30 hover:text-ink"
+                  className="flex items-center gap-1.5 border border-line px-3 py-1.5 text-sm text-ink-soft transition-colors hover:border-ink hover:text-ink"
                 >
                   <LogOut size={14} strokeWidth={1.75} />
                   Sign out
@@ -83,13 +84,13 @@ export default async function Nav() {
             <>
               <Link
                 href="/login"
-                className="rounded-md px-3 py-1.5 text-sm text-ink-soft transition-colors hover:text-ink"
+                className="px-3 py-1.5 text-sm text-ink-soft transition-colors hover:text-ink"
               >
                 Sign in
               </Link>
               <Link
                 href="/signup"
-                className="rounded-md bg-ink px-4 py-1.5 text-sm font-medium text-paper transition-colors hover:bg-ink/90"
+                className="bg-ink px-4 py-1.5 text-sm font-medium text-paper transition-colors hover:bg-marigold hover:text-ink"
               >
                 Join the network
               </Link>
@@ -103,7 +104,7 @@ export default async function Nav() {
           <Link
             key={l.href}
             href={l.href}
-            className="flex shrink-0 items-center gap-1.5 rounded-md px-3 py-1 text-xs text-ink-soft hover:bg-line-soft"
+            className="flex shrink-0 items-center gap-1.5 px-3 py-1 text-xs text-ink-soft hover:bg-line-soft"
           >
             <l.icon size={13} strokeWidth={1.75} />
             {l.label}
@@ -112,7 +113,7 @@ export default async function Nav() {
         {isAdmin && (
           <Link
             href="/admin"
-            className="flex shrink-0 items-center gap-1.5 rounded-md px-3 py-1 text-xs text-ink-soft hover:bg-line-soft"
+            className="flex shrink-0 items-center gap-1.5 px-3 py-1 text-xs text-ink-soft hover:bg-line-soft"
           >
             <ShieldCheck size={13} strokeWidth={1.75} />
             Admin

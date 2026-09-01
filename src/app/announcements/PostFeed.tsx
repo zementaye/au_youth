@@ -5,6 +5,7 @@ import { deletePostAction } from "@/lib/actions/posts";
 import { Pin, Pencil, Trash2, Paperclip } from "lucide-react";
 import EditPostForm from "./EditPostForm";
 import { formatDate } from "@/lib/format";
+import Dot from "@/components/Dot";
 
 type Post = {
   id: string;
@@ -81,7 +82,12 @@ export default function PostFeed({ posts, canPin }: { posts: Post[]; canPin: boo
             )}
             <p className="meta mt-4 text-xs text-ink-soft/70">
               {p.authorName}
-              {p.authorTitle ? ` · ${p.authorTitle}` : ""} · {formatDate(p.createdAt)}
+              {p.authorTitle && (
+                <>
+                  <Dot /> {p.authorTitle}
+                </>
+              )}
+              <Dot /> {formatDate(p.createdAt)}
             </p>
           </article>
         )

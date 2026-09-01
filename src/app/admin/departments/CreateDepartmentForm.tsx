@@ -40,21 +40,6 @@ export default function CreateDepartmentForm() {
           Cancel
         </button>
       </div>
-      <style jsx global>{`
-        .input {
-          width: 100%;
-          border: 1px solid var(--line);
-          background: var(--paper);
-          border-radius: 0.5rem;
-          padding: 0.6rem 0.8rem;
-          font-size: 0.875rem;
-          color: var(--ink);
-        }
-        .input:focus {
-          outline: 2px solid var(--coral);
-          outline-offset: 1px;
-        }
-      `}</style>
     </form>
   );
 }
