@@ -6,6 +6,16 @@ import { ArrowRight, Pin, Megaphone, Sparkles, HandHelping, type LucideIcon } fr
 import { formatDate } from "@/lib/format";
 import NetworkDiagram from "@/components/NetworkDiagram";
 import { deptColor } from "@/lib/deptColor";
+import CountUp from "@/components/CountUp";
+import HeroFloatingShapes from "@/components/HeroFloatingShapes";
+
+// The same four-color band from the footer's .strip, woven into a diagonal
+// repeating pattern instead of flat blocks — a nod to the interlocking
+// stripes common in African textile design. Hard color stops, not a
+// blended gradient, so it reads as a graphic pattern rather than the
+// "gradient wash as decoration" the brief ruled out.
+const KENTE_BAND =
+  "repeating-linear-gradient(135deg, var(--marigold) 0 16px, var(--indigo) 16px 32px, var(--brick) 32px 48px, var(--forest) 48px 64px)";
 
 export default async function LandingPage() {
   const [recentPosts, deptCounts, [{ skillCount }]] = await Promise.all([
@@ -39,16 +49,20 @@ export default async function LandingPage() {
     <div>
       {/* Hero — the diagram is real data, not an illustration; copy leads
           with what the platform does for one person, not a tagline.
-          Three deliberate departures from the rest of the site, chosen
-          instead of a little of everything:
-            1. Motion — NetworkDiagram plays its one load-in sequence here.
-            2. Texture — a faint route-line pattern grounds the whole
-               section in the network idea, not just the diagram; plus a
-               soft marigold glow anchored specifically behind the hub
-               (not a generic decorative wash).
-            3. Scale/contrast — a bigger, asymmetric headline, and the
-               diagram is allowed to sit larger than its column and drift
-               below the section's own border instead of staying boxed in. */}
+          "Go all-in" pass: a kente-inspired diagonal band bookends the
+          hero (echoing the footer's existing 4-color strip), a marquee
+          ticker of live department data runs continuously, floating
+          accent shapes drift and react to the cursor, the diagram's
+          spokes keep flowing after they draw in, and the stats count up
+          instead of appearing as static digits — several different kinds
+          of motion, not one effect repeated everywhere. */}
+      <div aria-hidden className="h-2 w-full" style={{ background: KENTE_BAND }} />
+      <MarqueeTicker
+        items={[
+          ...deptCounts.map((d) => `${d.name ?? "Unassigned"} · ${d.count} members`),
+          "Post it. Get matched. Get it done.",
+        ]}
+      />
       <section className="relative border-b border-line">
         <HeroTexture />
         {/* Bold offset color panel — sharp corners (matches the structural
@@ -64,73 +78,83 @@ export default async function LandingPage() {
           aria-hidden
           className="absolute -left-10 bottom-0 -z-10 h-40 w-64 rotate-[4deg] bg-marigold-soft opacity-80"
         />
-        <div className="relative z-10 mx-auto grid max-w-6xl gap-12 px-5 py-16 md:grid-cols-[1.15fr_1fr] md:items-center md:py-24">
-          <div>
-            <p className="meta mb-5 flex items-center gap-2 text-xs font-medium uppercase tracking-wide">
-              <span className="node-dot" /> AU Youth Network
-            </p>
-            <h1 className="font-display text-5xl font-semibold leading-[0.98] tracking-tight text-ink sm:text-6xl lg:text-7xl">
-              Find the person who
-              <br />
-              already knows how to
-              <br />
-              <span className="text-marigold">fix this.</span>
-            </h1>
-            <p className="mt-6 max-w-md text-base leading-relaxed text-ink-soft">
-              AU Youth Network connects interns, volunteers, and fellows across
-              every department. Post what you need help with, search the
-              directory by skill, and get matched to someone who can actually
-              help.
-            </p>
-            <div className="mt-8 flex flex-wrap items-center gap-3">
-              <Link
-                href="/signup"
-                className="group flex items-center gap-2 bg-ink px-5 py-2.5 text-sm font-medium text-paper transition-all hover:-translate-y-0.5 hover:bg-marigold hover:text-ink hover:shadow-lg"
-              >
-                Create your profile
-                <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
-              </Link>
-              <Link
-                href="/directory"
-                className="flex items-center gap-2 border border-line px-5 py-2.5 text-sm font-medium text-ink transition-all hover:-translate-y-0.5 hover:border-ink hover:shadow-md"
-              >
-                See who&apos;s on the network
-              </Link>
+        <HeroFloatingShapes>
+          <div className="relative z-10 mx-auto grid max-w-6xl gap-12 px-5 py-16 md:grid-cols-[1.15fr_1fr] md:items-center md:py-24">
+            <div>
+              <p className="meta mb-5 flex items-center gap-2 text-xs font-medium uppercase tracking-wide">
+                <span className="node-dot" /> AU Youth Network
+              </p>
+              <h1 className="font-display text-5xl font-semibold leading-[0.98] tracking-tight text-ink sm:text-6xl lg:text-7xl">
+                Find the person who
+                <br />
+                already knows how to
+                <br />
+                <span className="text-marigold">fix this.</span>
+              </h1>
+              <p className="mt-6 max-w-md text-base leading-relaxed text-ink-soft">
+                AU Youth Network connects interns, volunteers, and fellows across
+                every department. Post what you need help with, search the
+                directory by skill, and get matched to someone who can actually
+                help.
+              </p>
+              <div className="mt-8 flex flex-wrap items-center gap-3">
+                <Link
+                  href="/signup"
+                  className="group flex items-center gap-2 bg-ink px-5 py-2.5 text-sm font-medium text-paper transition-all hover:-translate-y-0.5 hover:bg-marigold hover:text-ink hover:shadow-lg"
+                >
+                  Create your profile
+                  <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
+                </Link>
+                <Link
+                  href="/directory"
+                  className="flex items-center gap-2 border border-line px-5 py-2.5 text-sm font-medium text-ink transition-all hover:-translate-y-0.5 hover:border-ink hover:shadow-md"
+                >
+                  See who&apos;s on the network
+                </Link>
+              </div>
+
+              <dl className="mt-12 flex flex-wrap gap-x-10 gap-y-4 border-t border-line pt-6">
+                <div>
+                  <dt className="meta text-xs">Departments</dt>
+                  <dd className="font-display text-3xl font-semibold text-marigold">
+                    <CountUp value={deptCounts.length} />
+                  </dd>
+                </div>
+                <div>
+                  <dt className="meta text-xs">Youth members</dt>
+                  <dd className="font-display text-3xl font-semibold text-indigo">
+                    <CountUp value={memberCount} />
+                  </dd>
+                </div>
+                <div>
+                  <dt className="meta text-xs">Listed skills</dt>
+                  <dd className="font-display text-3xl font-semibold text-brick">
+                    <CountUp value={skillCount} />
+                  </dd>
+                </div>
+              </dl>
             </div>
 
-            <dl className="mt-12 flex flex-wrap gap-x-10 gap-y-4 border-t border-line pt-6">
-              <div>
-                <dt className="meta text-xs">Departments</dt>
-                <dd className="font-display text-3xl font-semibold text-marigold">{deptCounts.length}</dd>
-              </div>
-              <div>
-                <dt className="meta text-xs">Youth members</dt>
-                <dd className="font-display text-3xl font-semibold text-indigo">{memberCount}</dd>
-              </div>
-              <div>
-                <dt className="meta text-xs">Listed skills</dt>
-                <dd className="font-display text-3xl font-semibold text-brick">{skillCount}</dd>
-              </div>
-            </dl>
+            {/* Sized past its old max-w-md and nudged down on larger screens
+                so it visually crosses the section's own border-b instead of
+                sitting neatly inside the hero box — the one deliberate break
+                from the strict grid. translate is purely visual (no reflow),
+                so it can't disturb the "How it works" section below it. */}
+            <div className="relative mx-auto w-full max-w-lg md:translate-y-10 lg:translate-y-14">
+              <div
+                aria-hidden
+                className="absolute inset-8 -z-10 rounded-full opacity-60 blur-3xl"
+                style={{ background: "radial-gradient(circle, var(--marigold-soft) 0%, transparent 68%)" }}
+              />
+              <NetworkDiagram
+                departments={deptCounts.map((d) => ({ name: d.name ?? "Unassigned", count: Number(d.count) }))}
+              />
+            </div>
           </div>
-
-          {/* Sized past its old max-w-md and nudged down on larger screens
-              so it visually crosses the section's own border-b instead of
-              sitting neatly inside the hero box — the one deliberate break
-              from the strict grid. translate is purely visual (no reflow),
-              so it can't disturb the "How it works" section below it. */}
-          <div className="relative mx-auto w-full max-w-lg md:translate-y-10 lg:translate-y-14">
-            <div
-              aria-hidden
-              className="absolute inset-8 -z-10 rounded-full opacity-60 blur-3xl"
-              style={{ background: "radial-gradient(circle, var(--marigold-soft) 0%, transparent 68%)" }}
-            />
-            <NetworkDiagram
-              departments={deptCounts.map((d) => ({ name: d.name ?? "Unassigned", count: Number(d.count) }))}
-            />
-          </div>
-        </div>
+        </HeroFloatingShapes>
       </section>
+
+      <div aria-hidden className="h-1.5 w-full" style={{ background: KENTE_BAND }} />
 
       {/* What happens on each part of the platform, told through the
           actions a member takes rather than abstract feature names. */}
@@ -206,11 +230,32 @@ export default async function LandingPage() {
   );
 }
 
-// Faint tiled route lines across the entire hero background — the same
-// "connection" idea as NetworkDiagram's spokes, just ambient rather than
-// literal data. Kept to low opacity so body text stays fully legible; not
-// meant to be looked at directly, just felt.
+// Continuously scrolling strip of live department data — real names and
+// member counts pulled from the same query as everything else on this
+// page, not invented copy. Content is duplicated once so the -50%
+// translateX loop is seamless. Decorative/duplicated, so it's hidden from
+// assistive tech; the same numbers are available (once, properly labeled)
+// in the stats and diagram below.
+function MarqueeTicker({ items }: { items: string[] }) {
+  const loop = [...items, ...items];
+  return (
+    <div aria-hidden className="overflow-hidden border-b border-line bg-ink">
+      <div className="flex w-max items-center gap-10 py-2" style={{ animation: "marquee-scroll 26s linear infinite" }}>
+        {loop.map((t, i) => (
+          <span key={i} className="whitespace-nowrap font-mono text-xs uppercase tracking-wide text-marigold">
+            {t}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function HeroTexture() {
+  // Faint tiled route lines across the entire hero background — the same
+  // "connection" idea as NetworkDiagram's spokes, just ambient rather than
+  // literal data. Kept to low opacity so body text stays fully legible;
+  // not meant to be looked at directly, just felt.
   return (
     <svg
       aria-hidden

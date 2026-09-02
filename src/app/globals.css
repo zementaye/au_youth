@@ -152,6 +152,33 @@ h1, h2, h3, .font-display {
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* ---- "Go all-in" pass: several more, deliberately different kinds of
+   motion layered on top of the one orchestrated load-in above, rather than
+   repeating the same effect everywhere. Each one respects
+   prefers-reduced-motion via the blanket override at the top of this
+   file — infinite loops collapse to a single, near-instant frame instead
+   of animating forever. ---- */
+
+/* Continuous "data flowing outward" overlay on the diagram's spokes —
+   starts once the one-time draw-in finishes, then loops. */
+@keyframes flow-dash {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: -0.24; }
+}
+
+/* Slow float + rotate for the hero's floating accent shapes. */
+@keyframes float-shape {
+  0%, 100% { transform: translateY(0) rotate(var(--float-rot, 0deg)); }
+  50% { transform: translateY(-16px) rotate(calc(var(--float-rot, 0deg) + 8deg)); }
+}
+
+/* Infinite horizontal scroll for the department ticker. Content is
+   duplicated once in markup, so -50% is exactly one full loop. */
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
 /* Small accent dot used before eyebrow labels and network nodes. */
 .node-dot {
   width: 6px;

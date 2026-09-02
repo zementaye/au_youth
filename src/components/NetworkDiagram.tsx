@@ -5,11 +5,14 @@
 //
 // On load, the diagram plays a single orchestrated sequence — lines draw
 // outward from the hub, nodes settle into place behind them, and the hub
-// itself resolves last — instead of just appearing. It's pure CSS
+// itself resolves last — instead of just appearing. Once that settles,
+// each spoke keeps a subtle marigold "flow" looping outward continuously,
+// so the diagram stays alive rather than going static. Both are pure CSS
 // (@keyframes in globals.css), so it needs no client-side state and still
-// respects prefers-reduced-motion via the global override there. This is
-// the platform's one deliberate animation; nothing else should animate on
-// hover to avoid diluting it.
+// respects prefers-reduced-motion via the global override there — the
+// infinite loop collapses to a single frame for that preference. This is
+// the platform's signature motion; nothing else should copy the "infinite
+// loop" trick to avoid diluting it.
 
 type DeptNode = {
   name: string;
@@ -70,6 +73,31 @@ export default function NetworkDiagram({ departments }: { departments: DeptNode[
           }}
         />
       ))}
+
+      {/* a second, continuous overlay per spoke — once the line above has
+          finished drawing in, a marigold dash pattern starts flowing
+          outward on a loop, reading as data/energy moving through the
+          network rather than a static diagram. */}
+      {positioned.map((n, i) => {
+        const flowDelay = BASE_DELAY + i * LINE_STAGGER + LINE_DURATION;
+        return (
+          <line
+            key={`flow-${n.name}`}
+            x1={CENTER.x}
+            y1={CENTER.y}
+            x2={n.x}
+            y2={n.y}
+            stroke="var(--marigold)"
+            strokeOpacity={0.6}
+            strokeWidth={2}
+            pathLength={1}
+            strokeDasharray="0.05 0.16"
+            style={{
+              animation: `flow-dash 2.4s linear ${flowDelay}ms infinite`,
+            }}
+          />
+        );
+      })}
 
       {/* department nodes — each settles in shortly after its own line
           starts drawing. transform-origin is set in the SVG's own user
