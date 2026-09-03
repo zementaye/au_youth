@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+@import "@fontsource/space-grotesk/500.css";
+@import "@fontsource/space-grotesk/600.css";
+@import "@fontsource/space-grotesk/700.css";
 @import "@fontsource/inter/400.css";
 @import "@fontsource/inter/500.css";
 @import "@fontsource/inter/600.css";
@@ -9,29 +12,51 @@
 @import "@fontsource/ibm-plex-mono/500.css";
 
 :root {
-  /* Near-black slate for primary text and monochrome UI elements (nav,
-     primary buttons) — restrained, not pure black. */
-  --ink: #0f172a;
-  --ink-soft: #64748b;
+  /* Warm charcoal, not slate — pairs with the warm paper instead of a cool
+     corporate grey. */
+  --ink: #17140f;
+  --ink-soft: #6b6154;
 
-  /* Neutral, cool surfaces — not warm cream, not a bold color field. */
-  --paper: #fafafa;
+  /* Soft warm paper, kept short of "cream". */
+  --paper: #f7f4ee;
   --paper-raised: #ffffff;
 
-  /* The one accent color, used sparingly: links, active nav state, small
-     highlights. A muted teal — enough identity to feel intentional
-     without dominating the interface the way a bold two-tone theme does. */
-  --gold: #0d9488;
-  --gold-soft: #ccfbf1;
+  /* Brand — a bold, saturated flagship green, the one color that shows up
+     everywhere: primary buttons, the ticker, the network hub. */
+  --brand: #0a7a45;
+  --brand-dark: #054d2c;
+  --brand-soft: #d7f0e2;
 
-  /* Semantic colors, standard SaaS conventions. */
-  --coral: #dc2626;
-  --sage: #16a34a;
+  /* Marigold — the network's signature "flow" color (used by the diagram's
+     continuous animation) and a secondary headline color. */
+  --marigold: #e8a317;
+  --marigold-soft: #f9ecc8;
 
-  --line: #e4e4e7;
-  --line-soft: #f1f1f3;
+  /* Indigo — the network's "connection" color: diagram lines/nodes, links. */
+  --indigo: #33406b;
+  --indigo-soft: #dde1ec;
 
-  --font-display: "Inter", ui-sans-serif, system-ui, sans-serif;
+  /* Status colors. */
+  --brick: #c1272d;
+  --brick-soft: #f3ded9;
+  --forest: #3f6e44;
+  --forest-soft: #dfe9df;
+
+  /* The wider vibrant set — department nodes, flag panel, community
+     illustration, so the palette reads as colorful, not one accent reused. */
+  --emerald: #0a7a45;
+  --emerald-soft: #d9efe1;
+  --terracotta: #c1571f;
+  --terracotta-soft: #f6e2d3;
+  --royal: #5b3fa0;
+  --royal-soft: #e6ddf3;
+  --teal: #147a7a;
+  --teal-soft: #d8ecec;
+
+  --line: #e2dccb;
+  --line-soft: #ede9dd;
+
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
   --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 }
@@ -41,10 +66,35 @@
   --color-ink-soft: var(--ink-soft);
   --color-paper: var(--paper);
   --color-paper-raised: var(--paper-raised);
-  --color-gold: var(--gold);
-  --color-gold-soft: var(--gold-soft);
-  --color-coral: var(--coral);
-  --color-sage: var(--sage);
+
+  --color-brand: var(--brand);
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-soft: var(--brand-soft);
+
+  --color-marigold: var(--marigold);
+  --color-marigold-soft: var(--marigold-soft);
+  --color-indigo: var(--indigo);
+  --color-indigo-soft: var(--indigo-soft);
+  --color-brick: var(--brick);
+  --color-brick-soft: var(--brick-soft);
+  --color-forest: var(--forest);
+  --color-forest-soft: var(--forest-soft);
+  --color-emerald: var(--emerald);
+  --color-emerald-soft: var(--emerald-soft);
+  --color-terracotta: var(--terracotta);
+  --color-terracotta-soft: var(--terracotta-soft);
+  --color-royal: var(--royal);
+  --color-royal-soft: var(--royal-soft);
+  --color-teal: var(--teal);
+  --color-teal-soft: var(--teal-soft);
+
+  /* Back-compat aliases: old class names (bg-gold, text-coral, text-sage)
+     from earlier in the project's history still resolve. */
+  --color-gold: var(--marigold);
+  --color-gold-soft: var(--marigold-soft);
+  --color-coral: var(--brick);
+  --color-sage: var(--forest);
+
   --color-line: var(--line);
   --color-line-soft: var(--line-soft);
   --font-display: var(--font-display);
@@ -69,30 +119,25 @@ body {
 
 h1, h2, h3, .font-display {
   font-family: var(--font-display);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 
-/* Explicit opt-in monospace, for genuinely tabular/code-like content
-   (audit-log timestamps, member IDs) — not used app-wide by default. */
 .font-mono {
   font-family: var(--font-mono);
 }
 
-/* Small muted meta text (eyebrows, byline/timestamp rows, footer). Plain
-   body font, not monospace — keeps the UI feeling like one calm typeface
-   instead of a mono/display/serif mix. */
 .meta {
   font-family: var(--font-body);
   color: var(--ink-soft);
 }
 
 ::selection {
-  background: var(--gold-soft);
+  background: var(--marigold-soft);
   color: var(--ink);
 }
 
 :focus-visible {
-  outline: 2px solid var(--gold);
+  outline: 2px solid var(--marigold);
   outline-offset: 2px;
 }
 
@@ -104,20 +149,20 @@ h1, h2, h3, .font-display {
   }
 }
 
-/* Small accent dot used before eyebrow labels. */
+/* Small accent dot used before eyebrow labels and network nodes. */
 .node-dot {
   width: 6px;
   height: 6px;
   border-radius: 999px;
-  background: var(--gold);
+  background: var(--marigold);
   flex-shrink: 0;
 }
 
 .card-raised {
   background: var(--paper-raised);
   border: 1px solid var(--line);
-  border-radius: 12px;
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 1px 6px rgba(15, 23, 42, 0.03);
+  border-radius: 2px;
+  box-shadow: 0 1px 2px rgba(23, 20, 15, 0.04), 0 1px 8px rgba(23, 20, 15, 0.03);
 }
 
 .tag {
@@ -138,8 +183,7 @@ h1, h2, h3, .font-display {
   background: var(--paper-raised);
   border-radius: 8px;
   padding: 0.6rem 0.8rem;
-  font-size: 1rem; /* 16px minimum — anything smaller triggers iOS Safari's
-                       auto-zoom on focus, which is jarring on mobile. */
+  font-size: 1rem; /* 16px minimum — avoids iOS Safari's auto-zoom on focus */
   color: var(--ink);
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
@@ -150,6 +194,97 @@ h1, h2, h3, .font-display {
 
 .input:focus {
   outline: none;
-  border-color: var(--gold);
-  box-shadow: 0 0 0 3px var(--gold-soft);
+  border-color: var(--marigold);
+  box-shadow: 0 0 0 3px var(--marigold-soft);
+}
+
+/* ---- Motion vocabulary ---- */
+
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-rise {
+  opacity: 0;
+  animation: rise-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: var(--delay, 0ms);
+}
+
+@keyframes sway {
+  0%, 100% { transform: rotate(-2.5deg); }
+  50% { transform: rotate(2.5deg); }
+}
+.animate-sway {
+  animation: sway 3.2s ease-in-out infinite;
+  animation-delay: var(--delay, 0ms);
+  transform-box: fill-box;
+  transform-origin: bottom center;
+}
+
+@keyframes blob-drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(3%, -4%) scale(1.06); }
+  66% { transform: translate(-3%, 3%) scale(0.96); }
+}
+.animate-blob {
+  animation: blob-drift 14s ease-in-out infinite;
+  animation-delay: var(--delay, 0ms);
+}
+
+@keyframes ticker-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: ticker-scroll 22s linear infinite;
+}
+.ticker-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  white-space: nowrap;
+  padding: 0 1.5rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.display-huge {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+}
+
+/* The network diagram's own signature motion: lines draw outward from the
+   hub (draw-line), each spoke then loops a marigold "flow" pulse forever
+   (flow-dash), nodes settle in with a slight overshoot (settle-in), and the
+   hub resolves last (hub-settle). pathLength={1} on the SVG lines means
+   stroke-dasharray/dashoffset are normalized to 0–1 regardless of each
+   line's actual on-screen length. */
+@keyframes draw-line {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes flow-dash {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: -1; }
+}
+@keyframes settle-in {
+  from { opacity: 0; transform: scale(0.5); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes hub-settle {
+  from { opacity: 0; transform: scale(0.3); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Not yet wired into any page, but defined so HeroFloatingShapes works the
+   moment it is — a slow drift plus a slight rotation toward each shape's
+   own --float-rot custom property. */
+@keyframes float-shape {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(var(--float-rot, 8deg)); }
 }
