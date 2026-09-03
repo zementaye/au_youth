@@ -1,6 +1,13 @@
+import type { Metadata } from "next";
 import { db } from "@/db";
 import { departments, skills } from "@/db/schema";
 import SignupForm from "./SignupForm";
+
+export const metadata: Metadata = {
+  title: "Join the network",
+  description:
+    "Create your AU Youth Network profile to connect with interns, volunteers, and fellows across every AU department.",
+};
 
 export default async function SignupPage() {
   const [deptList, skillList] = await Promise.all([

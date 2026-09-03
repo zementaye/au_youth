@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { db } from "@/db";
@@ -5,6 +6,12 @@ import { departments, users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import CreateDepartmentForm from "./CreateDepartmentForm";
 import AssignAdminForm from "./AssignAdminForm";
+
+export const metadata: Metadata = {
+  title: "Manage departments",
+  description: "Create departments and assign department admins.",
+  robots: { index: false, follow: false },
+};
 
 export default async function AdminDepartmentsPage() {
   const user = await getCurrentUser();

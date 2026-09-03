@@ -1,6 +1,13 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { verifyEmailAction } from "@/lib/actions/auth";
 import { CheckCircle2, XCircle } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Verify your email",
+  description: "Confirm your email address to finish setting up your AU Youth Network account.",
+  robots: { index: false, follow: false },
+};
 
 export default async function VerifyPage({
   searchParams,
@@ -23,7 +30,7 @@ export default async function VerifyPage({
       <p className="mt-2 text-sm text-ink-soft">{result.message}</p>
       <Link
         href="/dashboard"
-        className="mt-6 inline-block rounded-none bg-ink px-5 py-2.5 text-sm font-medium text-paper hover:bg-ink-soft"
+        className="mt-6 inline-block rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-paper hover:bg-ink-soft"
       >
         Go to dashboard
       </Link>

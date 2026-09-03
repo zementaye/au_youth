@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Search, Link2, FolderGit2, Globe, Mail, Phone, ChevronLeft, ChevronRight } from "lucide-react";
-import Dot from "@/components/Dot";
 
 type Member = {
   id: string;
@@ -63,14 +62,14 @@ export default function DirectoryClient({
 
   return (
     <div>
-      <div className="card-raised flex flex-col gap-3 rounded-none p-4 sm:flex-row sm:items-center">
-        <div className="flex flex-1 items-center gap-2 rounded-none border border-line bg-paper px-3 py-2">
+      <div className="card-raised flex flex-col gap-3 rounded-lg p-4 sm:flex-row sm:items-center">
+        <div className="flex flex-1 items-center gap-2 rounded-md border border-line bg-paper px-3 py-2">
           <Search size={15} className="text-ink-soft" />
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search by skill, name, or title…"
-            className="flex-1 border-none bg-transparent text-sm outline-none placeholder:text-ink-soft/50"
+            className="flex-1 border-none bg-transparent text-base outline-none placeholder:text-ink-soft/50 sm:text-sm"
             list="skill-suggestions"
           />
           <datalist id="skill-suggestions">
@@ -82,7 +81,7 @@ export default function DirectoryClient({
         <select
           value={deptFilter}
           onChange={(e) => setDeptFilter(e.target.value)}
-          className="rounded-none border border-line bg-paper px-3 py-2 text-sm text-ink-soft"
+          className="rounded-md border border-line bg-paper px-3 py-2 text-base text-ink-soft sm:text-sm"
         >
           <option value="">All departments</option>
           {departments.map((d) => (
@@ -94,7 +93,7 @@ export default function DirectoryClient({
         <select
           value={programFilter}
           onChange={(e) => setProgramFilter(e.target.value)}
-          className="rounded-none border border-line bg-paper px-3 py-2 text-sm text-ink-soft"
+          className="rounded-md border border-line bg-paper px-3 py-2 text-base text-ink-soft sm:text-sm"
         >
           <option value="">All programs</option>
           <option value="INTERN">Intern</option>
@@ -109,7 +108,7 @@ export default function DirectoryClient({
 
       <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {pageItems.map((m) => (
-          <div key={m.id} className="card-raised flex flex-col gap-3 rounded-none p-5">
+          <div key={m.id} className="card-raised flex flex-col gap-3 rounded-lg p-5">
             <div className="flex items-start gap-3">
               <div className="h-11 w-11 shrink-0 overflow-hidden rounded-full border border-line bg-paper">
                 {m.profilePhotoUrl ? (
@@ -124,12 +123,7 @@ export default function DirectoryClient({
               <div>
                 <p className="font-display text-lg font-medium leading-snug text-ink">{m.fullName}</p>
                 <p className="text-xs text-ink-soft">
-                  {m.title ?? "Member"}
-                  {m.deptName && (
-                    <>
-                      <Dot /> {m.deptName}
-                    </>
-                  )}
+                  {m.title ?? "Member"} {m.deptName ? `· ${m.deptName}` : ""}
                 </p>
                 {m.programType && <span className="tag mt-2 inline-block">{titleCase(m.programType)}</span>}
               </div>
@@ -190,7 +184,7 @@ export default function DirectoryClient({
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page === 1}
-            className="flex items-center gap-1 rounded-none border border-line px-3 py-1.5 text-xs text-ink-soft hover:border-ink hover:text-ink disabled:opacity-40"
+            className="flex items-center gap-1 rounded-full border border-line px-3 py-1.5 text-xs text-ink-soft hover:border-ink hover:text-ink disabled:opacity-40"
           >
             <ChevronLeft size={14} /> Prev
           </button>
@@ -200,7 +194,7 @@ export default function DirectoryClient({
           <button
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={page === totalPages}
-            className="flex items-center gap-1 rounded-none border border-line px-3 py-1.5 text-xs text-ink-soft hover:border-ink hover:text-ink disabled:opacity-40"
+            className="flex items-center gap-1 rounded-full border border-line px-3 py-1.5 text-xs text-ink-soft hover:border-ink hover:text-ink disabled:opacity-40"
           >
             Next <ChevronRight size={14} />
           </button>

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { getCurrentUser } from "@/lib/auth";
@@ -6,6 +7,12 @@ import { devEmails } from "@/db/schema";
 import { desc } from "drizzle-orm";
 import { Mail } from "lucide-react";
 import { formatDateTime } from "@/lib/format";
+
+export const metadata: Metadata = {
+  title: "Dev email outbox",
+  description: "View verification and password-reset emails sent in this environment.",
+  robots: { index: false, follow: false },
+};
 
 export default async function DevOutboxPage() {
   const user = await getCurrentUser();
@@ -32,7 +39,9 @@ export default async function DevOutboxPage() {
         {emails.map((e) => (
           <div key={e.id} className="card-raised rounded-lg p-4">
             <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-ink-soft">
-              <span>To: {e.toEmail}</span>
+              <span>
+                To: <a href={`mailto:${e.toEmail}`} className="underline hover:text-ink">{e.toEmail}</a>
+              </span>
               <span className="meta">{formatDateTime(e.createdAt)}</span>
             </div>
             <p className="mt-1 text-sm font-medium text-ink">{e.subject}</p>

@@ -1,8 +1,14 @@
+import type { Metadata } from "next";
 import { db } from "@/db";
 import { users, departments, skills, userSkills } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { getCurrentUser } from "@/lib/auth";
 import DirectoryClient from "./DirectoryClient";
+
+export const metadata: Metadata = {
+  title: "Skill directory",
+  description: "Search AU youth members by skill, department, or program type, and find who can help.",
+};
 
 export default async function DirectoryPage() {
   const viewer = await getCurrentUser();

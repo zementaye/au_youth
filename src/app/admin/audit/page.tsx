@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { db } from "@/db";
@@ -5,6 +6,12 @@ import { auditLogs, users } from "@/db/schema";
 import { desc, eq } from "drizzle-orm";
 import { ScrollText } from "lucide-react";
 import AuditLogTable from "./AuditLogTable";
+
+export const metadata: Metadata = {
+  title: "Audit log",
+  description: "A searchable log of every admin action on the platform.",
+  robots: { index: false, follow: false },
+};
 
 export default async function AuditLogPage() {
   const user = await getCurrentUser();

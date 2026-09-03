@@ -3,6 +3,7 @@
 import { useActionState, useEffect, useState } from "react";
 import { editHelpRequestAction, type FormState } from "@/lib/actions/help-requests";
 import SkillPicker from "@/components/SkillPicker";
+import { useToast } from "@/components/ToastProvider";
 
 type Req = { id: string; title: string; description: string; skills: string[] };
 
@@ -17,18 +18,22 @@ export default function EditHelpRequestForm({
 }) {
   const [state, formAction, pending] = useActionState<FormState, FormData>(editHelpRequestAction, null);
   const [selectedSkills, setSelectedSkills] = useState<string[]>(request.skills);
+  const showToast = useToast();
 
   useEffect(() => {
-    if (state && !state.error) onDone();
+    if (state && !state.error) {
+      showToast("Help request saved.", "success");
+      onDone();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state]);
 
   return (
-    <form action={formAction} className="card-raised space-y-4 rounded-none p-5">
+    <form action={formAction} className="card-raised space-y-4 rounded-lg p-5">
       <input type="hidden" name="helpRequestId" value={request.id} />
       <p className="font-display text-lg font-medium text-ink">Edit help request</p>
       {state?.error && (
-        <div className="rounded-none border border-coral/40 bg-coral/5 px-4 py-2 text-sm text-coral">
+        <div className="rounded-md border border-coral/40 bg-coral/5 px-4 py-2 text-sm text-coral">
           {state.error}
         </div>
       )}
@@ -50,7 +55,7 @@ export default function EditHelpRequestForm({
         <button
           type="submit"
           disabled={pending}
-          className="rounded-none bg-ink px-5 py-2 text-sm font-medium text-paper hover:bg-ink-soft disabled:opacity-60"
+          className="rounded-full bg-ink px-5 py-2 text-sm font-medium text-paper hover:bg-ink-soft disabled:opacity-60"
         >
           {pending ? "Saving…" : "Save changes"}
         </button>

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { db } from "@/db";
@@ -5,6 +6,12 @@ import { users, departments } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import UsersTable from "./UsersTable";
 import HandoffAdminForm from "./HandoffAdminForm";
+
+export const metadata: Metadata = {
+  title: "Manage members",
+  description: "Grant posting privileges and manage member accounts.",
+  robots: { index: false, follow: false },
+};
 
 export default async function AdminUsersPage() {
   const user = await getCurrentUser();

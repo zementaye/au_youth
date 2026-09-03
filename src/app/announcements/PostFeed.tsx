@@ -5,7 +5,7 @@ import { deletePostAction } from "@/lib/actions/posts";
 import { Pin, Pencil, Trash2, Paperclip } from "lucide-react";
 import EditPostForm from "./EditPostForm";
 import { formatDate } from "@/lib/format";
-import Dot from "@/components/Dot";
+import { useToast } from "@/components/ToastProvider";
 
 type Post = {
   id: string;
@@ -23,6 +23,7 @@ type Post = {
 export default function PostFeed({ posts, canPin }: { posts: Post[]; canPin: boolean }) {
   const [isPending, startTransition] = useTransition();
   const [editingId, setEditingId] = useState<string | null>(null);
+  const showToast = useToast();
 
   if (posts.length === 0) {
     return <p className="text-sm text-ink-soft">No updates published yet.</p>;
@@ -34,7 +35,7 @@ export default function PostFeed({ posts, canPin }: { posts: Post[]; canPin: boo
         editingId === p.id ? (
           <EditPostForm key={p.id} post={p} canPin={canPin} onDone={() => setEditingId(null)} />
         ) : (
-          <article key={p.id} className="card-raised rounded-none p-5">
+          <article key={p.id} className="card-raised rounded-lg p-5">
             <div className="mb-2 flex flex-wrap items-center gap-2 text-xs text-ink-soft">
               {p.pinned && (
                 <span className="flex items-center gap-1 text-coral">
@@ -55,8 +56,10 @@ export default function PostFeed({ posts, canPin }: { posts: Post[]; canPin: boo
                     disabled={isPending}
                     onClick={() => {
                       if (confirm("Delete this update? This can't be undone.")) {
-                        startTransition(() => {
-                          deletePostAction(p.id);
+                        startTransition(async () => {
+                          const result = await deletePostAction(p.id);
+                          if (result?.error) showToast(result.error, "error");
+                          else showToast("Update deleted.", "success");
                         });
                       }
                     }}
@@ -75,19 +78,14 @@ export default function PostFeed({ posts, canPin }: { posts: Post[]; canPin: boo
                 href={p.attachmentUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="mt-2 flex w-fit items-center gap-1.5 rounded-none border border-line px-3 py-1 text-xs text-ink-soft hover:border-ink hover:text-ink"
+                className="mt-2 flex w-fit items-center gap-1.5 rounded-full border border-line px-3 py-1 text-xs text-ink-soft hover:border-ink hover:text-ink"
               >
                 <Paperclip size={12} /> View attachment
               </a>
             )}
             <p className="meta mt-4 text-xs text-ink-soft/70">
               {p.authorName}
-              {p.authorTitle && (
-                <>
-                  <Dot /> {p.authorTitle}
-                </>
-              )}
-              <Dot /> {formatDate(p.createdAt)}
+              {p.authorTitle ? ` · ${p.authorTitle}` : ""} · {formatDate(p.createdAt)}
             </p>
           </article>
         )

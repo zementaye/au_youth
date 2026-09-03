@@ -1,4 +1,6 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 import Link from "next/link";
 import { getCurrentUser, canPost } from "@/lib/auth";
 import { db } from "@/db";
@@ -6,7 +8,13 @@ import { helpRequests, userSkills, skills } from "@/db/schema";
 import { eq, or } from "drizzle-orm";
 import { Settings, ArrowRight } from "lucide-react";
 import VerifyBanner from "@/components/VerifyBanner";
-import Dot from "@/components/Dot";
+import RedirectToast from "@/components/RedirectToast";
+
+export const metadata: Metadata = {
+  title: "Your dashboard",
+  description: "View your profile, skills, and help request activity.",
+  robots: { index: false, follow: false },
+};
 
 export default async function DashboardPage() {
   const user = await getCurrentUser();
@@ -29,6 +37,9 @@ export default async function DashboardPage() {
 
   return (
     <div className="mx-auto max-w-4xl px-5 py-12">
+      <Suspense>
+        <RedirectToast param="profileSaved" message="Profile updated." />
+      </Suspense>
       {!user.emailVerified && <VerifyBanner />}
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
@@ -39,12 +50,7 @@ export default async function DashboardPage() {
             Welcome back, {user.fullName.split(" ")[0]}
           </h1>
           <p className="mt-2 text-sm text-ink-soft">
-            {user.title ?? "Member"}
-            {user.departmentName && (
-              <>
-                <Dot /> {user.departmentName}
-              </>
-            )}
+            {user.title ?? "Member"} {user.departmentName ? `· ${user.departmentName}` : ""}
           </p>
         </div>
         <Link

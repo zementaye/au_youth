@@ -1,20 +1,31 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { createHelpRequestAction, type FormState } from "@/lib/actions/help-requests";
 import { MessageSquarePlus } from "lucide-react";
 import SkillPicker from "@/components/SkillPicker";
+import { useToast } from "@/components/ToastProvider";
 
 export default function HelpRequestComposer({ skillOptions }: { skillOptions: string[] }) {
   const [open, setOpen] = useState(false);
   const [state, formAction, pending] = useActionState<FormState, FormData>(createHelpRequestAction, null);
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
+  const showToast = useToast();
+
+  useEffect(() => {
+    if (state && !state.error) {
+      showToast("Help request posted.", "success");
+      setOpen(false);
+      setSelectedSkills([]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state]);
 
   if (!open) {
     return (
       <button
         onClick={() => setOpen(true)}
-        className="flex w-full items-center justify-center gap-2 rounded-none border border-dashed border-line px-5 py-3 text-sm text-ink-soft transition-colors hover:border-ink hover:text-ink"
+        className="flex w-full items-center justify-center gap-2 rounded-lg border border-dashed border-line px-5 py-3 text-sm text-ink-soft transition-colors hover:border-ink hover:text-ink"
       >
         <MessageSquarePlus size={15} /> Post a help request
       </button>
@@ -22,10 +33,10 @@ export default function HelpRequestComposer({ skillOptions }: { skillOptions: st
   }
 
   return (
-    <form action={formAction} className="card-raised space-y-4 rounded-none p-5">
+    <form action={formAction} className="card-raised space-y-4 rounded-lg p-5">
       <p className="font-display text-lg font-medium text-ink">New help request</p>
       {state?.error && (
-        <div className="rounded-none border border-coral/40 bg-coral/5 px-4 py-2 text-sm text-coral">
+        <div className="rounded-md border border-coral/40 bg-coral/5 px-4 py-2 text-sm text-coral">
           {state.error}
         </div>
       )}
@@ -47,7 +58,7 @@ export default function HelpRequestComposer({ skillOptions }: { skillOptions: st
         <button
           type="submit"
           disabled={pending}
-          className="rounded-none bg-ink px-5 py-2 text-sm font-medium text-paper transition-colors hover:bg-ink-soft disabled:opacity-60"
+          className="rounded-full bg-ink px-5 py-2 text-sm font-medium text-paper transition-colors hover:bg-ink-soft disabled:opacity-60"
         >
           {pending ? "Posting…" : "Post request"}
         </button>

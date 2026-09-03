@@ -65,5 +65,5 @@ export async function updateProfileAction(_prev: FormState, formData: FormData):
 
   revalidatePath("/dashboard");
   revalidatePath("/directory");
-  redirect("/dashboard");
+  redirect("/dashboard?profileSaved=1");
 }

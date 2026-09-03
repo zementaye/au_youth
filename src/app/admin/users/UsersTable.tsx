@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { togglePosterAction, toggleActiveAction } from "@/lib/actions/admin";
 import { Search, ChevronLeft, ChevronRight } from "lucide-react";
+import { useToast } from "@/components/ToastProvider";
 
 type UserRow = {
   id: string;
@@ -23,6 +24,7 @@ export default function UsersTable({ users }: { users: UserRow[] }) {
   const [isPending, startTransition] = useTransition();
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
+  const showToast = useToast();
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -45,17 +47,17 @@ export default function UsersTable({ users }: { users: UserRow[] }) {
 
   return (
     <div>
-      <div className="mb-3 flex items-center gap-2 rounded-none border border-line bg-paper-raised px-3 py-2 sm:w-80">
+      <div className="mb-3 flex items-center gap-2 rounded-md border border-line bg-paper-raised px-3 py-2 sm:w-80">
         <Search size={14} className="text-ink-soft" />
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search members…"
-          className="flex-1 border-none bg-transparent text-sm outline-none placeholder:text-ink-soft/50"
+          className="flex-1 border-none bg-transparent text-base outline-none placeholder:text-ink-soft/50 sm:text-sm"
         />
       </div>
 
-      <div className="card-raised overflow-x-auto rounded-none">
+      <div className="card-raised overflow-x-auto rounded-lg">
         <table className="w-full min-w-[720px] text-left text-sm">
           <thead>
             <tr className="border-b border-line-soft text-xs uppercase tracking-wide text-ink-soft/70">
@@ -89,8 +91,14 @@ export default function UsersTable({ users }: { users: UserRow[] }) {
                     {u.systemRole === "MEMBER" && (
                       <button
                         disabled={isPending}
-                        onClick={() => startTransition(() => { togglePosterAction(u.id); })}
-                        className="rounded-none border border-line px-3 py-1 text-xs text-ink-soft hover:border-ink hover:text-ink disabled:opacity-60"
+                        onClick={() =>
+                          startTransition(async () => {
+                            const result = await togglePosterAction(u.id);
+                            if (result?.error) showToast(result.error, "error");
+                            else showToast(u.isPoster ? `Revoked poster access for ${u.fullName}.` : `Granted poster access to ${u.fullName}.`, "success");
+                          })
+                        }
+                        className="rounded-full border border-line px-3 py-1 text-xs text-ink-soft hover:border-ink hover:text-ink disabled:opacity-60"
                       >
                         {u.isPoster ? "Revoke poster" : "Grant poster"}
                       </button>
@@ -98,8 +106,14 @@ export default function UsersTable({ users }: { users: UserRow[] }) {
                     {u.systemRole !== "SUPER_ADMIN" && (
                       <button
                         disabled={isPending}
-                        onClick={() => startTransition(() => { toggleActiveAction(u.id); })}
-                        className="rounded-none border border-line px-3 py-1 text-xs text-ink-soft hover:border-coral hover:text-coral disabled:opacity-60"
+                        onClick={() =>
+                          startTransition(async () => {
+                            const result = await toggleActiveAction(u.id);
+                            if (result?.error) showToast(result.error, "error");
+                            else showToast(u.isActive ? `${u.fullName} deactivated.` : `${u.fullName} reactivated.`, "success");
+                          })
+                        }
+                        className="rounded-full border border-line px-3 py-1 text-xs text-ink-soft hover:border-coral hover:text-coral disabled:opacity-60"
                       >
                         {u.isActive ? "Deactivate" : "Reactivate"}
                       </button>
@@ -124,7 +138,7 @@ export default function UsersTable({ users }: { users: UserRow[] }) {
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page === 1}
-            className="flex items-center gap-1 rounded-none border border-line px-3 py-1.5 text-xs text-ink-soft hover:border-ink hover:text-ink disabled:opacity-40"
+            className="flex items-center gap-1 rounded-full border border-line px-3 py-1.5 text-xs text-ink-soft hover:border-ink hover:text-ink disabled:opacity-40"
           >
             <ChevronLeft size={14} /> Prev
           </button>
@@ -134,7 +148,7 @@ export default function UsersTable({ users }: { users: UserRow[] }) {
           <button
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={page === totalPages}
-            className="flex items-center gap-1 rounded-none border border-line px-3 py-1.5 text-xs text-ink-soft hover:border-ink hover:text-ink disabled:opacity-40"
+            className="flex items-center gap-1 rounded-full border border-line px-3 py-1.5 text-xs text-ink-soft hover:border-ink hover:text-ink disabled:opacity-40"
           >
             Next <ChevronRight size={14} />
           </button>

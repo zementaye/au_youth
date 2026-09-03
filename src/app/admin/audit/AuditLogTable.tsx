@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Search, ChevronLeft, ChevronRight } from "lucide-react";
 import { formatDateTime } from "@/lib/format";
-import Dot from "@/components/Dot";
 
 type Row = {
   id: string;
@@ -56,20 +55,20 @@ export default function AuditLogTable({
 
   return (
     <div>
-      <div className="card-raised flex flex-col gap-3 rounded-none p-4 sm:flex-row sm:items-center">
-        <div className="flex flex-1 items-center gap-2 rounded-none border border-line bg-paper px-3 py-2">
+      <div className="card-raised flex flex-col gap-3 rounded-lg p-4 sm:flex-row sm:items-center">
+        <div className="flex flex-1 items-center gap-2 rounded-md border border-line bg-paper px-3 py-2">
           <Search size={14} className="text-ink-soft" />
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search actions, targets…"
-            className="flex-1 border-none bg-transparent text-sm outline-none placeholder:text-ink-soft/50"
+            className="flex-1 border-none bg-transparent text-base outline-none placeholder:text-ink-soft/50 sm:text-sm"
           />
         </div>
         <select
           value={actorFilter}
           onChange={(e) => setActorFilter(e.target.value)}
-          className="rounded-none border border-line bg-paper px-3 py-2 text-sm text-ink-soft"
+          className="rounded-md border border-line bg-paper px-3 py-2 text-sm text-ink-soft"
         >
           <option value="">All actors</option>
           {actors.map((a) => (
@@ -81,7 +80,7 @@ export default function AuditLogTable({
         <select
           value={actionFilter}
           onChange={(e) => setActionFilter(e.target.value)}
-          className="rounded-none border border-line bg-paper px-3 py-2 text-sm text-ink-soft"
+          className="rounded-md border border-line bg-paper px-3 py-2 text-sm text-ink-soft"
         >
           <option value="">All actions</option>
           {actions.map((a) => (
@@ -96,11 +95,11 @@ export default function AuditLogTable({
         {filtered.length} of {rows.length} entries
       </p>
 
-      <div className="card-raised mt-3 divide-y divide-line-soft rounded-none">
+      <div className="card-raised mt-3 divide-y divide-line-soft rounded-lg">
         {pageItems.map((r) => (
           <div key={r.id} className="flex flex-wrap items-center justify-between gap-2 px-5 py-3 text-sm">
             <span className="text-ink-soft">
-              <span className="text-ink">{r.actorName ?? "Unknown"}</span> <Dot /> {actionLabel(r.action)}
+              <span className="text-ink">{r.actorName ?? "Unknown"}</span> · {actionLabel(r.action)}
               {r.targetType && <span className="text-ink-soft/70"> ({r.targetType})</span>}
             </span>
             <span className="meta text-xs text-ink-soft/60">{formatDateTime(r.createdAt)}</span>
@@ -114,7 +113,7 @@ export default function AuditLogTable({
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page === 1}
-            className="flex items-center gap-1 rounded-none border border-line px-3 py-1.5 text-xs text-ink-soft hover:border-ink hover:text-ink disabled:opacity-40"
+            className="flex items-center gap-1 rounded-full border border-line px-3 py-1.5 text-xs text-ink-soft hover:border-ink hover:text-ink disabled:opacity-40"
           >
             <ChevronLeft size={14} /> Prev
           </button>
@@ -124,7 +123,7 @@ export default function AuditLogTable({
           <button
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={page === totalPages}
-            className="flex items-center gap-1 rounded-none border border-line px-3 py-1.5 text-xs text-ink-soft hover:border-ink hover:text-ink disabled:opacity-40"
+            className="flex items-center gap-1 rounded-full border border-line px-3 py-1.5 text-xs text-ink-soft hover:border-ink hover:text-ink disabled:opacity-40"
           >
             Next <ChevronRight size={14} />
           </button>

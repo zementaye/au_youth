@@ -11,7 +11,7 @@ import {
 import { CheckCircle2, HandHelping, Circle, Pencil, Trash2, RotateCcw } from "lucide-react";
 import EditHelpRequestForm from "./EditHelpRequestForm";
 import { formatShortDate } from "@/lib/format";
-import Dot from "@/components/Dot";
+import { useToast } from "@/components/ToastProvider";
 
 type Req = {
   id: string;
@@ -39,6 +39,21 @@ export default function HelpRequestList({
 }) {
   const [isPending, startTransition] = useTransition();
   const [editingId, setEditingId] = useState<string | null>(null);
+  const showToast = useToast();
+
+  function runAction(
+    action: () => Promise<{ error?: string } | undefined>,
+    successMessage: string
+  ) {
+    startTransition(async () => {
+      const result = await action();
+      if (result?.error) {
+        showToast(result.error, "error");
+      } else {
+        showToast(successMessage, "success");
+      }
+    });
+  }
 
   return (
     <div className="space-y-4">
@@ -51,7 +66,7 @@ export default function HelpRequestList({
             onDone={() => setEditingId(null)}
           />
         ) : (
-          <article key={r.id} className="card-raised rounded-none p-5">
+          <article key={r.id} className="card-raised rounded-lg p-5">
             <div className="mb-2 flex flex-wrap items-center gap-2 text-xs">
               <StatusBadge status={r.status} />
               {r.deptName && <span className="tag">{r.deptName}</span>}
@@ -68,9 +83,7 @@ export default function HelpRequestList({
                     disabled={isPending}
                     onClick={() => {
                       if (confirm("Delete this help request? This can't be undone.")) {
-                        startTransition(() => {
-                          deleteHelpRequestAction(r.id);
-                        });
+                        runAction(() => deleteHelpRequestAction(r.id), "Help request deleted.");
                       }
                     }}
                     aria-label="Delete"
@@ -94,7 +107,7 @@ export default function HelpRequestList({
             )}
             <div className="mt-4 flex flex-wrap items-center gap-3 border-t border-line-soft pt-3 text-xs text-ink-soft/80">
               <span className="meta">
-                Requested by {r.requestedByName ?? "someone"} <Dot /> {formatShortDate(r.createdAt)}
+                Requested by {r.requestedByName ?? "someone"} · {formatShortDate(r.createdAt)}
               </span>
               {r.claimedByName && r.status === "CLAIMED" && (
                 <span className="flex items-center gap-1 text-sage">
@@ -105,8 +118,8 @@ export default function HelpRequestList({
                 {currentUserId && r.status === "OPEN" && r.requestedById !== currentUserId && (
                   <button
                     disabled={isPending}
-                    onClick={() => startTransition(() => { claimHelpRequestAction(r.id); })}
-                    className="rounded-none bg-ink px-4 py-1.5 text-xs font-medium text-paper hover:bg-ink-soft disabled:opacity-60"
+                    onClick={() => runAction(() => claimHelpRequestAction(r.id), "You're now helping with this request.")}
+                    className="rounded-full bg-ink px-4 py-1.5 text-xs font-medium text-paper hover:bg-ink-soft disabled:opacity-60"
                   >
                     I can help
                   </button>
@@ -114,8 +127,13 @@ export default function HelpRequestList({
                 {currentUserId && r.status === "CLAIMED" && (r.claimedById === currentUserId || r.canManage) && (
                   <button
                     disabled={isPending}
-                    onClick={() => startTransition(() => { unclaimHelpRequestAction(r.id); })}
-                    className="flex items-center gap-1 rounded-none border border-line px-4 py-1.5 text-xs font-medium text-ink-soft hover:border-ink hover:text-ink disabled:opacity-60"
+                    onClick={() =>
+                      runAction(
+                        () => unclaimHelpRequestAction(r.id),
+                        r.claimedById === currentUserId ? "You've stepped back from this request." : "Request reopened."
+                      )
+                    }
+                    className="flex items-center gap-1 rounded-full border border-line px-4 py-1.5 text-xs font-medium text-ink-soft hover:border-ink hover:text-ink disabled:opacity-60"
                   >
                     <RotateCcw size={12} /> {r.claimedById === currentUserId ? "Step back" : "Reopen"}
                   </button>
@@ -123,8 +141,8 @@ export default function HelpRequestList({
                 {currentUserId && r.status !== "RESOLVED" && r.canManage && (
                   <button
                     disabled={isPending}
-                    onClick={() => startTransition(() => { resolveHelpRequestAction(r.id); })}
-                    className="rounded-none border border-line px-4 py-1.5 text-xs font-medium text-ink-soft hover:border-ink hover:text-ink disabled:opacity-60"
+                    onClick={() => runAction(() => resolveHelpRequestAction(r.id), "Marked as resolved.")}
+                    className="rounded-full border border-line px-4 py-1.5 text-xs font-medium text-ink-soft hover:border-ink hover:text-ink disabled:opacity-60"
                   >
                     Mark resolved
                   </button>
@@ -132,8 +150,8 @@ export default function HelpRequestList({
                 {currentUserId && r.status === "RESOLVED" && r.canManage && (
                   <button
                     disabled={isPending}
-                    onClick={() => startTransition(() => { reopenHelpRequestAction(r.id); })}
-                    className="flex items-center gap-1 rounded-none border border-line px-4 py-1.5 text-xs font-medium text-ink-soft hover:border-ink hover:text-ink disabled:opacity-60"
+                    onClick={() => runAction(() => reopenHelpRequestAction(r.id), "Request reopened.")}
+                    className="flex items-center gap-1 rounded-full border border-line px-4 py-1.5 text-xs font-medium text-ink-soft hover:border-ink hover:text-ink disabled:opacity-60"
                   >
                     <RotateCcw size={12} /> Reopen
                   </button>

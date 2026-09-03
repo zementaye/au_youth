@@ -1,5 +1,6 @@
 import { writeFile, mkdir } from "fs/promises";
 import path from "path";
+import sharp from "sharp";
 import { newId } from "@/lib/id";
 
 /**
@@ -21,7 +22,14 @@ const UPLOAD_DIR = process.env.UPLOAD_DIR || path.join(process.cwd(), "uploads")
 
 const ALLOWED_IMAGE_TYPES = ["image/png", "image/jpeg", "image/webp", "image/gif"];
 const ALLOWED_ATTACHMENT_TYPES = [...ALLOWED_IMAGE_TYPES, "application/pdf"];
-const MAX_BYTES = 5 * 1024 * 1024; // 5MB
+const MAX_BYTES = 5 * 1024 * 1024; // 5MB before compression
+
+// Profile photos are only ever displayed small (biggest usage is a 64px
+// avatar), so they're capped tighter than general post attachments.
+const MAX_DIMENSION: Record<"image" | "attachment", number> = {
+  image: 512,
+  attachment: 1600,
+};
 
 export function uploadDir() {
   return UPLOAD_DIR;
@@ -46,22 +54,36 @@ export async function saveUpload(
 
   await mkdir(UPLOAD_DIR, { recursive: true });
 
-  const ext = path.extname(file.name).toLowerCase() || guessExt(file.type);
-  const filename = `${newId(kind)}${ext}`;
-  const buffer = Buffer.from(await file.arrayBuffer());
-  await writeFile(path.join(/* turbopackIgnore: true */ UPLOAD_DIR, filename), buffer);
+  const originalBuffer = Buffer.from(await file.arrayBuffer());
+
+  // PDFs pass through untouched — only raster images get compressed.
+  if (file.type === "application/pdf") {
+    const filename = `${newId(kind)}.pdf`;
+    await writeFile(path.join(/* turbopackIgnore: true */ UPLOAD_DIR, filename), originalBuffer);
+    return { url: `/uploads/${filename}` };
+  }
+
+  // Resize (never upscale) and re-encode as compressed WebP. This
+  // consistently cuts a multi-MB phone photo down to well under 200KB
+  // without a visible quality loss at the sizes this app displays images.
+  let outputBuffer: Buffer;
+  try {
+    outputBuffer = await sharp(originalBuffer)
+      .rotate() // respect EXIF orientation before stripping metadata
+      .resize({
+        width: MAX_DIMENSION[kind],
+        height: MAX_DIMENSION[kind],
+        fit: "inside",
+        withoutEnlargement: true,
+      })
+      .webp({ quality: 82 })
+      .toBuffer();
+  } catch {
+    return { error: "This image couldn't be processed. Try a different file." };
+  }
+
+  const filename = `${newId(kind)}.webp`;
+  await writeFile(path.join(/* turbopackIgnore: true */ UPLOAD_DIR, filename), outputBuffer);
 
   return { url: `/uploads/${filename}` };
-}
-
-function guessExt(mime: string) {
-  return (
-    {
-      "image/png": ".png",
-      "image/jpeg": ".jpg",
-      "image/webp": ".webp",
-      "image/gif": ".gif",
-      "application/pdf": ".pdf",
-    }[mime] ?? ""
-  );
 }

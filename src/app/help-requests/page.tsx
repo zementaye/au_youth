@@ -1,9 +1,15 @@
+import type { Metadata } from "next";
 import { db } from "@/db";
 import { helpRequests, users, departments, skills, helpRequestSkills } from "@/db/schema";
 import { desc, eq } from "drizzle-orm";
 import { getCurrentUser, isDeptAdminOf } from "@/lib/auth";
 import HelpRequestComposer from "./HelpRequestComposer";
 import HelpRequestList from "./HelpRequestList";
+
+export const metadata: Metadata = {
+  title: "Help request board",
+  description: "Post a help request tagged with a skill, or offer to help with an open request.",
+};
 
 export default async function HelpRequestsPage() {
   const [user, requestRows, skillList, reqSkillRows] = await Promise.all([

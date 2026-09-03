@@ -1,9 +1,15 @@
+import type { Metadata } from "next";
 import { db } from "@/db";
 import { posts, users, departments } from "@/db/schema";
 import { desc, eq } from "drizzle-orm";
 import { getCurrentUser, canPost, isDeptAdminOf } from "@/lib/auth";
 import PostComposer from "./PostComposer";
 import PostFeed from "./PostFeed";
+
+export const metadata: Metadata = {
+  title: "Updates",
+  description: "Platform-wide and department announcements for AU interns, volunteers, and fellows.",
+};
 
 export default async function AnnouncementsPage() {
   const [user, feed, deptList] = await Promise.all([

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { getCurrentUser } from "@/lib/auth";
@@ -6,8 +7,13 @@ import { users, departments, helpRequests, userSkills, skills, auditLogs } from 
 import { eq, desc, sql, and } from "drizzle-orm";
 import { Building2, Users as UsersIcon, MessageSquare, ScrollText, ArrowRight, Mail } from "lucide-react";
 import { MembersByDeptChart, TopSkillsChart, HelpRequestStatusChart } from "./AdminCharts";
+
+export const metadata: Metadata = {
+  title: "Admin overview",
+  description: "Platform analytics and admin tools for the AU Youth Network.",
+  robots: { index: false, follow: false },
+};
 import { formatDateTime } from "@/lib/format";
-import Dot from "@/components/Dot";
 
 export default async function AdminOverviewPage() {
   const user = await getCurrentUser();
@@ -123,7 +129,7 @@ export default async function AdminOverviewPage() {
             {recentAudit.map((a) => (
               <div key={a.id} className="flex items-center justify-between px-5 py-3 text-sm">
                 <span className="text-ink-soft">
-                  <span className="text-ink">{a.actorName}</span> <Dot /> {actionLabel(a.action)}
+                  <span className="text-ink">{a.actorName}</span> · {actionLabel(a.action)}
                 </span>
                 <span className="meta text-xs text-ink-soft/60">{formatDateTime(a.createdAt)}</span>
               </div>

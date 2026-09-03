@@ -2,6 +2,7 @@
 
 import { useTransition } from "react";
 import { assignDeptAdminAction } from "@/lib/actions/admin";
+import { useToast } from "@/components/ToastProvider";
 
 type Member = { id: string; fullName: string };
 
@@ -13,10 +14,17 @@ export default function AssignAdminForm({
   members: Member[];
 }) {
   const [isPending, startTransition] = useTransition();
+  const showToast = useToast();
 
   return (
     <form
-      action={(fd) => startTransition(() => { assignDeptAdminAction(fd); })}
+      action={(fd) =>
+        startTransition(async () => {
+          const result = await assignDeptAdminAction(fd);
+          if (result?.error) showToast(result.error, "error");
+          else showToast("Department admin assigned.", "success");
+        })
+      }
       className="flex items-center gap-2"
     >
       <input type="hidden" name="departmentId" value={departmentId} />
@@ -24,7 +32,7 @@ export default function AssignAdminForm({
         name="userId"
         required
         disabled={members.length === 0}
-        className="rounded-none border border-line bg-paper px-2.5 py-1.5 text-xs text-ink-soft"
+        className="rounded-md border border-line bg-paper px-2.5 py-1.5 text-xs text-ink-soft"
         defaultValue=""
       >
         <option value="" disabled>
@@ -39,7 +47,7 @@ export default function AssignAdminForm({
       <button
         type="submit"
         disabled={isPending || members.length === 0}
-        className="rounded-none border border-line px-3 py-1.5 text-xs text-ink-soft hover:border-ink hover:text-ink disabled:opacity-60"
+        className="rounded-full border border-line px-3 py-1.5 text-xs text-ink-soft hover:border-ink hover:text-ink disabled:opacity-60"
       >
         Assign
       </button>

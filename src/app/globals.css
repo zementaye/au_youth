@@ -1,46 +1,37 @@
 @import "tailwindcss";
 
-@import "@fontsource/space-grotesk/500.css";
-@import "@fontsource/space-grotesk/600.css";
-@import "@fontsource/space-grotesk/700.css";
 @import "@fontsource/inter/400.css";
 @import "@fontsource/inter/500.css";
 @import "@fontsource/inter/600.css";
+@import "@fontsource/inter/700.css";
+@import "@fontsource/inter/800.css";
 @import "@fontsource/ibm-plex-mono/400.css";
 @import "@fontsource/ibm-plex-mono/500.css";
 
 :root {
-  /* Warm charcoal, not slate — pairs with the warm paper instead of a cool
-     corporate grey. */
-  --ink: #211d18;
-  --ink-soft: #746a5b;
+  /* Near-black slate for primary text and monochrome UI elements (nav,
+     primary buttons) — restrained, not pure black. */
+  --ink: #0f172a;
+  --ink-soft: #64748b;
 
-  /* Soft warm paper, kept short of "cream" — no serif/terracotta pairing to
-     go with it, so it doesn't read as the generic AI-portfolio default. */
-  --paper: #f7f4ee;
+  /* Neutral, cool surfaces — not warm cream, not a bold color field. */
+  --paper: #fafafa;
   --paper-raised: #ffffff;
 
-  /* Marigold — the one loud color, used sparingly: primary actions, the
-     network hub, active states. */
-  --marigold: #d98f1b;
-  --marigold-soft: #f7e7c4;
+  /* The one accent color, used sparingly: links, active nav state, small
+     highlights. A muted teal — enough identity to feel intentional
+     without dominating the interface the way a bold two-tone theme does. */
+  --gold: #0d9488;
+  --gold-soft: #ccfbf1;
 
-  /* Indigo — the network's "connection" color. Used for links and the
-     diagram's route lines, never for buttons, so it stays a distinct signal. */
-  --indigo: #33406b;
-  --indigo-soft: #dde1ec;
+  /* Semantic colors, standard SaaS conventions. */
+  --coral: #dc2626;
+  --sage: #16a34a;
 
-  /* Status colors — brick and forest instead of stock red/green, so they sit
-     comfortably in the same warm family as everything else. */
-  --brick: #a23b2e;
-  --brick-soft: #f3ded9;
-  --forest: #3f6e44;
-  --forest-soft: #dfe9df;
+  --line: #e4e4e7;
+  --line-soft: #f1f1f3;
 
-  --line: #e2dccb;
-  --line-soft: #ede9dd;
-
-  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 }
@@ -50,23 +41,10 @@
   --color-ink-soft: var(--ink-soft);
   --color-paper: var(--paper);
   --color-paper-raised: var(--paper-raised);
-
-  --color-marigold: var(--marigold);
-  --color-marigold-soft: var(--marigold-soft);
-  --color-indigo: var(--indigo);
-  --color-indigo-soft: var(--indigo-soft);
-  --color-brick: var(--brick);
-  --color-brick-soft: var(--brick-soft);
-  --color-forest: var(--forest);
-  --color-forest-soft: var(--forest-soft);
-
-  /* Back-compat aliases: lets every existing component (bg-gold, text-coral,
-     text-sage, etc.) pick up the new palette without a file-by-file rewrite. */
-  --color-gold: var(--marigold);
-  --color-gold-soft: var(--marigold-soft);
-  --color-coral: var(--brick);
-  --color-sage: var(--forest);
-
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-coral: var(--coral);
+  --color-sage: var(--sage);
   --color-line: var(--line);
   --color-line-soft: var(--line-soft);
   --font-display: var(--font-display);
@@ -91,25 +69,30 @@ body {
 
 h1, h2, h3, .font-display {
   font-family: var(--font-display);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
 }
 
+/* Explicit opt-in monospace, for genuinely tabular/code-like content
+   (audit-log timestamps, member IDs) — not used app-wide by default. */
 .font-mono {
   font-family: var(--font-mono);
 }
 
+/* Small muted meta text (eyebrows, byline/timestamp rows, footer). Plain
+   body font, not monospace — keeps the UI feeling like one calm typeface
+   instead of a mono/display/serif mix. */
 .meta {
   font-family: var(--font-body);
   color: var(--ink-soft);
 }
 
 ::selection {
-  background: var(--marigold-soft);
+  background: var(--gold-soft);
   color: var(--ink);
 }
 
 :focus-visible {
-  outline: 2px solid var(--marigold);
+  outline: 2px solid var(--gold);
   outline-offset: 2px;
 }
 
@@ -121,82 +104,20 @@ h1, h2, h3, .font-display {
   }
 }
 
-/* ---- The one orchestrated animation, used by NetworkDiagram on load and
-   by staggered feed entrances. Deliberately not used for hover states —
-   see the "Add energy" brief: motion is a single considered sequence, not
-   a hover effect on everything. All three respect prefers-reduced-motion
-   via the blanket override above (durations collapse to ~0). ---- */
-@keyframes draw-line {
-  from { stroke-dashoffset: 1; }
-  to { stroke-dashoffset: 0; }
-}
-
-/* Slight overshoot on the way in — reads as a node "settling" into its
-   spot rather than a flat fade. */
-@keyframes settle-in {
-  0% { opacity: 0; transform: scale(0.5); }
-  60% { opacity: 1; transform: scale(1.08); }
-  100% { opacity: 1; transform: scale(1); }
-}
-
-@keyframes hub-settle {
-  0% { opacity: 0; transform: scale(0.6); }
-  55% { opacity: 1; transform: scale(1.1); }
-  100% { opacity: 1; transform: scale(1); }
-}
-
-/* Used for the landing page's recent-post cards and anywhere else content
-   should arrive rather than just appear. */
-@keyframes rise-in {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* ---- "Go all-in" pass: several more, deliberately different kinds of
-   motion layered on top of the one orchestrated load-in above, rather than
-   repeating the same effect everywhere. Each one respects
-   prefers-reduced-motion via the blanket override at the top of this
-   file — infinite loops collapse to a single, near-instant frame instead
-   of animating forever. ---- */
-
-/* Continuous "data flowing outward" overlay on the diagram's spokes —
-   starts once the one-time draw-in finishes, then loops. */
-@keyframes flow-dash {
-  from { stroke-dashoffset: 0; }
-  to { stroke-dashoffset: -0.24; }
-}
-
-/* Slow float + rotate for the hero's floating accent shapes. */
-@keyframes float-shape {
-  0%, 100% { transform: translateY(0) rotate(var(--float-rot, 0deg)); }
-  50% { transform: translateY(-16px) rotate(calc(var(--float-rot, 0deg) + 8deg)); }
-}
-
-/* Infinite horizontal scroll for the department ticker. Content is
-   duplicated once in markup, so -50% is exactly one full loop. */
-@keyframes marquee-scroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-
-/* Small accent dot used before eyebrow labels and network nodes. */
+/* Small accent dot used before eyebrow labels. */
 .node-dot {
   width: 6px;
   height: 6px;
   border-radius: 999px;
-  background: var(--marigold);
+  background: var(--gold);
   flex-shrink: 0;
 }
 
-/* Structural surface: square corners, hairline border, quiet shadow.
-   Deliberately NOT rounded — roundness is reserved for tags, avatars, and
-   the notification dot, so the two read as distinct vocabulary rather than
-   one radius value slapped on everything. */
 .card-raised {
   background: var(--paper-raised);
   border: 1px solid var(--line);
-  border-radius: 2px;
-  box-shadow: 0 1px 2px rgba(33, 29, 24, 0.04), 0 1px 8px rgba(33, 29, 24, 0.03);
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 1px 6px rgba(15, 23, 42, 0.03);
 }
 
 .tag {
@@ -210,16 +131,15 @@ h1, h2, h3, .font-display {
   white-space: nowrap;
 }
 
-/* Shared form input style — one definition, used by every form. Every
-   component-level <style jsx global> re-declaration of .input has been
-   removed in favor of this. */
+/* Shared form input style — one definition, used by every form. */
 .input {
   width: 100%;
   border: 1px solid var(--line);
   background: var(--paper-raised);
-  border-radius: 2px;
+  border-radius: 8px;
   padding: 0.6rem 0.8rem;
-  font-size: 0.875rem;
+  font-size: 1rem; /* 16px minimum — anything smaller triggers iOS Safari's
+                       auto-zoom on focus, which is jarring on mobile. */
   color: var(--ink);
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
@@ -230,15 +150,6 @@ h1, h2, h3, .font-display {
 
 .input:focus {
   outline: none;
-  border-color: var(--marigold);
-  box-shadow: 0 0 0 3px var(--marigold-soft);
-}
-
-/* Footer color strip — was pointing at undefined variables before. */
-.strip {
-  display: flex;
-  height: 4px;
-}
-.strip span {
-  flex: 1;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px var(--gold-soft);
 }

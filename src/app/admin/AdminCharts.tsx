@@ -2,11 +2,11 @@
 
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, PieChart, Pie, Cell } from "recharts";
 
-const INK = "#211d18";
-const GOLD = "#d98f1b";
-const CORAL = "#a23b2e";
-const SAGE = "#3f6e44";
-const LINE = "#e2dccb";
+const INK = "#0f172a";
+const GOLD = "#0d9488";
+const CORAL = "#dc2626";
+const SAGE = "#16a34a";
+const LINE = "#e4e4e7";
 
 export function MembersByDeptChart({ data }: { data: { name: string; count: number }[] }) {
   if (data.length === 0) return <p className="text-sm text-ink-soft">No members yet.</p>;

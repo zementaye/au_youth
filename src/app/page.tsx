@@ -1,21 +1,16 @@
 import Link from "next/link";
+import type { CSSProperties } from "react";
 import { db } from "@/db";
 import { posts, users, departments, skills } from "@/db/schema";
 import { desc, eq, sql } from "drizzle-orm";
-import { ArrowRight, Pin, Megaphone, Sparkles, HandHelping, type LucideIcon } from "lucide-react";
+import { ArrowRight, Pin } from "lucide-react";
 import { formatDate } from "@/lib/format";
 import NetworkDiagram from "@/components/NetworkDiagram";
-import { deptColor } from "@/lib/deptColor";
-import CountUp from "@/components/CountUp";
-import HeroFloatingShapes from "@/components/HeroFloatingShapes";
-
-// The same four-color band from the footer's .strip, woven into a diagonal
-// repeating pattern instead of flat blocks — a nod to the interlocking
-// stripes common in African textile design. Hard color stops, not a
-// blended gradient, so it reads as a graphic pattern rather than the
-// "gradient wash as decoration" the brief ruled out.
-const KENTE_BAND =
-  "repeating-linear-gradient(135deg, var(--marigold) 0 16px, var(--indigo) 16px 32px, var(--brick) 32px 48px, var(--forest) 48px 64px)";
+import { accentFor, accentSoftFor } from "@/lib/accent";
+import PeopleBand from "@/components/PeopleBand";
+import HeroBlobs from "@/components/HeroBlobs";
+import MarqueeTicker from "@/components/MarqueeTicker";
+import FlagPanel from "@/components/FlagPanel";
 
 export default async function LandingPage() {
   const [recentPosts, deptCounts, [{ skillCount }]] = await Promise.all([
@@ -47,140 +42,120 @@ export default async function LandingPage() {
 
   return (
     <div>
-      {/* Hero — the diagram is real data, not an illustration; copy leads
-          with what the platform does for one person, not a tagline.
-          "Go all-in" pass: a kente-inspired diagonal band bookends the
-          hero (echoing the footer's existing 4-color strip), a marquee
-          ticker of live department data runs continuously, floating
-          accent shapes drift and react to the cursor, the diagram's
-          spokes keep flowing after they draw in, and the stats count up
-          instead of appearing as static digits — several different kinds
-          of motion, not one effect repeated everywhere. */}
-      <div aria-hidden className="h-2 w-full" style={{ background: KENTE_BAND }} />
-      <MarqueeTicker
-        items={[
-          ...deptCounts.map((d) => `${d.name ?? "Unassigned"} · ${d.count} members`),
-          "Post it. Get matched. Get it done.",
-        ]}
-      />
-      <section className="relative border-b border-line">
-        <HeroTexture />
-        {/* Bold offset color panel — sharp corners (matches the structural
-            shape rule), rotated slightly, bleeding off the left edge. This
-            is the "bolder background" pass: a real color shape behind the
-            copy, not a gradient wash, and not confined neatly inside the
-            hero box. */}
-        <div
-          aria-hidden
-          className="absolute -left-24 top-10 -z-10 h-72 w-[36rem] rotate-[-3deg] bg-indigo-soft opacity-70"
-        />
-        <div
-          aria-hidden
-          className="absolute -left-10 bottom-0 -z-10 h-40 w-64 rotate-[4deg] bg-marigold-soft opacity-80"
-        />
-        <HeroFloatingShapes>
-          <div className="relative z-10 mx-auto grid max-w-6xl gap-12 px-5 py-16 md:grid-cols-[1.15fr_1fr] md:items-center md:py-24">
-            <div>
-              <p className="meta mb-5 flex items-center gap-2 text-xs font-medium uppercase tracking-wide">
-                <span className="node-dot" /> AU Youth Network
-              </p>
-              <h1 className="font-display text-5xl font-semibold leading-[0.98] tracking-tight text-ink sm:text-6xl lg:text-7xl">
-                Find the person who
-                <br />
-                already knows how to
-                <br />
-                <span className="text-marigold">fix this.</span>
-              </h1>
-              <p className="mt-6 max-w-md text-base leading-relaxed text-ink-soft">
-                AU Youth Network connects interns, volunteers, and fellows across
-                every department. Post what you need help with, search the
-                directory by skill, and get matched to someone who can actually
-                help.
-              </p>
-              <div className="mt-8 flex flex-wrap items-center gap-3">
-                <Link
-                  href="/signup"
-                  className="group flex items-center gap-2 bg-ink px-5 py-2.5 text-sm font-medium text-paper transition-all hover:-translate-y-0.5 hover:bg-marigold hover:text-ink hover:shadow-lg"
-                >
-                  Create your profile
-                  <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
-                </Link>
-                <Link
-                  href="/directory"
-                  className="flex items-center gap-2 border border-line px-5 py-2.5 text-sm font-medium text-ink transition-all hover:-translate-y-0.5 hover:border-ink hover:shadow-md"
-                >
-                  See who&apos;s on the network
-                </Link>
-              </div>
-
-              <dl className="mt-12 flex flex-wrap gap-x-10 gap-y-4 border-t border-line pt-6">
-                <div>
-                  <dt className="meta text-xs">Departments</dt>
-                  <dd className="font-display text-3xl font-semibold text-marigold">
-                    <CountUp value={deptCounts.length} />
-                  </dd>
-                </div>
-                <div>
-                  <dt className="meta text-xs">Youth members</dt>
-                  <dd className="font-display text-3xl font-semibold text-indigo">
-                    <CountUp value={memberCount} />
-                  </dd>
-                </div>
-                <div>
-                  <dt className="meta text-xs">Listed skills</dt>
-                  <dd className="font-display text-3xl font-semibold text-brick">
-                    <CountUp value={skillCount} />
-                  </dd>
-                </div>
-              </dl>
-            </div>
-
-            {/* Sized past its old max-w-md and nudged down on larger screens
-                so it visually crosses the section's own border-b instead of
-                sitting neatly inside the hero box — the one deliberate break
-                from the strict grid. translate is purely visual (no reflow),
-                so it can't disturb the "How it works" section below it. */}
-            <div className="relative mx-auto w-full max-w-lg md:translate-y-10 lg:translate-y-14">
-              <div
-                aria-hidden
-                className="absolute inset-8 -z-10 rounded-full opacity-60 blur-3xl"
-                style={{ background: "radial-gradient(circle, var(--marigold-soft) 0%, transparent 68%)" }}
-              />
-              <NetworkDiagram
-                departments={deptCounts.map((d) => ({ name: d.name ?? "Unassigned", count: Number(d.count) }))}
-              />
-            </div>
+      {/* Hero — oversized, run-together headline and a drifting field of
+          color blobs instead of a quiet data-panel hero. The network stats
+          still lead with real numbers, just louder about it. */}
+      <section className="relative overflow-hidden bg-brand-soft">
+        <HeroBlobs />
+        <div className="relative z-10 mx-auto max-w-5xl px-5 pb-14 pt-20 text-center sm:pt-28">
+          <p className="animate-rise mb-4 font-display text-xs font-semibold uppercase tracking-[0.2em] text-brand-dark">
+            African Union · Youth Network
+          </p>
+          <h1 className="animate-rise display-huge text-[15vw] text-ink sm:text-[6.5rem]" style={{ "--delay": "80ms" } as CSSProperties}>
+            <span className="block">Find</span>
+            <span className="block text-brand">Your</span>
+            <span className="block text-marigold">People.</span>
+          </h1>
+          <p
+            className="animate-rise mx-auto mt-6 max-w-lg text-base leading-relaxed text-ink-soft sm:text-lg"
+            style={{ "--delay": "160ms" } as CSSProperties}
+          >
+            Every intern, volunteer, and fellow across the African Union — searchable
+            by skill, posting updates, asking for and giving help. Not a directory.
+            A network.
+          </p>
+          <div
+            className="animate-rise mt-9 flex flex-wrap items-center justify-center gap-3"
+            style={{ "--delay": "220ms" } as CSSProperties}
+          >
+            <Link
+              href="/signup"
+              className="flex items-center gap-2 bg-ink px-7 py-3.5 text-sm font-semibold uppercase tracking-wide text-paper transition-colors hover:bg-brand"
+            >
+              Join the network <ArrowRight size={16} />
+            </Link>
+            <Link
+              href="/directory"
+              className="flex items-center gap-2 bg-marigold px-7 py-3.5 text-sm font-semibold uppercase tracking-wide text-ink transition-opacity hover:opacity-90"
+            >
+              See who&apos;s in it
+            </Link>
           </div>
-        </HeroFloatingShapes>
+
+          <dl
+            className="animate-rise mx-auto mt-14 flex max-w-md flex-wrap justify-center gap-x-12 gap-y-4"
+            style={{ "--delay": "280ms" } as CSSProperties}
+          >
+            <div>
+              <dt className="meta text-xs">Departments</dt>
+              <dd className="font-display text-3xl font-bold text-ink">{deptCounts.length}</dd>
+            </div>
+            <div>
+              <dt className="meta text-xs">Youth members</dt>
+              <dd className="font-display text-3xl font-bold text-ink">{memberCount}</dd>
+            </div>
+            <div>
+              <dt className="meta text-xs">Listed skills</dt>
+              <dd className="font-display text-3xl font-bold text-ink">{skillCount}</dd>
+            </div>
+          </dl>
+        </div>
       </section>
 
-      <div aria-hidden className="h-1.5 w-full" style={{ background: KENTE_BAND }} />
+      <MarqueeTicker background="var(--ink)" color="var(--paper)" />
+      <FlagPanel labels={deptCounts.slice(0, 8).map((d) => d.name ?? "")} />
+
+      {/* Abstract community illustration — not stock photography (a real
+          identifiable person can't be sourced or licensed sight-unseen for
+          this), but flat-color figures in the site's own visual language,
+          standing in for the people the diagram counts. */}
+      <section className="border-b border-line bg-paper-raised py-14">
+        <div className="mx-auto max-w-5xl px-5">
+          <p className="mb-8 text-center font-display text-2xl font-bold text-ink sm:text-3xl">
+            One network. Every department.
+          </p>
+          <PeopleBand />
+        </div>
+      </section>
 
       {/* What happens on each part of the platform, told through the
           actions a member takes rather than abstract feature names. */}
       <section className="mx-auto max-w-5xl px-5 py-16">
-        <div className="grid gap-6 sm:grid-cols-3">
+        <div className="grid gap-10 sm:grid-cols-3">
           <HowItWorks
             step="Post an update"
             body="Share news with your whole department, or the entire network. Pinned updates stay at the top of the feed."
-            icon={Megaphone}
-            color="marigold"
-            index={1}
+            color="var(--marigold)"
+            delay={0}
           />
           <HowItWorks
             step="List your skills"
             body="Add what you're good at to your profile. Anyone searching the directory for that skill finds you."
-            icon={Sparkles}
-            color="indigo"
-            index={2}
+            color="var(--emerald)"
+            delay={90}
           />
           <HowItWorks
             step="Ask for help"
             body="Tag a request with the skill you need. Everyone who has it gets notified automatically."
-            icon={HandHelping}
-            color="brick"
-            index={3}
+            color="var(--royal)"
+            delay={180}
           />
+        </div>
+      </section>
+
+      {/* The network diagram gets its own dedicated moment instead of
+          sharing the hero — real department/member data, drawn in live. */}
+      <section className="border-t border-line bg-ink py-16">
+        <div className="mx-auto max-w-3xl px-5 text-center">
+          <p className="font-display text-2xl font-bold text-paper sm:text-3xl">See the network</p>
+          <p className="mx-auto mt-2 max-w-md text-sm text-paper/60">
+            Every department, sized by how many members it has right now.
+          </p>
+          <div className="mx-auto mt-8 w-full max-w-md">
+            <NetworkDiagram
+              departments={deptCounts.map((d) => ({ name: d.name ?? "Unassigned", count: Number(d.count) }))}
+            />
+          </div>
         </div>
       </section>
 
@@ -188,126 +163,58 @@ export default async function LandingPage() {
       <section className="mx-auto max-w-6xl px-5 py-14">
         <div className="mb-6 flex items-baseline justify-between">
           <h2 className="font-display text-2xl font-semibold text-ink">Latest updates</h2>
-          <Link
-            href="/announcements"
-            className="group flex items-center gap-1 text-sm text-ink-soft transition-colors hover:text-ink"
-          >
-            View all <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+          <Link href="/announcements" className="flex items-center gap-1 text-sm text-ink-soft hover:text-ink">
+            View all <ArrowRight size={14} />
           </Link>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
-          {recentPosts.map((p, i) => {
-            const color = deptColor(p.deptName);
-            return (
-              <Link
-                key={p.id}
-                href="/announcements"
-                className={`card-raised group flex flex-col gap-2.5 border-l-4 p-5 transition-all hover:-translate-y-1 hover:rotate-[-0.3deg] hover:shadow-lg ${color.edge}`}
-                style={{ animation: `rise-in 520ms cubic-bezier(0.16, 1, 0.3, 1) ${150 + i * 90}ms both` }}
-              >
-                <div className="flex items-center gap-2 text-xs text-ink-soft">
-                  {p.pinned && <Pin size={12} className="text-brick" />}
-                  <span className={`tag ${color.chip}`}>{p.deptName ?? "Platform-wide"}</span>
-                </div>
-                <h3 className="font-display text-lg font-semibold leading-snug text-ink group-hover:underline">
-                  {p.title}
-                </h3>
-                <p className="line-clamp-2 text-sm text-ink-soft">{p.body}</p>
-                <p className="meta mt-auto pt-2 text-xs">
-                  {p.authorName} — {formatDate(p.createdAt)}
-                </p>
-              </Link>
-            );
-          })}
+          {recentPosts.map((p, i) => (
+            <Link
+              key={p.id}
+              href="/announcements"
+              className="card-raised animate-rise group flex flex-col gap-2.5 border-l-[3px] p-5 transition-shadow hover:shadow-md"
+              style={{ "--delay": `${i * 60}ms`, borderLeftColor: accentFor(p.deptName) } as CSSProperties}
+            >
+              <div className="flex items-center gap-2 text-xs text-ink-soft">
+                {p.pinned && <Pin size={12} className="text-brick" />}
+                <span
+                  className="tag"
+                  style={{ background: accentSoftFor(p.deptName), color: "var(--ink)" }}
+                >
+                  {p.deptName ?? "Platform-wide"}
+                </span>
+              </div>
+              <h3 className="font-display text-lg font-semibold leading-snug text-ink group-hover:underline">
+                {p.title}
+              </h3>
+              <p className="line-clamp-2 text-sm text-ink-soft">{p.body}</p>
+              <p className="meta mt-auto pt-2 text-xs">
+                {p.authorName} — {formatDate(p.createdAt)}
+              </p>
+            </Link>
+          ))}
           {recentPosts.length === 0 && (
             <p className="text-sm text-ink-soft">
-              Quiet in here so far — be the first to post something the network should know.
+              Quiet so far — be the first to post something the network should know.
             </p>
           )}
         </div>
+      </section>
+
+      {/* Closing statement — a bold, single line before the footer, the way
+          a movement site closes on conviction rather than more links. */}
+      <section className="bg-marigold py-14 text-center">
+        <p className="display-huge text-3xl text-ink sm:text-4xl">The network doesn&apos;t wait.</p>
       </section>
     </div>
   );
 }
 
-// Continuously scrolling strip of live department data — real names and
-// member counts pulled from the same query as everything else on this
-// page, not invented copy. Content is duplicated once so the -50%
-// translateX loop is seamless. Decorative/duplicated, so it's hidden from
-// assistive tech; the same numbers are available (once, properly labeled)
-// in the stats and diagram below.
-function MarqueeTicker({ items }: { items: string[] }) {
-  const loop = [...items, ...items];
+function HowItWorks({ step, body, color, delay }: { step: string; body: string; color: string; delay: number }) {
   return (
-    <div aria-hidden className="overflow-hidden border-b border-line bg-ink">
-      <div className="flex w-max items-center gap-10 py-2" style={{ animation: "marquee-scroll 26s linear infinite" }}>
-        {loop.map((t, i) => (
-          <span key={i} className="whitespace-nowrap font-mono text-xs uppercase tracking-wide text-marigold">
-            {t}
-          </span>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function HeroTexture() {
-  // Faint tiled route lines across the entire hero background — the same
-  // "connection" idea as NetworkDiagram's spokes, just ambient rather than
-  // literal data. Kept to low opacity so body text stays fully legible;
-  // not meant to be looked at directly, just felt.
-  return (
-    <svg
-      aria-hidden
-      className="pointer-events-none absolute inset-0 h-full w-full"
-      preserveAspectRatio="none"
-    >
-      <defs>
-        <pattern id="hero-routes" width="76" height="76" patternUnits="userSpaceOnUse" patternTransform="rotate(6)">
-          <circle cx="6" cy="6" r="1.6" fill="var(--indigo)" opacity="0.3" />
-          <path d="M6 6 L68 6" stroke="var(--indigo)" strokeWidth="1" opacity="0.12" />
-          <path d="M6 6 L6 68" stroke="var(--indigo)" strokeWidth="1" opacity="0.12" />
-        </pattern>
-      </defs>
-      <rect width="100%" height="100%" fill="url(#hero-routes)" />
-    </svg>
-  );
-}
-
-const HOW_IT_WORKS_COLORS = {
-  marigold: { chip: "bg-marigold text-ink", edge: "border-l-marigold", num: "text-marigold" },
-  indigo: { chip: "bg-indigo text-paper", edge: "border-l-indigo", num: "text-indigo" },
-  brick: { chip: "bg-brick text-paper", edge: "border-l-brick", num: "text-brick" },
-} as const;
-
-function HowItWorks({
-  step,
-  body,
-  icon: Icon,
-  color,
-  index,
-}: {
-  step: string;
-  body: string;
-  icon: LucideIcon;
-  color: "marigold" | "indigo" | "brick";
-  index: number;
-}) {
-  const c = HOW_IT_WORKS_COLORS[color];
-  return (
-    <div
-      className={`card-raised group flex flex-col gap-3 border-l-4 p-5 transition-all hover:-translate-y-1 hover:shadow-lg ${c.edge}`}
-    >
-      <div className="flex items-center justify-between">
-        <span className={`flex h-9 w-9 items-center justify-center rounded-full ${c.chip}`}>
-          <Icon size={16} />
-        </span>
-        <span className={`font-mono text-xs font-medium ${c.num}`}>0{index}</span>
-      </div>
-      <div>
-        <h3 className="font-display text-base font-semibold text-ink">{step}</h3>
-        <p className="mt-1.5 text-sm leading-relaxed text-ink-soft">{body}</p>
-      </div>
+    <div className="animate-rise border-l-2 pl-4" style={{ "--delay": `${delay}ms`, borderLeftColor: color } as CSSProperties}>
+      <h3 className="font-display text-base font-semibold text-ink">{step}</h3>
+      <p className="mt-1.5 text-sm leading-relaxed text-ink-soft">{body}</p>
     </div>
   );
 }
