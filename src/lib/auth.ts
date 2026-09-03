@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
+import { cache } from "react";
 import { db } from "@/db";
 import { users, departments } from "@/db/schema";
 import { eq } from "drizzle-orm";
@@ -44,7 +45,7 @@ export async function clearSessionCookie() {
   store.delete(SESSION_COOKIE);
 }
 
-export async function getCurrentUser() {
+export const getCurrentUser = cache(async () => {
   const store = await cookies();
   const token = store.get(SESSION_COOKIE)?.value;
   if (!token) return null;
@@ -82,6 +83,6 @@ export async function getCurrentUser() {
   } catch {
     return null;
   }
-}
+});
 
 export type CurrentUser = NonNullable<Awaited<ReturnType<typeof getCurrentUser>>>;
