@@ -118,6 +118,29 @@ export default async function LandingPage() {
         </div>
       </section>
 
+      {/* Real photo band — freely-licensed (Unsplash License: free for
+          commercial use, no attribution required), a group of Black
+          professionals in an office setting, not a named/identifiable
+          public figure. An ink-tinted gradient keeps the headline readable
+          over the image. */}
+      <section
+        className="relative overflow-hidden bg-ink bg-cover bg-center py-24"
+        style={{
+          backgroundImage:
+            "linear-gradient(180deg, rgba(20,23,26,0.55) 0%, rgba(20,23,26,0.85) 100%), url('https://images.unsplash.com/photo-1573164574511-73c773193279?auto=format&fit=crop&w=1600&q=80')",
+        }}
+      >
+        <div className="relative z-10 mx-auto max-w-3xl px-5 text-center">
+          <p className="font-display text-2xl font-bold text-paper sm:text-3xl">
+            Built by the people it&apos;s for.
+          </p>
+          <p className="mx-auto mt-3 max-w-md text-sm text-paper/70">
+            Interns, volunteers, and fellows across every AU department — this is
+            their network.
+          </p>
+        </div>
+      </section>
+
       {/* What happens on each part of the platform, told through the
           actions a member takes rather than abstract feature names. */}
       <section className="mx-auto max-w-5xl px-5 py-16">
