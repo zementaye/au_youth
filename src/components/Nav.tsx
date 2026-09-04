@@ -21,9 +21,9 @@ export default async function Nav() {
   const isAdmin = user && (user.systemRole === "SUPER_ADMIN" || user.systemRole === "DEPT_ADMIN");
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-paper-raised/90 backdrop-blur">
+    <header className="material sticky top-0 z-40 border-b border-transparent bg-paper-raised/80 shadow-[0_1px_16px_-6px_rgba(23,20,15,0.25)] backdrop-blur-xl backdrop-saturate-150">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3">
-        <Link href="/" className="flex items-center gap-2.5">
+        <Link href="/" className="tap flex items-center gap-2.5">
           <span className="flex h-7 w-7 items-center justify-center bg-ink text-[11px] font-bold text-paper">
             AU
           </span>
@@ -37,7 +37,7 @@ export default async function Nav() {
             <Link
               key={l.href}
               href={l.href}
-              className="group flex items-center gap-1.5 py-1.5 text-sm text-ink-soft transition-colors hover:text-ink"
+              className="tap group flex items-center gap-1.5 py-1.5 text-sm text-ink-soft hover:text-ink"
             >
               {l.label}
               <span className="block h-[2px] w-0 bg-marigold transition-all duration-200 group-hover:w-full" />
@@ -46,7 +46,7 @@ export default async function Nav() {
           {isAdmin && (
             <Link
               href="/admin"
-              className="group flex items-center gap-1.5 py-1.5 text-sm text-ink-soft transition-colors hover:text-ink"
+              className="tap group flex items-center gap-1.5 py-1.5 text-sm text-ink-soft hover:text-ink"
             >
               Admin
               <span className="block h-[2px] w-0 bg-marigold transition-all duration-200 group-hover:w-full" />
@@ -61,7 +61,7 @@ export default async function Nav() {
               <>
                 <Link
                   href="/dashboard"
-                  className="flex items-center gap-1.5 text-sm text-ink-soft transition-colors hover:text-ink"
+                  className="tap flex items-center gap-1.5 text-sm text-ink-soft hover:text-ink"
                 >
                   {user.profilePhotoUrl ? (
                     // eslint-disable-next-line @next/next/no-img-element
@@ -74,7 +74,7 @@ export default async function Nav() {
                 <form action={logoutAction}>
                   <button
                     type="submit"
-                    className="flex items-center gap-1.5 border border-line px-3 py-1.5 text-sm text-ink-soft transition-colors hover:border-ink hover:text-ink"
+                    className="tap flex items-center gap-1.5 border border-line px-3 py-1.5 text-sm text-ink-soft hover:border-ink hover:text-ink"
                   >
                     <LogOut size={14} strokeWidth={1.75} />
                     Sign out
@@ -85,13 +85,13 @@ export default async function Nav() {
               <>
                 <Link
                   href="/login"
-                  className="px-1 py-1.5 text-sm text-ink-soft transition-colors hover:text-ink"
+                  className="tap px-1 py-1.5 text-sm text-ink-soft hover:text-ink"
                 >
                   Sign in
                 </Link>
                 <Link
                   href="/signup"
-                  className="bg-ink px-4 py-1.5 text-sm font-medium text-paper transition-colors hover:bg-brand"
+                  className="tap bg-ink px-4 py-1.5 text-sm font-medium text-paper hover:bg-brand"
                 >
                   Join the network
                 </Link>

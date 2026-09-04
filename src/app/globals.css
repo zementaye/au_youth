@@ -59,6 +59,12 @@
   --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
   --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  /* Apple's "Designing Fluid Interfaces" ease-out curve — used for anything
+     that materializes (sheets, dropdowns, press feedback) instead of a
+     generic linear/ease transition. Already used inline for animate-rise;
+     exposed here so other components share the same feel. */
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @theme inline {
@@ -129,6 +135,7 @@ h1, h2, h3, .font-display {
 .meta {
   font-family: var(--font-body);
   color: var(--ink-soft);
+  letter-spacing: 0.005em;
 }
 
 ::selection {
@@ -147,6 +154,46 @@ h1, h2, h3, .font-display {
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
   }
+}
+
+/* Frostier / near-solid translucent surfaces when the OS asks for less
+   transparency, and a defined border under high-contrast mode — both per
+   the reduced-motion/transparency/contrast guidance in the design brief. */
+@media (prefers-reduced-transparency: reduce) {
+  .material {
+    background: var(--paper-raised) !important;
+    backdrop-filter: none !important;
+  }
+}
+@media (prefers-contrast: more) {
+  .material {
+    border-color: var(--ink) !important;
+  }
+}
+
+/* Respond on press, not on release — instant feedback using the spring
+   curve rather than a default linear ease. */
+.tap {
+  transition: transform 120ms var(--ease-spring), background-color 150ms var(--ease-spring),
+    border-color 150ms var(--ease-spring), color 150ms var(--ease-spring), opacity 150ms var(--ease-spring);
+}
+.tap:active {
+  transform: scale(0.97);
+}
+
+/* A surface that "materializes" (mobile menu, notification dropdown)
+   rather than just fading — blur and scale animate together so it reads
+   as a physical sheet arriving, not a flat opacity cross-fade. Anchor
+   transform-origin at each call site to the element that triggered it. */
+@keyframes materialize {
+  from { opacity: 0; transform: scale(0.96) translateY(-4px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+.animate-materialize {
+  animation: materialize 220ms var(--ease-spring) forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-materialize { animation: rise-in 0.2s ease forwards; }
 }
 
 /* Small accent dot used before eyebrow labels and network nodes. */

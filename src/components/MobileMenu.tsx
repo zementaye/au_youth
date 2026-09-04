@@ -46,11 +46,17 @@ export default function MobileMenu({
     };
   }, [open]);
 
-  const overlay = open && (
-    <div className="fixed inset-0 z-50 flex flex-col bg-paper">
-      <div className="flex items-center justify-between border-b border-line px-5 py-3">
-        <Link href="/" className="flex items-center gap-2" onClick={() => setOpen(false)}>
-          <span className="flex h-6 w-6 items-center justify-center rounded-md bg-ink text-[11px] font-bold text-paper">
+  const overlay = (
+    <div
+      className={`material fixed inset-0 z-50 flex flex-col bg-paper/97 backdrop-blur-xl transition-opacity duration-200 ${
+        open ? "animate-materialize opacity-100" : "pointer-events-none opacity-0"
+      }`}
+      style={{ transformOrigin: "top right" }}
+      aria-hidden={!open}
+    >
+      <div className="flex items-center justify-between border-b border-line-soft px-5 py-3">
+        <Link href="/" className="tap flex items-center gap-2" onClick={() => setOpen(false)}>
+          <span className="flex h-6 w-6 items-center justify-center bg-ink text-[11px] font-bold text-paper">
             AU
           </span>
           <span className="font-display text-[15px] font-semibold text-ink">Youth Network</span>
@@ -59,7 +65,7 @@ export default function MobileMenu({
           type="button"
           onClick={() => setOpen(false)}
           aria-label="Close menu"
-          className="flex h-10 w-10 items-center justify-center rounded-md text-ink-soft hover:bg-line-soft hover:text-ink"
+          className="tap flex h-10 w-10 items-center justify-center text-ink-soft hover:bg-line-soft hover:text-ink"
         >
           <X size={22} />
         </button>
@@ -72,7 +78,7 @@ export default function MobileMenu({
             <Link
               key={l.href}
               href={l.href}
-              className="flex items-center gap-3 rounded-md px-4 py-3.5 text-base text-ink transition-colors hover:bg-line-soft"
+              className="tap flex items-center gap-3 px-4 py-3.5 text-base text-ink hover:bg-line-soft"
             >
               <Icon size={19} strokeWidth={1.75} />
               {l.label}
@@ -82,7 +88,7 @@ export default function MobileMenu({
         {isAdmin && (
           <Link
             href="/admin"
-            className="flex items-center gap-3 rounded-md px-4 py-3.5 text-base text-ink transition-colors hover:bg-line-soft"
+            className="tap flex items-center gap-3 px-4 py-3.5 text-base text-ink hover:bg-line-soft"
           >
             <ShieldCheck size={19} strokeWidth={1.75} />
             Admin
@@ -95,7 +101,7 @@ export default function MobileMenu({
           <>
             <Link
               href="/dashboard"
-              className="flex items-center gap-3 rounded-md px-4 py-3.5 text-base text-ink transition-colors hover:bg-line-soft"
+              className="tap flex items-center gap-3 px-4 py-3.5 text-base text-ink hover:bg-line-soft"
             >
               {profilePhotoUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
@@ -108,7 +114,7 @@ export default function MobileMenu({
             <form action={logoutAction}>
               <button
                 type="submit"
-                className="flex w-full items-center gap-3 rounded-md px-4 py-3.5 text-left text-base text-ink-soft transition-colors hover:bg-line-soft hover:text-ink"
+                className="tap flex w-full items-center gap-3 px-4 py-3.5 text-left text-base text-ink-soft hover:bg-line-soft hover:text-ink"
               >
                 <LogOut size={19} strokeWidth={1.75} />
                 Sign out
@@ -119,13 +125,13 @@ export default function MobileMenu({
           <>
             <Link
               href="/login"
-              className="flex items-center gap-3 rounded-md px-4 py-3.5 text-base text-ink transition-colors hover:bg-line-soft"
+              className="tap flex items-center gap-3 px-4 py-3.5 text-base text-ink hover:bg-line-soft"
             >
               Sign in
             </Link>
             <Link
               href="/signup"
-              className="mt-2 flex items-center justify-center gap-2 rounded-md bg-ink px-4 py-3.5 text-base font-medium text-paper"
+              className="tap mt-2 flex items-center justify-center gap-2 bg-ink px-4 py-3.5 text-base font-medium text-paper"
             >
               Join the network
             </Link>
@@ -142,7 +148,7 @@ export default function MobileMenu({
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? "Close menu" : "Open menu"}
         aria-expanded={open}
-        className="flex h-10 w-10 items-center justify-center rounded-md text-ink-soft transition-colors hover:bg-line-soft hover:text-ink"
+        className="tap flex h-10 w-10 items-center justify-center text-ink-soft hover:bg-line-soft hover:text-ink"
       >
         {open ? <X size={22} /> : <Menu size={22} />}
       </button>
@@ -152,8 +158,10 @@ export default function MobileMenu({
           containing block for descendants — that silently breaks
           `position: fixed` for anything nested inside it, anchoring it to
           the header's own box instead of the viewport. Portaling out of
-          the header's DOM subtree sidesteps that entirely. */}
-      {mounted && overlay && createPortal(overlay, document.body)}
+          the header's DOM subtree sidesteps that entirely. Always mounted
+          (once) rather than conditionally rendered, so both the entrance
+          and the exit can transition instead of hard-cutting on close. */}
+      {mounted && createPortal(overlay, document.body)}
     </div>
   );
 }

@@ -51,7 +51,7 @@ export default function NotificationBell({
       <button
         onClick={handleOpen}
         aria-label="Notifications"
-        className="relative flex h-8 w-8 items-center justify-center rounded-md text-ink-soft transition-colors hover:bg-line-soft hover:text-ink"
+        className="tap relative flex h-8 w-8 items-center justify-center text-ink-soft hover:bg-line-soft hover:text-ink"
       >
         <Bell size={17} strokeWidth={1.75} />
         {unreadCount > 0 && (
@@ -64,11 +64,14 @@ export default function NotificationBell({
       {open && (
         <>
           <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
-          <div className="card-raised absolute right-0 z-50 mt-2 w-80 rounded-lg p-2">
+          <div
+            className="material animate-materialize card-raised absolute right-0 z-50 mt-2 w-80 bg-paper-raised/95 p-2 backdrop-blur-xl"
+            style={{ transformOrigin: "top right" }}
+          >
             <div className="flex items-center justify-between px-2 py-1.5">
               <p className="text-xs font-medium uppercase tracking-wide text-ink-soft/70">Notifications</p>
               {items.length > 0 && (
-                <button onClick={handleMarkAll} className="text-xs text-ink-soft underline hover:text-ink">
+                <button onClick={handleMarkAll} className="tap text-xs text-ink-soft underline hover:text-ink">
                   Mark all read
                 </button>
               )}
@@ -79,7 +82,7 @@ export default function NotificationBell({
                   key={n.id}
                   href={n.link ?? "#"}
                   onClick={() => handleItemClick(n.id)}
-                  className={`block rounded-md px-2 py-2 text-sm transition-colors hover:bg-paper ${
+                  className={`tap block px-2 py-2 text-sm hover:bg-paper ${
                     n.isRead ? "text-ink-soft" : "text-ink"
                   }`}
                 >
