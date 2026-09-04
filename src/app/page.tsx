@@ -9,6 +9,8 @@ import NetworkDiagram from "@/components/NetworkDiagram";
 import { accentFor } from "@/lib/accent";
 import PeopleBand from "@/components/PeopleBand";
 import HeroBlobs from "@/components/HeroBlobs";
+import HeroFloatingShapes from "@/components/HeroFloatingShapes";
+import CountUp from "@/components/CountUp";
 import MarqueeTicker from "@/components/MarqueeTicker";
 import FlagPanel from "@/components/FlagPanel";
 
@@ -47,6 +49,7 @@ export default async function LandingPage() {
           still lead with real numbers, just louder about it. */}
       <section className="relative overflow-hidden bg-brand-soft">
         <HeroBlobs />
+        <HeroFloatingShapes>
         <div className="relative z-10 mx-auto max-w-5xl px-5 pb-14 pt-20 text-center sm:pt-28">
           <p className="animate-rise mb-4 font-display text-xs font-semibold uppercase tracking-[0.2em] text-brand-dark">
             African Union · Youth Network
@@ -70,13 +73,13 @@ export default async function LandingPage() {
           >
             <Link
               href="/signup"
-              className="flex items-center gap-2 bg-ink px-7 py-3.5 text-sm font-semibold uppercase tracking-wide text-paper transition-colors hover:bg-brand"
+              className="tap flex items-center gap-2 bg-ink px-7 py-3.5 text-sm font-semibold uppercase tracking-wide text-paper hover:bg-brand"
             >
               Join the network <ArrowRight size={16} />
             </Link>
             <Link
               href="/directory"
-              className="flex items-center gap-2 bg-marigold px-7 py-3.5 text-sm font-semibold uppercase tracking-wide text-ink transition-opacity hover:opacity-90"
+              className="tap flex items-center gap-2 bg-marigold px-7 py-3.5 text-sm font-semibold uppercase tracking-wide text-ink hover:opacity-90"
             >
               See who&apos;s in it
             </Link>
@@ -88,18 +91,25 @@ export default async function LandingPage() {
           >
             <div>
               <dt className="meta text-xs">Departments</dt>
-              <dd className="font-display text-3xl font-bold text-ink">{deptCounts.length}</dd>
+              <dd className="font-display text-3xl font-bold text-ink">
+                <CountUp value={deptCounts.length} />
+              </dd>
             </div>
             <div>
               <dt className="meta text-xs">Youth members</dt>
-              <dd className="font-display text-3xl font-bold text-ink">{memberCount}</dd>
+              <dd className="font-display text-3xl font-bold text-ink">
+                <CountUp value={memberCount} />
+              </dd>
             </div>
             <div>
               <dt className="meta text-xs">Listed skills</dt>
-              <dd className="font-display text-3xl font-bold text-ink">{skillCount}</dd>
+              <dd className="font-display text-3xl font-bold text-ink">
+                <CountUp value={skillCount} />
+              </dd>
             </div>
           </dl>
         </div>
+        </HeroFloatingShapes>
       </section>
 
       <MarqueeTicker background="var(--ink)" color="var(--paper)" />
@@ -252,9 +262,19 @@ export default async function LandingPage() {
       </section>
 
       {/* Closing statement — a bold, single line before the footer, the way
-          a movement site closes on conviction rather than more links. */}
-      <section className="bg-marigold py-14 text-center">
-        <p className="display-huge text-3xl text-ink sm:text-4xl">The network doesn&apos;t wait.</p>
+          a movement site closes on conviction rather than more links. A
+          slow-moving multi-hue sweep (the site's own accent colors, not a
+          generic rainbow) instead of a flat fill — the one place on the
+          page that gets an ongoing color animation, kept to this single
+          moment rather than scattered everywhere. */}
+      <section
+        className="animate-gradient-sweep py-14 text-center"
+        style={{
+          backgroundImage:
+            "linear-gradient(120deg, var(--marigold) 0%, var(--terracotta) 20%, var(--brick) 40%, var(--royal) 60%, var(--brand) 80%, var(--marigold) 100%)",
+        }}
+      >
+        <p className="display-huge text-3xl text-paper drop-shadow-sm sm:text-4xl">The network doesn&apos;t wait.</p>
       </section>
     </div>
   );

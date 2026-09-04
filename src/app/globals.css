@@ -307,6 +307,15 @@ h1, h2, h3, .font-display {
   line-height: 0.95;
 }
 
+@keyframes gradient-sweep {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+.animate-gradient-sweep {
+  background-size: 300% 100%;
+  animation: gradient-sweep 8s linear infinite;
+}
+
 /* The network diagram's own signature motion: lines draw outward from the
    hub (draw-line), each spoke then loops a marigold "flow" pulse forever
    (flow-dash), nodes settle in with a slight overshoot (settle-in), and the
