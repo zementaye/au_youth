@@ -176,12 +176,13 @@ h1, h2, h3, .font-display {
   white-space: nowrap;
 }
 
-/* Shared form input style — one definition, used by every form. */
+/* Shared form input style — one definition, used by every form. Radius
+   matches .card-raised's 2px, not the generic 8px "SaaS form" default. */
 .input {
   width: 100%;
   border: 1px solid var(--line);
   background: var(--paper-raised);
-  border-radius: 8px;
+  border-radius: 2px;
   padding: 0.6rem 0.8rem;
   font-size: 1rem; /* 16px minimum — avoids iOS Safari's auto-zoom on focus */
   color: var(--ink);

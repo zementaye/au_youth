@@ -41,14 +41,14 @@ export default function HandoffAdminForm({ candidates }: { candidates: Candidate
           router.push("/dashboard");
         });
       }}
-      className="card-raised flex flex-wrap items-center gap-3 rounded-lg p-4"
+      className="card-raised flex flex-wrap items-center gap-3 p-4"
     >
       <UserCog size={16} className="text-ink-soft" />
       <p className="text-sm text-ink">Hand your department admin role to:</p>
       <select
         name="userId"
         required
-        className="rounded-md border border-line bg-paper px-2.5 py-1.5 text-sm text-ink-soft"
+        className=" border border-line bg-paper px-2.5 py-1.5 text-sm text-ink-soft"
         defaultValue=""
       >
         <option value="" disabled>

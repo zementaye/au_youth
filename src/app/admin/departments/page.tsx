@@ -46,7 +46,7 @@ export default async function AdminDepartmentsPage() {
 
       <div className="mt-10 space-y-4">
         {deptRows.map((d) => (
-          <div key={d.id} className="card-raised rounded-lg p-5">
+          <div key={d.id} className="card-raised p-5">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
                 <p className="font-display text-lg font-medium text-ink">{d.name}</p>

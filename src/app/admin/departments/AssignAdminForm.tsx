@@ -32,7 +32,7 @@ export default function AssignAdminForm({
         name="userId"
         required
         disabled={members.length === 0}
-        className="rounded-md border border-line bg-paper px-2.5 py-1.5 text-xs text-ink-soft"
+        className=" border border-line bg-paper px-2.5 py-1.5 text-xs text-ink-soft"
         defaultValue=""
       >
         <option value="" disabled>

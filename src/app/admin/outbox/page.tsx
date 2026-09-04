@@ -37,7 +37,7 @@ export default async function DevOutboxPage() {
 
       <div className="mt-8 space-y-3">
         {emails.map((e) => (
-          <div key={e.id} className="card-raised rounded-lg p-4">
+          <div key={e.id} className="card-raised p-4">
             <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-ink-soft">
               <span>
                 To: <a href={`mailto:${e.toEmail}`} className="underline hover:text-ink">{e.toEmail}</a>

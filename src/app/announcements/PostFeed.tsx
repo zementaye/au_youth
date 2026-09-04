@@ -35,7 +35,7 @@ export default function PostFeed({ posts, canPin }: { posts: Post[]; canPin: boo
         editingId === p.id ? (
           <EditPostForm key={p.id} post={p} canPin={canPin} onDone={() => setEditingId(null)} />
         ) : (
-          <article key={p.id} className="card-raised rounded-lg p-5">
+          <article key={p.id} className="card-raised p-5">
             <div className="mb-2 flex flex-wrap items-center gap-2 text-xs text-ink-soft">
               {p.pinned && (
                 <span className="flex items-center gap-1 text-coral">

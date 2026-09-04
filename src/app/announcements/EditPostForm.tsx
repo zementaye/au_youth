@@ -27,11 +27,11 @@ export default function EditPostForm({
   }, [state]);
 
   return (
-    <form action={formAction} className="card-raised space-y-4 rounded-lg p-5">
+    <form action={formAction} className="card-raised space-y-4 p-5">
       <input type="hidden" name="postId" value={post.id} />
       <p className="font-display text-lg font-medium text-ink">Edit update</p>
       {state?.error && (
-        <div className="rounded-md border border-coral/40 bg-coral/5 px-4 py-2 text-sm text-coral">
+        <div className=" border border-coral/40 bg-coral/5 px-4 py-2 text-sm text-coral">
           {state.error}
         </div>
       )}

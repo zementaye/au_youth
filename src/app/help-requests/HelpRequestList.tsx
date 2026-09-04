@@ -66,7 +66,7 @@ export default function HelpRequestList({
             onDone={() => setEditingId(null)}
           />
         ) : (
-          <article key={r.id} className="card-raised rounded-lg p-5">
+          <article key={r.id} className="card-raised p-5">
             <div className="mb-2 flex flex-wrap items-center gap-2 text-xs">
               <StatusBadge status={r.status} />
               {r.deptName && <span className="tag">{r.deptName}</span>}

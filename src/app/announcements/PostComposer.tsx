@@ -30,7 +30,7 @@ export default function PostComposer({
     return (
       <button
         onClick={() => setOpen(true)}
-        className="flex w-full items-center justify-center gap-2 rounded-lg border border-dashed border-line px-5 py-3 text-sm text-ink-soft transition-colors hover:border-ink hover:text-ink"
+        className="flex w-full items-center justify-center gap-2 border border-dashed border-line px-5 py-3 text-sm text-ink-soft transition-colors hover:border-ink hover:text-ink"
       >
         <PenSquare size={15} /> Post a new update
       </button>
@@ -38,10 +38,10 @@ export default function PostComposer({
   }
 
   return (
-    <form action={formAction} className="card-raised space-y-4 rounded-lg p-5">
+    <form action={formAction} className="card-raised space-y-4 p-5">
       <p className="font-display text-lg font-medium text-ink">New update</p>
       {state?.error && (
-        <div className="rounded-md border border-coral/40 bg-coral/5 px-4 py-2 text-sm text-coral">
+        <div className=" border border-coral/40 bg-coral/5 px-4 py-2 text-sm text-coral">
           {state.error}
         </div>
       )}

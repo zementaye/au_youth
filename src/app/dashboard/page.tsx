@@ -94,7 +94,7 @@ export default async function DashboardPage() {
           </div>
           <div className="space-y-3">
             {submitted.map((r) => (
-              <div key={r.id} className="card-raised rounded-lg p-4">
+              <div key={r.id} className="card-raised p-4">
                 <p className="text-sm font-medium text-ink">{r.title}</p>
                 <p className="mt-1 text-xs text-ink-soft">{statusLabel(r.status)}</p>
               </div>
@@ -109,7 +109,7 @@ export default async function DashboardPage() {
           </div>
           <div className="space-y-3">
             {helping.map((r) => (
-              <div key={r.id} className="card-raised rounded-lg p-4">
+              <div key={r.id} className="card-raised p-4">
                 <p className="text-sm font-medium text-ink">{r.title}</p>
                 <p className="mt-1 text-xs text-ink-soft">{statusLabel(r.status)}</p>
               </div>
@@ -124,7 +124,7 @@ export default async function DashboardPage() {
 
 function StatCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="card-raised rounded-lg p-4">
+    <div className="card-raised p-4">
       <p className="meta text-xs text-ink-soft/70">{label}</p>
       <p className="mt-1 font-display text-xl font-medium text-ink">{value}</p>
     </div>

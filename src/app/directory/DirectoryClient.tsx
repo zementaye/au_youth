@@ -62,8 +62,8 @@ export default function DirectoryClient({
 
   return (
     <div>
-      <div className="card-raised flex flex-col gap-3 rounded-lg p-4 sm:flex-row sm:items-center">
-        <div className="flex flex-1 items-center gap-2 rounded-md border border-line bg-paper px-3 py-2">
+      <div className="card-raised flex flex-col gap-3 p-4 sm:flex-row sm:items-center">
+        <div className="flex flex-1 items-center gap-2 border border-line bg-paper px-3 py-2">
           <Search size={15} className="text-ink-soft" />
           <input
             value={query}
@@ -81,7 +81,7 @@ export default function DirectoryClient({
         <select
           value={deptFilter}
           onChange={(e) => setDeptFilter(e.target.value)}
-          className="rounded-md border border-line bg-paper px-3 py-2 text-base text-ink-soft sm:text-sm"
+          className=" border border-line bg-paper px-3 py-2 text-base text-ink-soft sm:text-sm"
         >
           <option value="">All departments</option>
           {departments.map((d) => (
@@ -93,7 +93,7 @@ export default function DirectoryClient({
         <select
           value={programFilter}
           onChange={(e) => setProgramFilter(e.target.value)}
-          className="rounded-md border border-line bg-paper px-3 py-2 text-base text-ink-soft sm:text-sm"
+          className=" border border-line bg-paper px-3 py-2 text-base text-ink-soft sm:text-sm"
         >
           <option value="">All programs</option>
           <option value="INTERN">Intern</option>
@@ -108,7 +108,7 @@ export default function DirectoryClient({
 
       <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {pageItems.map((m) => (
-          <div key={m.id} className="card-raised flex flex-col gap-3 rounded-lg p-5">
+          <div key={m.id} className="card-raised flex flex-col gap-3 p-5">
             <div className="flex items-start gap-3">
               <div className="h-11 w-11 shrink-0 overflow-hidden rounded-full border border-line bg-paper">
                 {m.profilePhotoUrl ? (

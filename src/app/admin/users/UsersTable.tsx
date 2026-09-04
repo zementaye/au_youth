@@ -47,7 +47,7 @@ export default function UsersTable({ users }: { users: UserRow[] }) {
 
   return (
     <div>
-      <div className="mb-3 flex items-center gap-2 rounded-md border border-line bg-paper-raised px-3 py-2 sm:w-80">
+      <div className="mb-3 flex items-center gap-2 border border-line bg-paper-raised px-3 py-2 sm:w-80">
         <Search size={14} className="text-ink-soft" />
         <input
           value={query}
@@ -57,7 +57,7 @@ export default function UsersTable({ users }: { users: UserRow[] }) {
         />
       </div>
 
-      <div className="card-raised overflow-x-auto rounded-lg">
+      <div className="card-raised overflow-x-auto">
         <table className="w-full min-w-[720px] text-left text-sm">
           <thead>
             <tr className="border-b border-line-soft text-xs uppercase tracking-wide text-ink-soft/70">
