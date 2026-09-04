@@ -16,7 +16,23 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="h-full">
-      <body className="flex min-h-full flex-col">
+      <body className="relative flex min-h-full flex-col">
+        {/* Site-wide photo backdrop — one shared image reference (single
+            request, cached), fixed behind all content so it's visible
+            through any translucent section on any page, not just one band.
+            Freely-licensed (Unsplash License: free for commercial use, no
+            attribution required); a group of Black professionals in an
+            office setting, not a named/identifiable public figure. Uses a
+            `fixed` positioned div rather than CSS `background-attachment:
+            fixed`, which is known to cause scroll jank on mobile browsers. */}
+        <div
+          aria-hidden
+          className="fixed inset-0 -z-10 bg-cover bg-bottom"
+          style={{
+            backgroundImage:
+              "linear-gradient(180deg, rgba(20,23,26,0.35) 0%, rgba(20,23,26,0.55) 100%), url('https://images.unsplash.com/photo-1573164574511-73c773193279?auto=format&fit=crop&crop=faces&w=1920&q=60')",
+          }}
+        />
         <ToastProvider>
           <Nav />
           <main className="flex-1">{children}</main>
