@@ -4,9 +4,7 @@ import { logoutAction } from "@/lib/actions/auth";
 import { getMyNotifications } from "@/lib/actions/notifications";
 import NotificationBell from "@/components/NotificationBell";
 import MobileMenu from "@/components/MobileMenu";
-import { LayoutGrid, Users, MessagesSquare, ShieldCheck, LogOut, UserCircle } from "lucide-react";
-
-const ICON_MAP = { grid: LayoutGrid, users: Users, messages: MessagesSquare } as const;
+import { LogOut, UserCircle } from "lucide-react";
 
 export default async function Nav() {
   const user = await getCurrentUser();
@@ -25,8 +23,8 @@ export default async function Nav() {
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-paper-raised/90 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="flex h-6 w-6 items-center justify-center rounded-md bg-ink text-[11px] font-bold text-paper">
+        <Link href="/" className="flex items-center gap-2.5">
+          <span className="flex h-7 w-7 items-center justify-center bg-ink text-[11px] font-bold text-paper">
             AU
           </span>
           <span className="font-display text-[15px] font-semibold text-ink">
@@ -34,34 +32,31 @@ export default async function Nav() {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-1 md:flex">
-          {links.map((l) => {
-            const Icon = ICON_MAP[l.icon];
-            return (
-              <Link
-                key={l.href}
-                href={l.href}
-                className="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm text-ink-soft transition-colors hover:bg-line-soft hover:text-ink"
-              >
-                <Icon size={15} strokeWidth={1.75} />
-                {l.label}
-              </Link>
-            );
-          })}
+        <nav className="hidden items-center gap-6 md:flex">
+          {links.map((l) => (
+            <Link
+              key={l.href}
+              href={l.href}
+              className="group flex items-center gap-1.5 py-1.5 text-sm text-ink-soft transition-colors hover:text-ink"
+            >
+              {l.label}
+              <span className="block h-[2px] w-0 bg-marigold transition-all duration-200 group-hover:w-full" />
+            </Link>
+          ))}
           {isAdmin && (
             <Link
               href="/admin"
-              className="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm text-ink-soft transition-colors hover:bg-line-soft hover:text-ink"
+              className="group flex items-center gap-1.5 py-1.5 text-sm text-ink-soft transition-colors hover:text-ink"
             >
-              <ShieldCheck size={15} strokeWidth={1.75} />
               Admin
+              <span className="block h-[2px] w-0 bg-marigold transition-all duration-200 group-hover:w-full" />
             </Link>
           )}
         </nav>
 
         <div className="flex items-center gap-3">
           {user && <NotificationBell initialNotifications={notifications} initialUnreadCount={unreadCount} />}
-          <div className="hidden items-center gap-3 md:flex">
+          <div className="hidden items-center gap-4 md:flex">
             {user ? (
               <>
                 <Link
@@ -79,7 +74,7 @@ export default async function Nav() {
                 <form action={logoutAction}>
                   <button
                     type="submit"
-                    className="flex items-center gap-1.5 rounded-md border border-line px-3 py-1.5 text-sm text-ink-soft transition-colors hover:border-ink/30 hover:text-ink"
+                    className="flex items-center gap-1.5 border border-line px-3 py-1.5 text-sm text-ink-soft transition-colors hover:border-ink hover:text-ink"
                   >
                     <LogOut size={14} strokeWidth={1.75} />
                     Sign out
@@ -90,13 +85,13 @@ export default async function Nav() {
               <>
                 <Link
                   href="/login"
-                  className="rounded-md px-3 py-1.5 text-sm text-ink-soft transition-colors hover:text-ink"
+                  className="px-1 py-1.5 text-sm text-ink-soft transition-colors hover:text-ink"
                 >
                   Sign in
                 </Link>
                 <Link
                   href="/signup"
-                  className="rounded-md bg-ink px-4 py-1.5 text-sm font-medium text-paper transition-colors hover:bg-ink/90"
+                  className="bg-ink px-4 py-1.5 text-sm font-medium text-paper transition-colors hover:bg-brand"
                 >
                   Join the network
                 </Link>

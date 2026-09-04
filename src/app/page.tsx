@@ -6,7 +6,7 @@ import { desc, eq, sql } from "drizzle-orm";
 import { ArrowRight, Pin } from "lucide-react";
 import { formatDate } from "@/lib/format";
 import NetworkDiagram from "@/components/NetworkDiagram";
-import { accentFor, accentSoftFor } from "@/lib/accent";
+import { accentFor } from "@/lib/accent";
 import PeopleBand from "@/components/PeopleBand";
 import HeroBlobs from "@/components/HeroBlobs";
 import MarqueeTicker from "@/components/MarqueeTicker";
@@ -118,23 +118,16 @@ export default async function LandingPage() {
         </div>
       </section>
 
-      {/* Real photo band — freely-licensed (Unsplash License: free for
-          commercial use, no attribution required), a group of Black
-          professionals in an office setting, not a named/identifiable
-          public figure. An ink-tinted gradient keeps the headline readable
-          over the image. */}
-      <section
-        className="relative overflow-hidden bg-ink bg-cover bg-center py-24"
-        style={{
-          backgroundImage:
-            "linear-gradient(180deg, rgba(20,23,26,0.55) 0%, rgba(20,23,26,0.85) 100%), url('https://images.unsplash.com/photo-1573164574511-73c773193279?auto=format&fit=crop&w=1600&q=80')",
-        }}
-      >
+      {/* This section is transparent on purpose — it reveals the site-wide
+          photo backdrop from layout.tsx (same image, one shared request)
+          rather than loading its own copy. A lighter ink gradient keeps
+          the headline readable while the photo stays clearly visible. */}
+      <section className="relative flex min-h-[70vh] items-center justify-center overflow-hidden bg-gradient-to-b from-ink/20 via-ink/35 to-ink/20 py-24">
         <div className="relative z-10 mx-auto max-w-3xl px-5 text-center">
-          <p className="font-display text-2xl font-bold text-paper sm:text-3xl">
+          <p className="font-display text-3xl font-bold text-paper sm:text-4xl">
             Built by the people it&apos;s for.
           </p>
-          <p className="mx-auto mt-3 max-w-md text-sm text-paper/70">
+          <p className="mx-auto mt-3 max-w-md text-base text-paper/80">
             Interns, volunteers, and fellows across every AU department — this is
             their network.
           </p>
@@ -182,7 +175,9 @@ export default async function LandingPage() {
         </div>
       </section>
 
-      {/* Pinned / recent announcements */}
+      {/* Pinned / recent announcements — one featured post carries the
+          section, the rest read as a dated list rather than four identical
+          boxed cards competing for the same attention. */}
       <section className="mx-auto max-w-6xl px-5 py-14">
         <div className="mb-6 flex items-baseline justify-between">
           <h2 className="font-display text-2xl font-semibold text-ink">Latest updates</h2>
@@ -190,38 +185,70 @@ export default async function LandingPage() {
             View all <ArrowRight size={14} />
           </Link>
         </div>
-        <div className="grid gap-4 sm:grid-cols-2">
-          {recentPosts.map((p, i) => (
-            <Link
-              key={p.id}
-              href="/announcements"
-              className="card-raised animate-rise group flex flex-col gap-2.5 border-l-[3px] p-5 transition-shadow hover:shadow-md"
-              style={{ "--delay": `${i * 60}ms`, borderLeftColor: accentFor(p.deptName) } as CSSProperties}
-            >
-              <div className="flex items-center gap-2 text-xs text-ink-soft">
-                {p.pinned && <Pin size={12} className="text-brick" />}
-                <span
-                  className="tag"
-                  style={{ background: accentSoftFor(p.deptName), color: "var(--ink)" }}
-                >
-                  {p.deptName ?? "Platform-wide"}
-                </span>
-              </div>
-              <h3 className="font-display text-lg font-semibold leading-snug text-ink group-hover:underline">
-                {p.title}
-              </h3>
-              <p className="line-clamp-2 text-sm text-ink-soft">{p.body}</p>
-              <p className="meta mt-auto pt-2 text-xs">
-                {p.authorName} — {formatDate(p.createdAt)}
-              </p>
-            </Link>
-          ))}
-          {recentPosts.length === 0 && (
-            <p className="text-sm text-ink-soft">
-              Quiet so far — be the first to post something the network should know.
-            </p>
-          )}
-        </div>
+        {recentPosts.length === 0 ? (
+          <p className="text-sm text-ink-soft">
+            Quiet so far — be the first to post something the network should know.
+          </p>
+        ) : (
+          <div className="grid gap-x-10 gap-y-8 lg:grid-cols-[1.3fr_1fr]">
+            {(() => {
+              const [featured, ...rest] = recentPosts;
+              return (
+                <>
+                  <Link
+                    href="/announcements"
+                    className="animate-rise group block border-t-[3px] pt-5"
+                    style={{ borderTopColor: accentFor(featured.deptName) }}
+                  >
+                    <div className="flex items-center gap-2 text-xs text-ink-soft">
+                      {featured.pinned && <Pin size={12} className="text-brick" />}
+                      <span className="font-medium" style={{ color: accentFor(featured.deptName) }}>
+                        {featured.deptName ?? "Platform-wide"}
+                      </span>
+                    </div>
+                    <h3 className="mt-3 font-display text-3xl font-semibold leading-tight text-ink group-hover:underline">
+                      {featured.title}
+                    </h3>
+                    <p className="mt-3 max-w-md text-sm leading-relaxed text-ink-soft">{featured.body}</p>
+                    <p className="meta mt-4 text-xs">
+                      {featured.authorName} — {formatDate(featured.createdAt)}
+                    </p>
+                  </Link>
+
+                  <div className="divide-y divide-line-soft border-t border-line-soft lg:border-t-0">
+                    {rest.map((p, i) => (
+                      <Link
+                        key={p.id}
+                        href="/announcements"
+                        className="animate-rise group flex items-start gap-3 py-4"
+                        style={{ "--delay": `${(i + 1) * 60}ms` } as CSSProperties}
+                      >
+                        <span
+                          className="mt-1.5 h-2 w-2 shrink-0"
+                          style={{ background: accentFor(p.deptName) }}
+                        />
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-2 text-xs text-ink-soft">
+                            {p.pinned && <Pin size={11} className="text-brick" />}
+                            <span className="font-medium text-ink-soft">
+                              {p.deptName ?? "Platform-wide"}
+                            </span>
+                          </div>
+                          <h3 className="mt-1 font-display text-base font-semibold leading-snug text-ink group-hover:underline">
+                            {p.title}
+                          </h3>
+                          <p className="meta mt-1 text-xs">
+                            {p.authorName} — {formatDate(p.createdAt)}
+                          </p>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </>
+              );
+            })()}
+          </div>
+        )}
       </section>
 
       {/* Closing statement — a bold, single line before the footer, the way
